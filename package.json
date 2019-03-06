@@ -1,0 +1,19 @@
+{
+  "name": "maskdata",
+  "version": "1.0.0",
+  "description": "Node module to mask various kinds of data in required formats",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sumukha1496/maskdata"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "mask",
+    "data"
+  ],
+  "author": "sumukha.s",
+  "license": "MIT"
+}
