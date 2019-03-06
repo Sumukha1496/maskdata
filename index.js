@@ -52,7 +52,7 @@ class MaskData {
   }
 
   static simplePhoneMask(phone) {
-    return MaskData.maskPhone(phone, defaultPasswordMaskOptions);
+    return MaskData.maskPhone(phone, defaultPhoneMaskOptions);
   }
 
   static maskPhone(phone, options) {
