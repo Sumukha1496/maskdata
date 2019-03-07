@@ -7,12 +7,12 @@ maskdata is a Node.js module to mask various kinds of data.
     - [Mask Phone Number](#mask-phone-number)
     - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
     - [Mask Password](#mask-Password)
-    - [Mask Password with the default configuration](#Mask Password with the default configuration)
+    - [Mask Password with the default configuration](#mask-password-with-the-default-configuration)
     - [Mask Email](#mask-Email-Id)
-    - [Mask Email id with the default configuration](#Mask Email id with the default configuration)
-    - [Mask JSON fields](#Mask fields in a JSON)
-    - [Mask a value from the string](#Mask the exact substring from throughout the string)
-- [Report Bugs](#Report Bugs)
+    - [Mask Email id with the default configuration](#mask-email-id-with-the-default-configuration)
+    - [Mask JSON fields](#mask-fields-in-a-json)
+    - [Mask a value from the string](#mask-the-exact-substring-from-throughout-the-sstring)
+- [Report Bugs](#report-bugs)
 - [LICENSE - "MIT"](#license---mit)
 
 # Features
