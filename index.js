@@ -1,6 +1,6 @@
 'use strict';
 
-const MaskHelper = require('./MaskHelper');
+const MaskHelper = require('./lib/helpers/MaskHelper');
 
 const defaultPhoneMaskOptions = {
   maskWith : "*",

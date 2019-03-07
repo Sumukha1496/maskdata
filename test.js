@@ -25,7 +25,7 @@ console.log("========================================");
 
 const defaultEmailMaskOptions = {
   maskWith : "*",
-  unmaskedStartCharacters : 4,
+  unmaskedStartCharacters : 3,
   unmaskedEndCharacters : 1,
   maskAtTheRate : false,
   maxMaskedCharactersBeforeAtTheRate : 10,

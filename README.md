@@ -2,22 +2,31 @@ maskdata is a Node.js module to mask various kinds of data.
 
 # Table of Contents
 - [Features](#features)
-- [Install maskdata](#install-maskdata)
-- [How to Use](#use)
-    - [Mask Phone Number](#maskPhone)
-    - [Mask Password](#maskPassword)
-    - [Mask Email](#maskEmail)
-    - [Mask JSON fields](#maskJSON)
-    - [Mask a value from the string](#maskString)
-- [Report Bugs](#report)
+- [Install maskdata](#Install-maskdata)
+- [How to Use](#How-to-Use)
+    - [Mask Phone Number](#Mask-Phone-Number)
+    - [Mask Phone Number with the default configuration](#Mask Phone Number with the default configuration)
+    - [Mask Password](#mask-Password)
+    - [Mask Password with the default configuration](#Mask Password with the default configuration)
+    - [Mask Email](#mask-Email-Id)
+    - [Mask Email id with the default configuration](#Mask Email id with the default configuration)
+    - [Mask JSON fields](#Mask fields in a JSON)
+    - [Mask a value from the string](#Mask the exact substring from throughout the string)
+- [Report Bugs](#Report Bugs)
 - [LICENSE - "MIT"](#license---mit)
 
 # Features
-* Mask password data
+* Mask password data with the desired configuration
+    * Simple password mask(Mask using default configurations)
+    * Mask password data with the desired configuration
 * Mask Phone numbers
-* Mask JSON Fields value
-* Mask String
+    * Simple phone number mask(Mask using default configurations)
+    * Mask phone number data with the desired configuration
 * Mask Email
+    * Simple Email mask(Mask using default configurations)
+    * Mask Email data with the desired configuration
+* Mask desired fields in a JSON
+* Mask the given substring from throughout a String
 
 # Install maskdata
 > npm i maskdata
@@ -36,15 +45,16 @@ const maskPhoneOptions = {
   maskWith : "*",
   // If the starting 'n' digits needs to be unmasked
   // Default value is 4
-  unmaskedStartDigits : 4, //Should be positive Integer
+  unmaskedStartDigits : 5, //Should be positive Integer
   //If the ending 'n' digits needs to be unmasked
   // Default value is 1
   unmaskedEndDigits : 1 // Should be positive Integer
 };
 
-const phoneNumber = "+111234567890";
+const phoneNumber = "+911234567890";
 
-const maskedPhoneNumber = MaskData.maskPhone(phone, maskPhoneOptions);
+const maskedPhoneNumber = MaskData.maskPhone(phoneNumber, maskPhoneOptions);
+//Output : +9112*******0
 
 ```
 
@@ -59,7 +69,9 @@ const MaskData = require('./maskdata');
 **/
 const phoneNumber = "+111234567890";
 
-const maskedPhoneNumber = MaskData.simplePhoneMask(phone);
+const maskedPhoneNumber = MaskData.simplePhoneMask(phoneNumber);
+
+//Output : +911********0
 
 ```
 
@@ -79,6 +91,8 @@ const maskPasswordOptions = {
 const password = "Password1$";
 
 const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
+
+//Output : **********
 
 ```
 
@@ -106,7 +120,7 @@ const maskEmailOptions = {
   // Character to mask the data. Default value is '*'
   maskWith : "*",
   // If the starting 'n' characters needs to be unmasked. Default value is 3
-  unmaskedStartCharacters : 3, //Should be positive Integer
+  unmaskedStartCharacters : 1, //Should be positive Integer
   // If the ending 'n' characters needs to be unmasked. Default value is 2
   unmaskedEndCharacters : 2, //Should be positive Integer
   //If '@' needs to be masked. Default value is false(Will not mask)
@@ -120,6 +134,8 @@ const maskEmailOptions = {
 const email = "my.test.email@testEmail.com";
 
 const maskedEmail = MaskData.maskEmail(email, maskEmailOptions);
+
+//Output : m**********@**********om
 
 ```
 
@@ -138,6 +154,8 @@ const MaskData = require('./maskdata');
 const email = "my.test.email@testEmail.com";
 
 const maskedEmail = MaskData.simpleEmailMask(email);
+
+//Output : my.********@**********om
 
 ```
 
@@ -158,12 +176,13 @@ const obj = {
   firstName : "Jon",
   lastName : "Snoww"
 };
+const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
 
-const JSONAfterMasking = MaskData.maskJSONFields(obj, maskJSONOptions);
+//Output : { password: '************', firstName: '***', lastName: 'Snoww' }
 
 ```
 
-## Mask the exact substring from throughout the string.
+## Mask the exact substring from throughout the string
 This will mask the field value if present in the given object
 ```javascript
 const MaskData = require('./maskdata');
@@ -181,10 +200,12 @@ const str = "This is a test String";
 
 const strAfterMasking = MaskData.maskString(str, maskStringOptions);
 
+//Output : Th** ** a **** String
+
 ```
 
 # Report Bugs 
-Please raise an issue in github : 
+Please raise an issue in github : https://github.com/Sumukha1496/maskdata/issues
 
 # LICENSE - "MIT" 
 Licenced under MIT Licence
