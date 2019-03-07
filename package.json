@@ -12,7 +12,11 @@
   },
   "keywords": [
     "mask",
-    "data"
+    "data",
+    "datamask",
+    "maskdata",
+    "hide data",
+    "mask data"
   ],
   "author": "sumukha.s",
   "license": "MIT"
