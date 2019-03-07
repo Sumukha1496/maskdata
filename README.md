@@ -2,10 +2,10 @@ maskdata is a Node.js module to mask various kinds of data.
 
 # Table of Contents
 - [Features](#features)
-- [Install maskdata](#Install-maskdata)
-- [How to Use](#How-to-Use)
-    - [Mask Phone Number](#Mask-Phone-Number)
-    - [Mask Phone Number with the default configuration](#Mask Phone Number with the default configuration)
+- [Install maskdata](#install-maskdata)
+- [How to Use](#how-to-use)
+    - [Mask Phone Number](#mask-phone-number)
+    - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
     - [Mask Password](#mask-Password)
     - [Mask Password with the default configuration](#Mask Password with the default configuration)
     - [Mask Email](#mask-Email-Id)
