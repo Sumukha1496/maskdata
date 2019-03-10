@@ -33,6 +33,12 @@ const defaultStringMaskOptions = {
   values : []
 };
 
+const defaultCardMaskOptions = {
+  maskWith : "*",
+  unmaskedStartDigits : 4,
+  unmaskedEndDigits : 1
+};
+
 class MaskData {
 
   static simplePasswordMask(password) {
@@ -136,6 +142,35 @@ class MaskData {
       }
     }
     return str;
+  }
+
+  static maskCard(card, options) {
+    card = card + '';
+    card = card.trim();
+    if(options) {
+      options = MaskHelper.mapWithDefaultValues(options, defaultCardMaskOptions);
+      MaskHelper.validateCardMaskOptions(options);
+    }
+    let maskedCard;
+    let cardWithoutSplChars = card.replace(/[^0-9]/g, '');
+    if((options.unmaskedStartDigits + options.unmaskedEndDigits) >= cardWithoutSplChars.length) {
+      maskedCard = card;
+    }
+    if(!maskedCard) {
+      maskedCard = '';
+      let maskBeg = 0;
+      for(let i = 0; i < (card.length-options.unmaskedEndDigits); i++) {
+        let char = card[i];
+        if(!isNaN(parseInt(card[i])) && maskBeg < options.unmaskedStartDigits) {
+          char = options.maskWith;
+          maskBeg++;
+        }
+        maskedCard += char;
+        char = null;
+      }
+      maskedCard += `${options.maskWith}`.repeat(options.unmaskedEndDigits);
+    }
+    return maskedCard;
   }
 }
 

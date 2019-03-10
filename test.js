@@ -69,3 +69,14 @@ defaultStringMaskOptions.maskOnlyFirstOccurance = true;
 console.log(`Unmasked string : ${str}`);
 console.log(`String after masking only first occurances: ${MaskData.maskString(str, defaultStringMaskOptions)}`);
 console.log("========================================");
+
+const defaultCardMaskOptions = {
+  maskWith : "X",
+  unmaskedStartDigits : 6,
+  unmaskedEndDigits : 4
+};
+
+let cardNumber = "1234-5678-1234-5678";
+console.log(`Unmasked cardNumber : ${cardNumber}`);
+console.log(`cardNumber after masking : ${MaskData.maskCard(cardNumber, defaultCardMaskOptions)}`);
+console.log("========================================");

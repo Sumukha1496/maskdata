@@ -11,7 +11,8 @@ maskdata is a Node.js module to mask various kinds of data.
     - [Mask Email](#mask-email-id)
     - [Mask Email id with the default configuration](#mask-email-id-with-the-default-configuration)
     - [Mask JSON fields](#mask-fields-in-a-json)
-    - [Mask a value from the string](#mask-the-exact-substring-from-throughout-the-sstring)
+    - [Mask a value from the string](#mask-the-exact-substring-from-throughout-the-string)
+    - [Mask Card number](#mask-card-number)
 - [Report Bugs](#report-bugs)
 - [LICENSE - "MIT"](#license---mit)
 
@@ -201,6 +202,30 @@ const str = "This is a test String";
 const strAfterMasking = MaskData.maskString(str, maskStringOptions);
 
 //Output : Th** ** a **** String
+
+```
+
+## Mask card number
+This will mask the card numbers
+```javascript
+const MaskData = require('./maskdata');
+
+const maskCardOptions = {
+  // Character to mask the data. Default value is 'X'
+  maskWith : "X",
+  // If the starting 'n' numbers needs to be unmasked
+  // Default value is 4
+  unmaskedStartDigits : 4, //Should be positive Integer
+  //If the ending 'n' numbers needs to be unmasked
+  // Default value is 1. Max possible value is 4
+  unmaskedEndDigits : 1 // Should be positive Integer
+};
+
+const cardNumber = "1234-5678-1234-5678";
+
+const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
+
+//Output : XXXX-5678-1234-567X
 
 ```
 
