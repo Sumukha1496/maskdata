@@ -28,6 +28,7 @@ maskdata is a Node.js module to mask various kinds of data.
     * Mask Email data with the desired configuration
 * Mask desired fields in a JSON
 * Mask the given substring from throughout a String
+* Mask the card number
 
 # Install maskdata
 > npm i maskdata
@@ -44,12 +45,16 @@ const maskPhoneOptions = {
   // Character to mask the data
   // default value is '*'
   maskWith : "*",
+
+  //Should be positive Integer
   // If the starting 'n' digits needs to be unmasked
   // Default value is 4
-  unmaskedStartDigits : 5, //Should be positive Integer
+  unmaskedStartDigits : 5, 
+
+  // Should be positive Integer
   //If the ending 'n' digits needs to be unmasked
   // Default value is 1
-  unmaskedEndDigits : 1 // Should be positive Integer
+  unmaskedEndDigits : 1 
 };
 
 const phoneNumber = "+911234567890";
@@ -84,6 +89,7 @@ const maskPasswordOptions = {
   // Character to mask the data
   // default value is '*'
   maskWith : "*",
+
   // To limit the *s in the response when the password length is more
   // Default value is 16
   maxMaskedCharacters : 16
@@ -120,16 +126,26 @@ const MaskData = require('./maskdata');
 const maskEmailOptions = {
   // Character to mask the data. Default value is '*'
   maskWith : "*",
+
+  //Should be positive Integer
   // If the starting 'n' characters needs to be unmasked. Default value is 3
-  unmaskedStartCharacters : 1, //Should be positive Integer
+  unmaskedStartCharacters : 1, 
+
+  //Should be positive Integer
   // If the ending 'n' characters needs to be unmasked. Default value is 2
-  unmaskedEndCharacters : 2, //Should be positive Integer
+  unmaskedEndCharacters : 2, 
+
+  // Should be boolean
   //If '@' needs to be masked. Default value is false(Will not mask)
-  maskAtTheRate : false, // Should be boolean
+  maskAtTheRate : false, 
+
+  //Should be positive Integer
   // To limit the *s in the response(Max *s before '@'). Default value is 10
-  maxMaskedCharactersBeforeAtTheRate : 10, //Should be positive Integer
+  maxMaskedCharactersBeforeAtTheRate : 10, 
+
+  //Should be positive Integer
   // To limit the *s in the response(Max *s after '@'). Default value is 10
-  maxMaskedCharactersAfterAtTheRate : 10 //Should be positive Integer
+  maxMaskedCharactersAfterAtTheRate : 10 
 };
 
 const email = "my.test.email@testEmail.com";
@@ -168,8 +184,10 @@ const MaskData = require('./maskdata');
 const maskJSONOptions = {
   // Character to mask the data. Default value is '*'
   maskWith : "*",
+
+  // It should be an array
   // Field names to mask. Can give multiple fields.
-  fields : ['password', 'firstName'] // It should be an array
+  fields : ['password', 'firstName'] 
 };
 
 const obj = {
@@ -191,8 +209,12 @@ const MaskData = require('./maskdata');
 const maskStringOptions = {
   // Character to mask the data. Default value is '*'
   maskWith : "*",
+
+  // It should be an array of strings
   // Field names to mask. Can give multiple fields.
-  values : ['is', 'test'], // It should be an array of strings
+  values : ['is', 'test'], 
+
+  // Should be boolean
   // If to mask only the first occurance of each value in the given string
   maskOnlyFirstOccurance : false
 };
@@ -213,12 +235,17 @@ const MaskData = require('./maskdata');
 const maskCardOptions = {
   // Character to mask the data. Default value is 'X'
   maskWith : "X",
+
+  // Should be positive Integer
   // If the starting 'n' numbers needs to be unmasked
   // Default value is 4
-  unmaskedStartDigits : 4, //Should be positive Integer
+  unmaskedStartDigits : 4, 
+  
+  //Should be positive Integer
   //If the ending 'n' numbers needs to be unmasked
-  // Default value is 1. Max possible value is 4
-  unmaskedEndDigits : 1 // Should be positive Integer
+  // Default value is 1. 
+  // Max possible value is 4
+  unmaskedEndDigits : 1 
 };
 
 const cardNumber = "1234-5678-1234-5678";

@@ -152,25 +152,27 @@ class MaskData {
       MaskHelper.validateCardMaskOptions(options);
     }
     let maskedCard;
-    let cardWithoutSplChars = card.replace(/[^0-9]/g, '');
-    if((options.unmaskedStartDigits + options.unmaskedEndDigits) >= cardWithoutSplChars.length) {
-      maskedCard = card;
+    if((options.unmaskedStartDigits + options.unmaskedEndDigits) >= card.length) {
+      return card;
     }
     if(!maskedCard) {
       maskedCard = '';
-      let maskBeg = 0;
-      for(let i = 0; i < (card.length-options.unmaskedEndDigits); i++) {
-        let char = card[i];
-        if(!isNaN(parseInt(card[i])) && maskBeg < options.unmaskedStartDigits) {
-          char = options.maskWith;
-          maskBeg++;
-        }
-        maskedCard += char;
-        char = null;
+      for(let i = 0; i < options.unmaskedStartDigits; i++) {
+        maskedCard += card[i];
       }
-      maskedCard += `${options.maskWith}`.repeat(options.unmaskedEndDigits);
+
+      for(let i = options.unmaskedStartDigits; i < (card.length-options.unmaskedEndDigits); i++) {
+        if(isNaN(parseInt(card[i]))) {
+          maskedCard += card[i];
+        } else {
+          maskedCard += options.maskWith;
+        }
+      }
+      for(let i = (card.length-options.unmaskedEndDigits); i < card.length; i++) {
+        maskedCard += card[i];
+      }
+      return maskedCard;
     }
-    return maskedCard;
   }
 }
 
