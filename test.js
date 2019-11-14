@@ -72,8 +72,8 @@ console.log("========================================");
 
 const defaultCardMaskOptions = {
   maskWith : "X",
-  unmaskedStartDigits : 6,
-  unmaskedEndDigits : 4
+  unmaskedStartDigits : 4,
+  unmaskedEndDigits : 1
 };
 
 let cardNumber = "1234-5678-1234-5678";

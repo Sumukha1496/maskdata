@@ -252,7 +252,7 @@ const cardNumber = "1234-5678-1234-5678";
 
 const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
 
-//Output : XXXX-5678-1234-567X
+//Output : 1234-XXXX-XXXX-XXX8
 
 ```
 
