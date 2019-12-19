@@ -11,6 +11,7 @@ maskdata is a Node.js module to mask various kinds of data.
     - [Mask Email](#mask-email-id)
     - [Mask Email id with the default configuration](#mask-email-id-with-the-default-configuration)
     - [Mask JSON fields](#mask-fields-in-a-json)
+    - [Mask nested JSON fields](#mask-fields-of-a-nested-Object)
     - [Mask a value from the string](#mask-the-exact-substring-from-throughout-the-string)
     - [Mask Card number](#mask-card-number)
 - [Report Bugs](#report-bugs)
@@ -198,6 +199,38 @@ const obj = {
 const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
 
 //Output : { password: '************', firstName: '***', lastName: 'Snoww' }
+
+```
+
+## Mask fields of a nested Object
+This will mask the field values if present in the given object
+```javascript
+const MaskData = require('./maskdata');
+
+const maskJSONOptions = {
+  // Character to mask the data. Default value is '*'
+  maskWith : "*",
+
+  // It should be an array
+  // Field names to mask. Can give multiple fields.
+  fields : ['level1.level2.level3.field3', 'level1.level2.field2', 'level1.field1', 'value1'] 
+};
+
+const nestedObject = {
+  level1: {
+    field1: "field1",
+    level2: {
+      field2: "field2",
+      level3: {
+        field3: "field3",
+      }
+    }
+  },
+  value1: "value"
+};
+const maskedObj = MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2);
+
+//Output : {"level1":{"field1":"******","level2":{"field2":"******","level3":{"field3":"******"}}},"value1":"*****"}
 
 ```
 

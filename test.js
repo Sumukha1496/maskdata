@@ -50,8 +50,31 @@ const json = {
 
 console.log(`Unmasked object : `);
 console.log(JSON.stringify(json));
-console.log(`JSON Object after masking :`);
-console.log(MaskData.maskJSONFields(json, defaultJSONMaskOptions));
+console.log(`Object after masking :`);
+console.log(JSON.stringify(MaskData.maskJSONFields(json, defaultJSONMaskOptions)));
+console.log("========================================");
+
+const defaultJSONMaskOptions2 = {
+  fields : ['level1.level2.level3.field3', 'level1.level2.field2', 'level1.field1', 'value1']
+};
+
+const nestedObject = {
+  level1: {
+    field1: "field1",
+    level2: {
+      field2: "field2",
+      level3: {
+        field3: "field3",
+      }
+    }
+  },
+  value1: "value"
+};
+
+console.log(`Unmasked nested object : `);
+console.log(JSON.stringify(json));
+console.log(`Nested Object after masking :`);
+console.log(JSON.stringify(MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2)));
 console.log("========================================");
 
 const defaultStringMaskOptions = {

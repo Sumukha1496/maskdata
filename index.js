@@ -116,13 +116,30 @@ class MaskData {
       MaskHelper.validateJSONOptions(options);
     }
     let maskedObj = obj;
-    let fields = options.fields;
-    for(const key of Object.keys(obj)) {
-      if(fields.includes(key)) {
-        maskedObj[key] = `${options.maskWith}`.repeat(obj[key].toString().length);
-      }
+    const fields = options.fields;
+
+    for(const field of fields) {
+      try {
+        if(field.indexOf('.') !== -1) {
+          this.maskDeep(maskedObj, options.maskWith, field);
+        } else {
+          if(maskedObj[field]) {
+            maskedObj[field] = `${options.maskWith}`.repeat(maskedObj[field].toString().length);
+          }
+        }
+      } catch(ex) {}
     }
     return maskedObj;
+  }
+
+  static maskDeep(maskedObj, value, field) {
+    const [head, ...rest] = field.split('.');
+    if(!rest.length) {
+      maskedObj[head] = `${value}`.repeat(maskedObj[head].toString().length)
+      return;
+    } else {
+      return(this.maskDeep(maskedObj[head], value, rest.join('.')));
+    } 
   }
 
   static maskString(str, options) {
