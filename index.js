@@ -3,40 +3,40 @@
 const MaskHelper = require('./lib/helpers/MaskHelper');
 
 const defaultPhoneMaskOptions = {
-  maskWith : "*",
-  unmaskedStartDigits : 4,
-  unmaskedEndDigits : 1
+  maskWith: "*",
+  unmaskedStartDigits: 4,
+  unmaskedEndDigits: 1
 };
 
 const defaultEmailMaskOptions = {
-  maskWith : "*",
-  unmaskedStartCharacters : 3,
-  unmaskedEndCharacters : 2,
-  maskAtTheRate : false,
-  maxMaskedCharactersBeforeAtTheRate : 10,
-  maxMaskedCharactersAfterAtTheRate : 10,
+  maskWith: "*",
+  unmaskedStartCharacters: 3,
+  unmaskedEndCharacters: 2,
+  maskAtTheRate: false,
+  maxMaskedCharactersBeforeAtTheRate: 10,
+  maxMaskedCharactersAfterAtTheRate: 10,
 };
 
 const defaultJsonMaskOptions = {
-  maskWith : "*",
-  fields : []
+  maskWith: "*",
+  fields: []
 };
 
 const defaultPasswordMaskOptions = {
-  maskWith : "*",
-  maxMaskedCharacters : 16
+  maskWith: "*",
+  maxMaskedCharacters: 16
 };
 
 const defaultStringMaskOptions = {
-  maskWith : "*",
-  maskOnlyFirstOccurance : false,
-  values : []
+  maskWith: "*",
+  maskOnlyFirstOccurance: false,
+  values: []
 };
 
 const defaultCardMaskOptions = {
-  maskWith : "*",
-  unmaskedStartDigits : 4,
-  unmaskedEndDigits : 1
+  maskWith: "*",
+  unmaskedStartDigits: 4,
+  unmaskedEndDigits: 1
 };
 
 class MaskData {

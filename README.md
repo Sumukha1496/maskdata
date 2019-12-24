@@ -28,6 +28,7 @@ maskdata is a Node.js module to mask various kinds of data.
     * Simple Email mask(Mask using default configurations)
     * Mask Email data with the desired configuration
 * Mask desired fields in a JSON
+    * Mask nested onject fields
 * Mask the given substring from throughout a String
 * Mask the card number
 
@@ -45,23 +46,23 @@ const MaskData = require('./maskdata');
 const maskPhoneOptions = {
   // Character to mask the data
   // default value is '*'
-  maskWith : "*",
+  maskWith: "*",
 
   //Should be positive Integer
   // If the starting 'n' digits needs to be unmasked
   // Default value is 4
-  unmaskedStartDigits : 5, 
+  unmaskedStartDigits: 5, 
 
   // Should be positive Integer
   //If the ending 'n' digits needs to be unmasked
   // Default value is 1
-  unmaskedEndDigits : 1 
+  unmaskedEndDigits: 1 
 };
 
 const phoneNumber = "+911234567890";
 
 const maskedPhoneNumber = MaskData.maskPhone(phoneNumber, maskPhoneOptions);
-//Output : +9112*******0
+//Output: +9112*******0
 
 ```
 
@@ -70,15 +71,15 @@ const maskedPhoneNumber = MaskData.maskPhone(phoneNumber, maskPhoneOptions);
 const MaskData = require('./maskdata');
 
 /** Default Options
-  maskWith : "*"
-  unmaskedStartDigits : 4
-  unmaskedEndDigits : 1 
+  maskWith: "*"
+  unmaskedStartDigits: 4
+  unmaskedEndDigits: 1 
 **/
 const phoneNumber = "+111234567890";
 
 const maskedPhoneNumber = MaskData.simplePhoneMask(phoneNumber);
 
-//Output : +911********0
+//Output: +911********0
 
 ```
 
@@ -89,18 +90,18 @@ const MaskData = require('./maskdata');
 const maskPasswordOptions = {
   // Character to mask the data
   // default value is '*'
-  maskWith : "*",
+  maskWith: "*",
 
   // To limit the *s in the response when the password length is more
   // Default value is 16
-  maxMaskedCharacters : 16
+  maxMaskedCharacters: 16
 };
 
 const password = "Password1$";
 
 const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
 
-//Output : **********
+//Output: **********
 
 ```
 
@@ -109,8 +110,8 @@ const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
 const MaskData = require('./maskdata');
 
   /** Default Options
-    maskWith : "*"
-    maxMaskedCharacters : 16
+    maskWith: "*"
+    maxMaskedCharacters: 16
   **/
 
 const password = "Password1$";
@@ -126,34 +127,34 @@ const MaskData = require('./maskdata');
 
 const maskEmailOptions = {
   // Character to mask the data. Default value is '*'
-  maskWith : "*",
+  maskWith: "*",
 
   //Should be positive Integer
   // If the starting 'n' characters needs to be unmasked. Default value is 3
-  unmaskedStartCharacters : 1, 
+  unmaskedStartCharacters: 1, 
 
   //Should be positive Integer
   // If the ending 'n' characters needs to be unmasked. Default value is 2
-  unmaskedEndCharacters : 2, 
+  unmaskedEndCharacters: 2, 
 
   // Should be boolean
   //If '@' needs to be masked. Default value is false(Will not mask)
-  maskAtTheRate : false, 
+  maskAtTheRate: false, 
 
   //Should be positive Integer
   // To limit the *s in the response(Max *s before '@'). Default value is 10
-  maxMaskedCharactersBeforeAtTheRate : 10, 
+  maxMaskedCharactersBeforeAtTheRate: 10, 
 
   //Should be positive Integer
   // To limit the *s in the response(Max *s after '@'). Default value is 10
-  maxMaskedCharactersAfterAtTheRate : 10 
+  maxMaskedCharactersAfterAtTheRate: 10 
 };
 
 const email = "my.test.email@testEmail.com";
 
 const maskedEmail = MaskData.maskEmail(email, maskEmailOptions);
 
-//Output : m**********@**********om
+//Output: m**********@**********om
 
 ```
 
@@ -162,18 +163,18 @@ const maskedEmail = MaskData.maskEmail(email, maskEmailOptions);
 const MaskData = require('./maskdata');
 
 /** Default Options
-    maskWith : "*"
-    unmaskedStartCharacters : 3
-    unmaskedEndCharacters : 2
-    maskAtTheRate : false
-    maxMaskedCharactersBeforeAtTheRate : 10
-    maxMaskedCharactersAfterAtTheRate : 10
+    maskWith: "*"
+    unmaskedStartCharacters: 3
+    unmaskedEndCharacters: 2
+    maskAtTheRate: false
+    maxMaskedCharactersBeforeAtTheRate: 10
+    maxMaskedCharactersAfterAtTheRate: 10
 **/
 const email = "my.test.email@testEmail.com";
 
 const maskedEmail = MaskData.simpleEmailMask(email);
 
-//Output : my.********@**********om
+//Output: my.********@**********om
 
 ```
 
@@ -184,36 +185,37 @@ const MaskData = require('./maskdata');
 
 const maskJSONOptions = {
   // Character to mask the data. Default value is '*'
-  maskWith : "*",
+  maskWith: "*",
 
   // It should be an array
   // Field names to mask. Can give multiple fields.
-  fields : ['password', 'firstName'] 
+  fields: ['password', 'firstName'] 
 };
 
 const obj = {
-  password : "IKnowNothing",
-  firstName : "Jon",
-  lastName : "Snoww"
+  password: "IKnowNothing",
+  firstName: "Jon",
+  lastName: "Snoww"
 };
 const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
 
-//Output : { password: '************', firstName: '***', lastName: 'Snoww' }
+//Output: { password: '************', firstName: '***', lastName: 'Snoww' }
 
 ```
 
 ## Mask fields of a nested Object
-This will mask the field values if present in the given object
+This will mask the field values if present in the given object. 
+If the field doesn't exist then it will ignore that field.
 ```javascript
 const MaskData = require('./maskdata');
 
 const maskJSONOptions = {
   // Character to mask the data. Default value is '*'
-  maskWith : "*",
+  maskWith: "*",
 
   // It should be an array
   // Field names to mask. Can give multiple fields.
-  fields : ['level1.level2.level3.field3', 'level1.level2.field2', 'level1.field1', 'value1'] 
+  fields: ['level1.level2.level3.field3', 'level1.level2.field2', 'level1.field1', 'value1'] 
 };
 
 const nestedObject = {
@@ -230,7 +232,7 @@ const nestedObject = {
 };
 const maskedObj = MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2);
 
-//Output : {"level1":{"field1":"******","level2":{"field2":"******","level3":{"field3":"******"}}},"value1":"*****"}
+//Output: {"level1":{"field1":"******","level2":{"field2":"******","level3":{"field3":"******"}}},"value1":"*****"}
 
 ```
 
@@ -241,22 +243,22 @@ const MaskData = require('./maskdata');
 
 const maskStringOptions = {
   // Character to mask the data. Default value is '*'
-  maskWith : "*",
+  maskWith: "*",
 
   // It should be an array of strings
   // Field names to mask. Can give multiple fields.
-  values : ['is', 'test'], 
+  values: ['is', 'test'], 
 
   // Should be boolean
   // If to mask only the first occurance of each value in the given string
-  maskOnlyFirstOccurance : false
+  maskOnlyFirstOccurance: false
 };
 
 const str = "This is a test String";
 
 const strAfterMasking = MaskData.maskString(str, maskStringOptions);
 
-//Output : Th** ** a **** String
+//Output: Th** ** a **** String
 
 ```
 
@@ -267,30 +269,33 @@ const MaskData = require('./maskdata');
 
 const maskCardOptions = {
   // Character to mask the data. Default value is 'X'
-  maskWith : "X",
+  maskWith: "X",
 
   // Should be positive Integer
   // If the starting 'n' numbers needs to be unmasked
   // Default value is 4
-  unmaskedStartDigits : 4, 
+  unmaskedStartDigits: 4, 
   
   //Should be positive Integer
   //If the ending 'n' numbers needs to be unmasked
   // Default value is 1. 
   // Max possible value is 4
-  unmaskedEndDigits : 1 
+  unmaskedEndDigits: 1 
 };
 
 const cardNumber = "1234-5678-1234-5678";
 
 const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
 
-//Output : 1234-XXXX-XXXX-XXX8
+//Output: 1234-XXXX-XXXX-XXX8
 
 ```
 
 # Report Bugs 
-Please raise an issue in github : https://github.com/Sumukha1496/maskdata/issues
+Please raise an issue in github: https://github.com/Sumukha1496/maskdata/issues
+
+# Give a Star:
+You can give a start at: https://github.com/Sumukha1496/maskdata/stargazers 
 
 # LICENSE - "MIT" 
 Licenced under MIT Licence

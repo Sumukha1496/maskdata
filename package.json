@@ -16,8 +16,13 @@
     "datamask",
     "maskdata",
     "hide data",
-    "mask data"
+    "mask data",
+    "mask sensitive",
+    "mask password",
+    "mask card",
+    "mask json",
+    "mask string"
   ],
-  "author": "sumukha.s",
+  "author": "sumukha.s<sumukha.hs369@gmail.com>",
   "license": "MIT"
 }
