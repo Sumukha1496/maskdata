@@ -204,8 +204,10 @@ const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
 ```
 
 ## Mask fields of a nested Object
-This will mask the field values if present in the given object. 
-The masked value type will always be string. Won't mask if the value is ```null```
+This will mask the field values if present in the given object.
+
+The masked value type will always be string. Won't mask if the value is ```null```.
+
 If the field doesn't exist or if there is any syntax error, then it will ignore without throwing any error.
 ```javascript
 const MaskData = require('./maskdata');
@@ -239,7 +241,8 @@ const nestedObject = {
 };
 const maskedObj = MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2);
 
-//Output: {"level1":{"field1":"******","level2":{"field2":"******","level3":{"field3":"******","field4":[{"Hello":"world"},{"Hello":"Newworld"},"Just a String"]}}},"value1":"*****"}
+//Output: 
+{"level1":{"field1":"******","level2":{"field2":"******","level3":{"field3":"******","field4":[{"Hello":null},{"Hello":"Newworld"},"*************"]}}},"value1":"*****"}
 
 ```
 

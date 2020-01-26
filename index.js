@@ -125,9 +125,7 @@ class MaskData {
         if(value !== undefined) {
           _.set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
         }
-      } catch(ex) {
-        console.log(ex);
-      }
+      } catch(ex) {}
     }
     return maskedObj;
   }
