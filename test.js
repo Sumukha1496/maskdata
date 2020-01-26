@@ -55,7 +55,7 @@ console.log(JSON.stringify(MaskData.maskJSONFields(json, defaultJSONMaskOptions)
 console.log("========================================");
 
 const defaultJSONMaskOptions2 = {
-  fields : ['level1.level2.level3.field3', 'level1.level2.field2', 'level1.field1', 'value1']
+  fields : ['level1.level2.level3.field3', 'level1.level2.field2', 'level1.field1', 'value1', 'level1.level2.level3.field4[0].Hello', 'level1.level2.level3.field4[2]']
 };
 
 const nestedObject = {
@@ -65,6 +65,7 @@ const nestedObject = {
       field2: "field2",
       level3: {
         field3: "field3",
+        field4: [{ Hello: null }, { Hello: "Newworld" }, "Just a String"]
       }
     }
   },

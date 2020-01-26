@@ -1,6 +1,6 @@
 {
   "name": "maskdata",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Node module to mask various kinds of data in required formats",
   "main": "index.js",
   "repository": {
@@ -21,8 +21,13 @@
     "mask password",
     "mask card",
     "mask json",
-    "mask string"
+    "mask string",
+    "mask json",
+    "mask object"
   ],
   "author": "sumukha.s<sumukha.hs369@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
 }

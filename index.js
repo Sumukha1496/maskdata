@@ -1,6 +1,7 @@
 'use strict';
 
 const MaskHelper = require('./lib/helpers/MaskHelper');
+const _ = require('lodash');
 
 const defaultPhoneMaskOptions = {
   maskWith: "*",
@@ -120,26 +121,15 @@ class MaskData {
 
     for(const field of fields) {
       try {
-        if(field.indexOf('.') !== -1) {
-          this.maskDeep(maskedObj, options.maskWith, field);
-        } else {
-          if(maskedObj[field]) {
-            maskedObj[field] = `${options.maskWith}`.repeat(maskedObj[field].toString().length);
-          }
+        const value = _.get(maskedObj, field);
+        if(value !== undefined) {
+          _.set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
         }
-      } catch(ex) {}
+      } catch(ex) {
+        console.log(ex);
+      }
     }
     return maskedObj;
-  }
-
-  static maskDeep(maskedObj, value, field) {
-    const [head, ...rest] = field.split('.');
-    if(!rest.length) {
-      maskedObj[head] = `${value}`.repeat(maskedObj[head].toString().length)
-      return;
-    } else {
-      return(this.maskDeep(maskedObj[head], value, rest.join('.')));
-    } 
   }
 
   static maskString(str, options) {
