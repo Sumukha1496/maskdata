@@ -58,14 +58,19 @@ const defaultJSONMaskOptions2 = {
   fields : ['level1.level2.level3.field3', 'level1.level2.field2', 'level1.field1', 'value1', 'level1.level2.level3.field4[0].Hello', 'level1.level2.level3.field4[2]']
 };
 
-const nestedObject = {
+const maskAllFields = {
+  fields : ['level1.level2.field3[*].Hello', 'level1.level2.level3.*']
+};
+
+const nestedAllObject = {
   level1: {
-    field1: "field1",
+    field1: "field1Value",
     level2: {
-      field2: "field2",
+      field2: "field2Value",
+      field3: [ { Hello: "Hello", Hi: "one" }, { Hello: "Hello again" } ],
       level3: {
-        field3: "field3",
-        field4: [{ Hello: null }, { Hello: "Newworld" }, "Just a String"]
+        field4: "field4Value",
+        field5: "field5Value"
       }
     }
   },
@@ -73,10 +78,31 @@ const nestedObject = {
 };
 
 console.log(`Unmasked nested object: `);
-console.log(JSON.stringify(json));
+console.log(JSON.stringify(nestedAllObject));
+console.log(`Nested Object after masking all:`);
+console.log(JSON.stringify(MaskData.maskJSONFields(nestedAllObject, maskAllFields)));
+console.log("========================================");
+
+const nestedObject = {
+  level1: {
+    field1: "field1",
+    level2: {
+      field2: "field2",
+      level3: {
+        field3: "field3",
+        field4: [{ Hello: "world" }, { Hello: "Newworld" }, "Just a String"]
+      }
+    }
+  },
+  value1: "value"
+};
+
+console.log(`Unmasked nested object: `);
+console.log(JSON.stringify(nestedObject));
 console.log(`Nested Object after masking:`);
 console.log(JSON.stringify(MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2)));
 console.log("========================================");
+
 
 const defaultStringMaskOptions = {
   maskWith: "*",
@@ -104,3 +130,22 @@ let cardNumber = "1234-5678-1234-5678";
 console.log(`Unmasked cardNumber: ${cardNumber}`);
 console.log(`cardNumber after masking: ${MaskData.maskCard(cardNumber, defaultCardMaskOptions)}`);
 console.log("========================================");
+
+const nestedJson = {
+  level1: {
+    field1: "field1",
+    level2: {
+      field2: "field2",
+      level3: {
+        field3: "field3",
+        field4: [ { Hello: "world" }, { Hello: "Newworld" }, "Just a String" ]
+      }
+    }
+  },
+  value1: "value"
+};
+
+const field = 'level1.level2.level3.field4[0].Hello';
+
+console.log("========================================");
+console.log(`${field}: ${MaskData.getInnerProperty(nestedJson, field)}`);

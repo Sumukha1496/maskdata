@@ -122,11 +122,31 @@ class MaskData {
 
     for(const field of fields) {
       try {
-        const value = get(maskedObj, field);
-        if(value !== undefined) {
+        if(field.includes('[*].')) {
+          let [arrayFieldName, subField] = field.split('[*].');
+          const arrayValue = get(maskedObj, arrayFieldName);
+          for(const arrayElement of arrayValue) {
+            const value = arrayElement[subField];
+            if(value !== undefined && value !== null) {
+              set(arrayElement, subField, (`${options.maskWith}`.repeat(value.toString().length)))
+            }
+          }
+        } else if(field.includes('.*')) {
+          let subField = field.split('.*')[0];
+          const innerObject = get(maskedObj, subField);
+          for(const innerObjectField of Object.keys(innerObject)) {
+            const value = innerObject[innerObjectField];
+            if(value !== undefined && value !== null) {
+              set(innerObject, innerObjectField, (`${options.maskWith}`.repeat(value.toString().length)))
+            }
+          }
+        } else {
+          const value = get(maskedObj, field);
+          if(value !== undefined && value !== null) {
           set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
         }
-      } catch(ex) {}
+        }
+      } catch(ex) { continue; }
     }
     return maskedObj;
   }
@@ -180,6 +200,11 @@ class MaskData {
       return maskedCard;
     }
   }
+
+  static getInnerProperty(object, field) {
+    return get(object, field);
+  }
+
 }
 
 module.exports = MaskData;

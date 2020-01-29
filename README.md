@@ -10,6 +10,7 @@ maskdata is a Node.js module to mask various kinds of data.
     - [Mask Password with the default configuration](#mask-password-with-the-default-configuration)
     - [Mask Email](#mask-email-id)
     - [Mask Email id with the default configuration](#mask-email-id-with-the-default-configuration)
+    - [Get Nested Json Property](#get-nested-json-property)
     - [Mask JSON fields](#mask-fields-in-a-json)
     - [Mask nested JSON fields](#mask-fields-of-a-nested-object)
     - [Mask a value from the string](#mask-the-exact-substring-from-throughout-the-string)
@@ -178,6 +179,33 @@ const maskedEmail = MaskData.simpleEmailMask(email);
 
 ```
 
+## Get Nested Json Property
+This will return the nested Json property if exists. Otherwise it returns ```undefined```
+```javascript
+const MaskData = require('./maskdata');
+
+const innerPropety = Maskdata.getInnerProperty(object, field);
+
+Example: 
+
+const nestedObject = {
+  level1: {
+    field1: "field1",
+    level2: {
+      field2: "field2",
+      level3: {
+        field3: "field3",
+        field4: [ { Hello: "world" }, { Hello: "Newworld" }, "Just a String" ]
+      }
+    }
+  },
+  value1: "value"
+};
+
+const innerPropety = Maskdata.getInnerProperty(nestedObject, 'level1.level2.level3.field4[0].Hello');
+
+```
+
 ## Mask fields in a JSON 
 This will mask the field value if present in the given object
 ```javascript
@@ -202,7 +230,6 @@ const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
 //Output: { password: '************', firstName: '***', lastName: 'Snoww' }
 
 ```
-
 ## Mask fields of a nested Object
 This will mask the field values if present in the given object.
 
@@ -243,6 +270,43 @@ const maskedObj = MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2)
 
 //Output: 
 {"level1":{"field1":"******","level2":{"field2":"******","level3":{"field3":"******","field4":[{"Hello":null},{"Hello":"Newworld"},"*************"]}}},"value1":"*****"}
+```
+
+
+### Example2: To mask all the keys of an object or to mask a field from all the elements of an array.
+
+```javascript
+Limititions: 
+1. Only one * is allowed per field. Either ARRAY[*].FIELD or JSON.* 
+2. It will not work for the nested fields like ARRAY[*].FIELD1.FIELD2
+3. It will not mask all array elements if given ARRAY[*] or ARRAY[*].
+4. Will not mask null values.
+5. If ARRAY[*].FIELD is an object, then it will mask that entire object include key.
+
+const nestedObject = {
+  level1: {
+    field1: "field1Value",
+    level2: {
+      field2: "field2Value",
+      field3: [ { Hello: "Hello", Hi: "one" }, { Hello: "Hello again" } ],
+      level3: {
+        field4: "field4Value",
+        field5: "field5Value"
+      }
+    }
+  },
+  value1: "value"
+};
+
+const maskAllFields = {
+  fields : ['level1.level2.field3[*].Hello', 'level1.level2.level3.*']
+};
+
+const maskedObject = MaskData.maskJSONFields(nestedObject, maskAllFields);
+
+// Output: 
+{"level1":{"field1":"field1Value","level2":{"field2":"field2Value","field3":[{"Hello":"*****","Hi":"one"},{"Hello":"***********"}],"level3":{"field4":"***********","field5":"***********"}}},"value1":"value"}
+
 
 ```
 

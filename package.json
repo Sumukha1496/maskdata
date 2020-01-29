@@ -1,6 +1,6 @@
 {
   "name": "maskdata",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Node module to mask various kinds of data in required formats",
   "main": "index.js",
   "repository": {
