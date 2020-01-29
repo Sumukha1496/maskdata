@@ -1,7 +1,8 @@
 'use strict';
 
 const MaskHelper = require('./lib/helpers/MaskHelper');
-const _ = require('lodash');
+const get = require('lodash.get');
+const set = require('lodash.set');
 
 const defaultPhoneMaskOptions = {
   maskWith: "*",
@@ -121,9 +122,9 @@ class MaskData {
 
     for(const field of fields) {
       try {
-        const value = _.get(maskedObj, field);
+        const value = get(maskedObj, field);
         if(value !== undefined) {
-          _.set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
+          set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
         }
       } catch(ex) {}
     }

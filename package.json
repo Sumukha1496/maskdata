@@ -1,6 +1,6 @@
 {
   "name": "maskdata",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Node module to mask various kinds of data in required formats",
   "main": "index.js",
   "repository": {
@@ -28,6 +28,7 @@
   "author": "sumukha.s<sumukha.hs369@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2"
   }
 }
