@@ -149,3 +149,17 @@ const field = 'level1.level2.level3.field4[0].Hello';
 
 console.log("========================================");
 console.log(`${field}: ${MaskData.getInnerProperty(nestedJson, field)}`);
+
+const input = {
+  name: "John",
+  age: 33,
+  married: true
+}
+
+console.log("Before replacing: " + JSON.stringify(input));
+console.log("========================================");
+let afterReplacing = MaskData.replaceValue(input, 'age', 99);
+afterReplacing = MaskData.replaceValue(input, 'married', false);
+console.log("After replacing: " + JSON.stringify(afterReplacing));
+console.log("Type of age: "+ typeof(afterReplacing.age));
+console.log("Type of married: "+ typeof(afterReplacing.married));

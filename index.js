@@ -205,6 +205,10 @@ class MaskData {
     return get(object, field);
   }
 
+  static replaceValue(object, field, value) {
+    return set(object, field, value);
+  }
+
 }
 
 module.exports = MaskData;

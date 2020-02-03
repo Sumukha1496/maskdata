@@ -11,6 +11,7 @@ maskdata is a Node.js module to mask various kinds of data.
     - [Mask Email](#mask-email-id)
     - [Mask Email id with the default configuration](#mask-email-id-with-the-default-configuration)
     - [Get Nested Json Property](#get-nested-json-property)
+    - [Replace the value of a json field](#replace-the-value-of-a-json-field)
     - [Mask JSON fields](#mask-fields-in-a-json)
     - [Mask nested JSON fields](#mask-fields-of-a-nested-object)
     - [Mask a value from the string](#mask-the-exact-substring-from-throughout-the-string)
@@ -203,6 +204,34 @@ const nestedObject = {
 };
 
 const innerPropety = Maskdata.getInnerProperty(nestedObject, 'level1.level2.level3.field4[0].Hello');
+
+```
+
+## Replace the value of a json field
+To replace a value by keeping the type.
+```javascript
+
+const input = {
+  name: "John",
+  age: 33,
+  married: true
+}
+
+console.log("Before replacing: " + JSON.stringify(input));
+console.log("========================================");
+let afterReplacing = MaskData.replaceValue(input, 'age', 99);
+afterReplacing = MaskData.replaceValue(input, 'married', false);
+console.log("After replacing: " + JSON.stringify(afterReplacing));
+console.log("Type of age: "+ typeof(afterReplacing.age));
+console.log("Type of married: "+ typeof(afterReplacing.married));
+
+//Output: 
+
+Before replacing: {"name":"John","age":33,"married":true}
+========================================
+After replacing: {"name":"John","age":99,"married":false}
+Type of age: number
+Type of married: boolean
 
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "maskdata",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Node module to mask various kinds of data in required formats",
   "main": "index.js",
   "repository": {
@@ -23,7 +23,10 @@
     "mask json",
     "mask string",
     "mask json",
-    "mask object"
+    "mask object",
+    "Get json fields",
+    "Set json fields", 
+    "Replcae json fields"
   ],
   "author": "sumukha.s<sumukha.hs369@gmail.com>",
   "license": "MIT",
