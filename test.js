@@ -53,6 +53,8 @@ console.log(JSON.stringify(json));
 console.log(`Object after masking:`);
 console.log(JSON.stringify(MaskData.maskJSONFields(json, defaultJSONMaskOptions)));
 console.log("========================================");
+console.log(JSON.stringify(json));
+console.log("========================================");
 
 const defaultJSONMaskOptions2 = {
   fields : ['level1.level2.level3.field3', 'level1.level2.field2', 'level1.field1', 'value1', 'level1.level2.level3.field4[0].Hello', 'level1.level2.level3.field4[2]']

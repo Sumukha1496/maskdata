@@ -117,7 +117,12 @@ class MaskData {
       options = MaskHelper.mapWithDefaultValues(options, defaultJsonMaskOptions);
       MaskHelper.validateJSONOptions(options);
     }
-    let maskedObj = obj;
+    let maskedObj = {};
+    try {
+      maskedObj = JSON.parse(JSON.stringify(obj));
+    } catch (ex) {
+      return obj;
+    }
     const fields = options.fields;
 
     for(const field of fields) {
