@@ -38,6 +38,12 @@ console.log(`Unmasked email: ${email}`);
 console.log(`Email after masking: ${MaskData.maskEmail(email, defaultEmailMaskOptions)}`);
 console.log("========================================");
 
+console.log("========================================");
+const shortEmail = "my@test.com";
+console.log(`Unmasked shortEmail: ${shortEmail}`);
+console.log(`shortEmail after masking: ${MaskData.maskEmail(shortEmail, defaultEmailMaskOptions)}`);
+console.log("========================================");
+
 const defaultJSONMaskOptions = {
   fields: ['password', 'firstName']
 };

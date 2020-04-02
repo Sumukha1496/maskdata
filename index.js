@@ -106,6 +106,7 @@ class MaskData {
       maskedEmail = email;
     }
     if(!maskedEmail) {
+      if (maskLengthBeforeAtTheRate < 0) maskLengthBeforeAtTheRate = 0
       maskedEmail = email.substr(0, options.unmaskedStartCharacters) + `${options.maskWith}`.repeat(maskLengthBeforeAtTheRate)
         + '@' + `${options.maskWith}`.repeat(maskLengthAfterAtTheRate) + email.substr(email.length - options.unmaskedEndCharacters);
     }
