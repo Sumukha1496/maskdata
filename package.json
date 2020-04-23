@@ -8,7 +8,7 @@
     "url": "https://github.com/Sumukha1496/maskdata"
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "node tests/test.js && mocha ./tests"
   },
   "keywords": [
     "mask",
@@ -33,5 +33,9 @@
   "dependencies": {
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2"
+  },
+  "devDependencies": {
+    "mocha": "7.1.1",
+    "unexpected": "11.14.0"
   }
 }

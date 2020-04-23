@@ -1,4 +1,4 @@
-const MaskData = require('./index');
+const MaskData = require('../index');
 
 const defaultPasswordMaskOptions = {
   maxMaskedCharacters: 10,
@@ -21,27 +21,6 @@ const phone = "+91123456789";
 
 console.log(`Unmasked phone: ${phone}`);
 console.log(`phone after masking: ${MaskData.maskPhone(phone, defaultPhoneMaskOptions)}`);
-console.log("========================================");
-
-const defaultEmailMaskOptions = {
-  maskWith: "*",
-  unmaskedStartCharacters: 3,
-  unmaskedEndCharacters: 1,
-  maskAtTheRate: false,
-  maxMaskedCharactersBeforeAtTheRate: 10,
-  maxMaskedCharactersAfterAtTheRate: 10,
-};
-
-console.log("========================================");
-const email = "my.testEmail@testMail.com";
-console.log(`Unmasked email: ${email}`);
-console.log(`Email after masking: ${MaskData.maskEmail(email, defaultEmailMaskOptions)}`);
-console.log("========================================");
-
-console.log("========================================");
-const shortEmail = "my@test.com";
-console.log(`Unmasked shortEmail: ${shortEmail}`);
-console.log(`shortEmail after masking: ${MaskData.maskEmail(shortEmail, defaultEmailMaskOptions)}`);
 console.log("========================================");
 
 const defaultJSONMaskOptions = {
