@@ -69,6 +69,7 @@ const maskedPhoneNumber = MaskData.maskPhone(phoneNumber, maskPhoneOptions);
 ```
 
 ## Mask Phone Number with the default configuration
+To mask with the default options, dont pass the configurations.
 ```javascript
 const MaskData = require('./maskdata');
 
@@ -79,7 +80,7 @@ const MaskData = require('./maskdata');
 **/
 const phoneNumber = "+111234567890";
 
-const maskedPhoneNumber = MaskData.simplePhoneMask(phoneNumber);
+const maskedPhoneNumber = MaskData.maskPhone(phoneNumber);
 
 //Output: +911********0
 
@@ -108,6 +109,7 @@ const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
 ```
 
 ## Mask Password with the default configuration
+To mask with the default options, dont pass the configurations.
 ```javascript
 const MaskData = require('./maskdata');
 
@@ -118,7 +120,7 @@ const MaskData = require('./maskdata');
 
 const password = "Password1$";
 
-const maskedPassword = MaskData.simplePasswordMask(password);
+const maskedPassword = MaskData.maskPassword(password)
 
 ```
 
@@ -161,6 +163,7 @@ const maskedEmail = MaskData.maskEmail(email, maskEmailOptions);
 ```
 
 ## Mask Email id with the default configuration
+To mask with the default options, dont pass the configurations.
 ```javascript
 const MaskData = require('./maskdata');
 
@@ -174,14 +177,14 @@ const MaskData = require('./maskdata');
 **/
 const email = "my.test.email@testEmail.com";
 
-const maskedEmail = MaskData.simpleEmailMask(email);
+const maskedEmail = MaskData.maskEmail(email);
 
 //Output: my.********@**********om
 
 ```
 
 ## Get Nested Json Property
-This will return the nested Json property if exists. Otherwise it returns ```undefined```
+This method returns the value of nested Json property if exists. Otherwise it returns ```undefined```
 ```javascript
 const MaskData = require('./maskdata');
 
@@ -236,7 +239,7 @@ Type of married: boolean
 ```
 
 ## Mask fields in a JSON 
-This will mask the field value if present in the given object
+This method masks the field value if present in the given object
 ```javascript
 const MaskData = require('./maskdata');
 
@@ -260,7 +263,7 @@ const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
 
 ```
 ## Mask fields of a nested Object
-This will mask the field values if present in the given object.
+This method masks the field value if present in the given object
 
 The masked value type will always be string. Won't mask if the value is ```null```.
 

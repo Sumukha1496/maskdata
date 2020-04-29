@@ -51,6 +51,8 @@ class MaskData {
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultPasswordMaskOptions);
       MaskHelper.validatePasswordOptions(options);
+    } else {
+      options = defaultPasswordMaskOptions;
     }
     let maskPasswordLength = password.length;
     if(password.length > options.maxMaskedCharacters) {
@@ -68,6 +70,8 @@ class MaskData {
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultPhoneMaskOptions);
       MaskHelper.validatePhoneOptions(options);
+    } else {
+      options = defaultPhoneMaskOptions;
     }
     let maskLength = phone.length - options.unmaskedStartDigits - options.unmaskedEndDigits;
     if((options.unmaskedStartDigits + options.unmaskedEndDigits) >= phone.length) {
@@ -88,7 +92,9 @@ class MaskData {
     let maskedEmail = null;
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultEmailMaskOptions);
-      MaskHelper.validateEmailOptions(email, options);
+        MaskHelper.validateEmailOptions(email, options);
+    } else {
+      options = defaultEmailMaskOptions;
     }
     const indexOfAt = email.indexOf('@');
     let maskLengthBeforeAtTheRate = indexOfAt - options.unmaskedStartCharacters;
@@ -117,6 +123,8 @@ class MaskData {
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultJsonMaskOptions);
       MaskHelper.validateJSONOptions(options);
+    } else {
+      options = defaultJsonMaskOptions;
     }
     let maskedObj = {};
     try {
@@ -162,6 +170,8 @@ class MaskData {
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultStringMaskOptions);
       MaskHelper.validateStringOptions(options);
+    } else {
+      options = defaultStringMaskOptions;
     }
     let values = options.values;
     if(options.maskOnlyFirstOccurance == true) {
@@ -182,6 +192,8 @@ class MaskData {
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultCardMaskOptions);
       MaskHelper.validateCardMaskOptions(options);
+    } else {
+      options = defaultCardMaskOptions;
     }
     let maskedCard;
     if((options.unmaskedStartDigits + options.unmaskedEndDigits) >= card.length) {

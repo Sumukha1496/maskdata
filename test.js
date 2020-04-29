@@ -1,33 +1,37 @@
 const MaskData = require('./index');
 
-const defaultPasswordMaskOptions = {
+const passwordMaskOptions = {
   maxMaskedCharacters: 10,
   maskWith: ""
 };
 
 const password = "Password1$";
 console.log(`Unmasked Password: ${password}`);
-console.log(`Password after masking: ${MaskData.maskPassword(password, defaultPasswordMaskOptions)}`);
+console.log(`Password after masking: ${MaskData.maskPassword(password, passwordMaskOptions)}`);
+console.log("========================================");
+console.log(`Password after masking with default options: ${MaskData.maskPassword(password)}`);
 console.log("========================================");
 
 
-const defaultPhoneMaskOptions = {
+const phoneMaskOptions = {
   maskWith: "*",
-  unmaskedStartDigits: 4,
+  unmaskedStartDigits: 5,
   unmaskedEndDigits: 1
 };
 
 const phone = "+91123456789";
 
 console.log(`Unmasked phone: ${phone}`);
-console.log(`phone after masking: ${MaskData.maskPhone(phone, defaultPhoneMaskOptions)}`);
+console.log(`phone after masking: ${MaskData.maskPhone(phone, phoneMaskOptions)}`);
+console.log("========================================");
+console.log(`phone after masking with default options: ${MaskData.maskPhone(phone)}`);
 console.log("========================================");
 
-const defaultEmailMaskOptions = {
+const emailMaskOptions = {
   maskWith: "*",
-  unmaskedStartCharacters: 3,
-  unmaskedEndCharacters: 1,
-  maskAtTheRate: false,
+  unmaskedStartCharacters: 4,
+  unmaskedEndCharacters: 0,
+  maskAtTheRate: true,
   maxMaskedCharactersBeforeAtTheRate: 10,
   maxMaskedCharactersAfterAtTheRate: 10,
 };
@@ -35,16 +39,18 @@ const defaultEmailMaskOptions = {
 console.log("========================================");
 const email = "my.testEmail@testMail.com";
 console.log(`Unmasked email: ${email}`);
-console.log(`Email after masking: ${MaskData.maskEmail(email, defaultEmailMaskOptions)}`);
+console.log(`Email after masking: ${MaskData.maskEmail(email, emailMaskOptions)}`);
+console.log("========================================");
+console.log(`Email after masking with default options: ${MaskData.maskEmail(email)}`);
 console.log("========================================");
 
 console.log("========================================");
-const shortEmail = "my@test.com";
+const shortEmail = "a@b.c";
 console.log(`Unmasked shortEmail: ${shortEmail}`);
-console.log(`shortEmail after masking: ${MaskData.maskEmail(shortEmail, defaultEmailMaskOptions)}`);
+console.log(`shortEmail after masking: ${MaskData.maskEmail(shortEmail, emailMaskOptions)}`);
 console.log("========================================");
 
-const defaultJSONMaskOptions = {
+const jsonMaskOptions = {
   fields: ['password', 'firstName']
 };
 
@@ -57,16 +63,16 @@ const json = {
 console.log(`Unmasked object: `);
 console.log(JSON.stringify(json));
 console.log(`Object after masking:`);
-console.log(JSON.stringify(MaskData.maskJSONFields(json, defaultJSONMaskOptions)));
+console.log(JSON.stringify(MaskData.maskJSONFields(json, jsonMaskOptions)));
 console.log("========================================");
 console.log(JSON.stringify(json));
 console.log("========================================");
 
-const defaultJSONMaskOptions2 = {
+const jsonMaskOptions2 = {
   fields : ['level1.level2.level3.field3', 'level1.level2.field2', 'level1.field1', 'value1', 'level1.level2.level3.field4[0].Hello', 'level1.level2.level3.field4[2]']
 };
 
-const maskAllFields = {
+const maskAllFieldsOptions = {
   fields : ['level1.level2.field3[*].Hello', 'level1.level2.level3.*']
 };
 
@@ -88,7 +94,7 @@ const nestedAllObject = {
 console.log(`Unmasked nested object: `);
 console.log(JSON.stringify(nestedAllObject));
 console.log(`Nested Object after masking all:`);
-console.log(JSON.stringify(MaskData.maskJSONFields(nestedAllObject, maskAllFields)));
+console.log(JSON.stringify(MaskData.maskJSONFields(nestedAllObject, maskAllFieldsOptions)));
 console.log("========================================");
 
 const nestedObject = {
@@ -108,27 +114,27 @@ const nestedObject = {
 console.log(`Unmasked nested object: `);
 console.log(JSON.stringify(nestedObject));
 console.log(`Nested Object after masking:`);
-console.log(JSON.stringify(MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2)));
+console.log(JSON.stringify(MaskData.maskJSONFields(nestedObject, jsonMaskOptions2)));
 console.log("========================================");
 
 
-const defaultStringMaskOptions = {
+const stringMaskOptions = {
   maskWith: "*",
   values: ['is', 'API']
 };
 
 let str = "This is a testingAPI String";
 console.log(`Unmasked string: ${str}`);
-console.log(`String after masking: ${MaskData.maskString(str, defaultStringMaskOptions)}`);
+console.log(`String after masking: ${MaskData.maskString(str, stringMaskOptions)}`);
 console.log("========================================");
 
 str = "This is a testingAPI String";
-defaultStringMaskOptions.maskOnlyFirstOccurance = true;
+stringMaskOptions.maskOnlyFirstOccurance = true;
 console.log(`Unmasked string: ${str}`);
-console.log(`String after masking only first occurances: ${MaskData.maskString(str, defaultStringMaskOptions)}`);
+console.log(`String after masking only first occurances: ${MaskData.maskString(str, stringMaskOptions)}`);
 console.log("========================================");
 
-const defaultCardMaskOptions = {
+const cardMaskOptions = {
   maskWith: "X",
   unmaskedStartDigits: 4,
   unmaskedEndDigits: 1
@@ -136,7 +142,7 @@ const defaultCardMaskOptions = {
 
 let cardNumber = "1234-5678-1234-5678";
 console.log(`Unmasked cardNumber: ${cardNumber}`);
-console.log(`cardNumber after masking: ${MaskData.maskCard(cardNumber, defaultCardMaskOptions)}`);
+console.log(`cardNumber after masking: ${MaskData.maskCard(cardNumber, cardMaskOptions)}`);
 console.log("========================================");
 
 const nestedJson = {
