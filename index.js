@@ -1,6 +1,7 @@
 'use strict';
 
 const MaskHelper = require('./lib/helpers/MaskHelper');
+const MaskEmail = require('./lib/emailMask/EmailMask');
 const get = require('lodash.get');
 const set = require('lodash.set');
 
@@ -86,6 +87,10 @@ class MaskData {
 
   static simpleEmailMask(email) {
     return MaskData.maskEmail(email, defaultEmailMaskOptions);
+  }
+
+  static maskEmail2(email, options) {
+    return MaskEmail.maskEmail2(email, options);
   }
 
   static maskEmail(email, options) {

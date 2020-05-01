@@ -3,6 +3,7 @@ maskdata is a Node.js module to mask various kinds of data.
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
+- [Version 1.1.0 Features](#release-features)
 - [How to Use](#how-to-use)
     - [Mask Phone Number](#mask-phone-number)
     - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
@@ -20,22 +21,27 @@ maskdata is a Node.js module to mask various kinds of data.
 - [LICENSE - "MIT"](#license---mit)
 
 # Features
-* Mask password data with the desired configuration
-    * Simple password mask(Mask using default configurations)
-    * Mask password data with the desired configuration
+* Mask password
 * Mask Phone numbers
-    * Simple phone number mask(Mask using default configurations)
-    * Mask phone number data with the desired configuration
 * Mask Email
-    * Simple Email mask(Mask using default configurations)
-    * Mask Email data with the desired configuration
 * Mask desired fields in a JSON
-    * Mask nested onject fields
 * Mask the given substring from throughout a String
 * Mask the card number
 
 # Install maskdata
 > npm i maskdata
+
+# Release Features
+### Version: 1.1.0
+- Depricated **simplePasswordMask()** method -> To mask with default configs, simply dont pass the config argument to **maskPassword()** method.
+
+- Depricated **simplePhoneMask()** method -> To mask with default configs, simply dont pass the config argument to **maskPhone()** method.
+
+- Depricated **simpleEmailMask()** method -> To mask with default configs, simply dont pass the config argument to **maskEmail()** method.
+
+- Depricated **maskEmail()** method due to its complications in using the configs and some bugs -> To mask email, start using **maskEmail2()** method with the configs mentioned for maskEmail2 method
+
+All the above depricated methods will be removed in the next version
 
 # How to Use
 ```javascript
@@ -124,9 +130,78 @@ const maskedPassword = MaskData.maskPassword(password)
 
 ```
 
+## Mask Email id
+Use this method instead of maskEmail(). To mask with the default options, dont pass the configurations.
+```javascript
+const MaskData = require('./maskdata');
+
+const emailMask2Options = {
+    maskWith: "*", 
+    unmaskedStartCharactersBeforeAt: 3,
+    unmaskedEndCharactersAfterAt: 2,
+    maskAtTheRate: false
+};
+
+const email = "my.test.email@testEmail.com";
+
+const maskedEmail = MaskData.maskEmail2(email, emailMask2Options);
+
+//Output: my.********@**********om
+
+```
+### Consider an email: abcd@email.com 
+Here, 
+- number of characters before @ -> 4
+- number of characters after @ --> 9
+
+1. **unmaskedStartCharactersBeforeAt** --> number of starting characters (before @)not to be masked.
+      * If unmaskedStartCharactersBeforeAt > number of characters before @, then it will not mask the characters before @
+2. **unmaskedEndCharactersAfterAt** --> number of characters not to be masked starting from the end till @.
+      * If unmaskedEndCharactersAfterAt > number of characters after @, then it will not mask the characters after @
+
+### Mask only the characters before '@' 
+```javascript
+const MaskData = require('./maskdata');
+
+const emailMask2Options = {
+    maskWith: "*", 
+    unmaskedStartCharactersBeforeAt: 0,
+    unmaskedEndCharactersAfterAt: 257, // Give a number which is more than the characters after @
+    maskAtTheRate: false
+};
+
+const email = "abcd@email.com";
+
+const maskedEmail = MaskData.maskEmail2(email, emailMask2Options);
+
+//Output: ****@email.com
+
+```
+
+## Mask Email id with the default configuration
+To mask with the default options, dont pass the configurations.
+```javascript
+const MaskData = require('./maskdata');
+
+/** Default Options
+    maskWith: "*", 
+    unmaskedStartCharactersBeforeAt: 3,
+    unmaskedEndCharactersAfterAt: 2,
+    maskAtTheRate: false
+**/
+const email = "my.test.email@testEmail.com";
+
+const maskedEmail = MaskData.maskEmail2(email);
+
+//Output: my.********@**********om
+
+```
+
 ## Mask Email Id
+### **Depricated method**. Will be removed in next version. Start using maskEmail2 method
 Mask the email id along with the required configurations
 ```javascript
+// Depricated method
 const MaskData = require('./maskdata');
 
 const maskEmailOptions = {
@@ -156,30 +231,10 @@ const maskEmailOptions = {
 
 const email = "my.test.email@testEmail.com";
 
+**Depricated method**
 const maskedEmail = MaskData.maskEmail(email, maskEmailOptions);
 
 //Output: m**********@**********om
-
-```
-
-## Mask Email id with the default configuration
-To mask with the default options, dont pass the configurations.
-```javascript
-const MaskData = require('./maskdata');
-
-/** Default Options
-    maskWith: "*"
-    unmaskedStartCharacters: 3
-    unmaskedEndCharacters: 2
-    maskAtTheRate: false
-    maxMaskedCharactersBeforeAtTheRate: 10
-    maxMaskedCharactersAfterAtTheRate: 10
-**/
-const email = "my.test.email@testEmail.com";
-
-const maskedEmail = MaskData.maskEmail(email);
-
-//Output: my.********@**********om
 
 ```
 

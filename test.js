@@ -27,27 +27,25 @@ console.log("========================================");
 console.log(`phone after masking with default options: ${MaskData.maskPhone(phone)}`);
 console.log("========================================");
 
-const emailMaskOptions = {
+const emailMask2Options = {
   maskWith: "*",
-  unmaskedStartCharacters: 4,
-  unmaskedEndCharacters: 0,
-  maskAtTheRate: true,
-  maxMaskedCharactersBeforeAtTheRate: 10,
-  maxMaskedCharactersAfterAtTheRate: 10,
+  unmaskedStartCharactersBeforeAt: 0,
+  unmaskedEndCharactersAfterAt: 99,
+  maskAtTheRate: false
 };
 
 console.log("========================================");
 const email = "my.testEmail@testMail.com";
 console.log(`Unmasked email: ${email}`);
-console.log(`Email after masking: ${MaskData.maskEmail(email, emailMaskOptions)}`);
+console.log(`Email after masking: ${MaskData.maskEmail2(email, emailMask2Options)}`);
 console.log("========================================");
-console.log(`Email after masking with default options: ${MaskData.maskEmail(email)}`);
+console.log(`Email after masking with default options: ${MaskData.maskEmail2(email)}`);
 console.log("========================================");
 
 console.log("========================================");
 const shortEmail = "a@b.c";
 console.log(`Unmasked shortEmail: ${shortEmail}`);
-console.log(`shortEmail after masking: ${MaskData.maskEmail(shortEmail, emailMaskOptions)}`);
+console.log(`shortEmail after masking: ${MaskData.maskEmail2(shortEmail, emailMask2Options)}`);
 console.log("========================================");
 
 const jsonMaskOptions = {
