@@ -11,15 +11,6 @@ const defaultPhoneMaskOptions = {
   unmaskedEndDigits: 1
 };
 
-const defaultEmailMaskOptions = {
-  maskWith: "*",
-  unmaskedStartCharacters: 3,
-  unmaskedEndCharacters: 2,
-  maskAtTheRate: false,
-  maxMaskedCharactersBeforeAtTheRate: 10,
-  maxMaskedCharactersAfterAtTheRate: 10,
-};
-
 const defaultJsonMaskOptions = {
   maskWith: "*",
   fields: []
@@ -44,10 +35,6 @@ const defaultCardMaskOptions = {
 
 class MaskData {
 
-  static simplePasswordMask(password) {
-    return MaskData.maskPassword(password, defaultPasswordMaskOptions);
-  }
-
   static maskPassword(password, options) {
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultPasswordMaskOptions);
@@ -60,10 +47,6 @@ class MaskData {
       maskPasswordLength = parseInt(options.maxMaskedCharacters);
     }
     return `${options.maskWith}`.repeat(maskPasswordLength);
-  }
-
-  static simplePhoneMask(phone) {
-    return MaskData.maskPhone(phone, defaultPhoneMaskOptions);
   }
 
   static maskPhone(phone, options) {
@@ -85,43 +68,8 @@ class MaskData {
     return maskedPhone;
   }
 
-  static simpleEmailMask(email) {
-    return MaskData.maskEmail(email, defaultEmailMaskOptions);
-  }
-
   static maskEmail2(email, options) {
     return MaskEmail.maskEmail2(email, options);
-  }
-
-  static maskEmail(email, options) {
-    let maskedEmail = null;
-    if(options) {
-      options = MaskHelper.mapWithDefaultValues(options, defaultEmailMaskOptions);
-        MaskHelper.validateEmailOptions(email, options);
-    } else {
-      options = defaultEmailMaskOptions;
-    }
-    const indexOfAt = email.indexOf('@');
-    let maskLengthBeforeAtTheRate = indexOfAt - options.unmaskedStartCharacters;
-    let maskLengthAfterAtTheRate = email.length - indexOfAt - options.unmaskedEndCharacters;
-
-    if(maskLengthBeforeAtTheRate > options.maxMaskedCharactersBeforeAtTheRate) {
-      maskLengthBeforeAtTheRate = options.maxMaskedCharactersBeforeAtTheRate;
-    }
-    if(maskLengthAfterAtTheRate > options.maxMaskedCharactersAfterAtTheRate) {
-      maskLengthAfterAtTheRate = options.maxMaskedCharactersAfterAtTheRate;
-    }
-    if((options.unmaskedStartCharacters + options.unmaskedEndCharacters + 1) >= email.length) {
-      maskLengthBeforeAtTheRate = 0;
-      maskLengthAfterAtTheRate = 0;
-      maskedEmail = email;
-    }
-    if(!maskedEmail) {
-      if (maskLengthBeforeAtTheRate < 0) maskLengthBeforeAtTheRate = 0
-      maskedEmail = email.substr(0, options.unmaskedStartCharacters) + `${options.maskWith}`.repeat(maskLengthBeforeAtTheRate)
-        + '@' + `${options.maskWith}`.repeat(maskLengthAfterAtTheRate) + email.substr(email.length - options.unmaskedEndCharacters);
-    }
-    return maskedEmail;
   }
 
   static maskJSONFields(obj, options) {
