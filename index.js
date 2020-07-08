@@ -13,6 +13,8 @@ const defaultPhoneMaskOptions = {
 
 const defaultJsonMaskOptions = {
   maskWith: "*",
+  unmaskedStartDigits: 0,
+  unmaskedEndDigits: 0,
   fields: []
 };
 
@@ -110,8 +112,14 @@ class MaskData {
         } else {
           const value = get(maskedObj, field);
           if(value !== undefined && value !== null) {
-          set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
-        }
+            if((options.unmaskedStartDigits + options.unmaskedEndDigits) >= value.length) {
+              set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
+            }else{
+              let maskLength = value.length - options.unmaskedStartDigits - options.unmaskedEndDigits;
+              set(maskedObj, field, (value.substr(0, options.unmaskedStartDigits) + `${options.maskWith}`.repeat(maskLength) + value.substr(value.length-options.unmaskedEndDigits)))  
+            }
+          
+          }
         }
       } catch(ex) { continue; }
     }
