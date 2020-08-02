@@ -2,6 +2,7 @@
 
 const MaskHelper = require('./lib/helpers/MaskHelper');
 const MaskEmail = require('./lib/emailMask/EmailMask');
+const MaskCard = require('./lib/cardMask/CardMask');
 const get = require('lodash.get');
 const set = require('lodash.set');
 
@@ -27,12 +28,6 @@ const defaultStringMaskOptions = {
   values: []
 };
 
-const defaultCardMaskOptions = {
-  maskWith: "*",
-  unmaskedStartDigits: 4,
-  unmaskedEndDigits: 1
-};
-
 class MaskData {
 
   static maskPassword(password, options) {
@@ -50,7 +45,6 @@ class MaskData {
   }
 
   static maskPhone(phone, options) {
-    let maskedPhone = null;
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultPhoneMaskOptions);
       MaskHelper.validatePhoneOptions(options);
@@ -59,17 +53,17 @@ class MaskData {
     }
     let maskLength = phone.length - options.unmaskedStartDigits - options.unmaskedEndDigits;
     if((options.unmaskedStartDigits + options.unmaskedEndDigits) >= phone.length) {
-      maskLength = 0;
-      maskedPhone = phone;
+      return phone;
     }
-    if(!maskedPhone) {
-      maskedPhone = phone.substr(0, options.unmaskedStartDigits) + `${options.maskWith}`.repeat(maskLength) + phone.substr(phone.length-options.unmaskedEndDigits);
-    }
-    return maskedPhone;
+    return phone.substr(0, options.unmaskedStartDigits) + `${options.maskWith}`.repeat(maskLength) + phone.substr(phone.length-options.unmaskedEndDigits);
   }
 
   static maskEmail2(email, options) {
     return MaskEmail.maskEmail2(email, options);
+  }
+
+  static maskCard(cardNumber, options) {
+    return MaskCard.maskCard(cardNumber, options);
   }
 
   static maskJSONFields(obj, options) {
@@ -137,39 +131,6 @@ class MaskData {
       }
     }
     return str;
-  }
-
-  static maskCard(card, options) {
-    card = card + '';
-    card = card.trim();
-    if(options) {
-      options = MaskHelper.mapWithDefaultValues(options, defaultCardMaskOptions);
-      MaskHelper.validateCardMaskOptions(options);
-    } else {
-      options = defaultCardMaskOptions;
-    }
-    let maskedCard;
-    if((options.unmaskedStartDigits + options.unmaskedEndDigits) >= card.length) {
-      return card;
-    }
-    if(!maskedCard) {
-      maskedCard = '';
-      for(let i = 0; i < options.unmaskedStartDigits; i++) {
-        maskedCard += card[i];
-      }
-
-      for(let i = options.unmaskedStartDigits; i < (card.length-options.unmaskedEndDigits); i++) {
-        if(isNaN(parseInt(card[i]))) {
-          maskedCard += card[i];
-        } else {
-          maskedCard += options.maskWith;
-        }
-      }
-      for(let i = (card.length-options.unmaskedEndDigits); i < card.length; i++) {
-        maskedCard += card[i];
-      }
-      return maskedCard;
-    }
   }
 
   static getInnerProperty(object, field) {

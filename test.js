@@ -135,7 +135,7 @@ console.log("========================================");
 const cardMaskOptions = {
   maskWith: "X",
   unmaskedStartDigits: 4,
-  unmaskedEndDigits: 1
+  unmaskedEndDigits: 5
 };
 
 let cardNumber = "1234-5678-1234-5678";
@@ -175,3 +175,13 @@ afterReplacing = MaskData.replaceValue(input, 'married', false);
 console.log("After replacing: " + JSON.stringify(afterReplacing));
 console.log("Type of age: "+ typeof(afterReplacing.age));
 console.log("Type of married: "+ typeof(afterReplacing.married));
+
+const maskCardOptions = {
+  maskWith: "*",
+  unmaskedStartDigits: 4, 
+  unmaskedEndDigits: 4
+};
+
+const obj = { cardNumber: "123456789123" ,abc: "abceew" ,efg: "121212" } ;
+const result = MaskData.replaceValue(obj, 'cardNumber', MaskData.maskCard(obj['cardNumber'], maskCardOptions));
+console.log(result);

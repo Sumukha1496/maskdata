@@ -1,4 +1,5 @@
-maskdata is a Node.js module to mask various kinds of data.
+maskdata is a Node.js module to mask various kinds of data. With the help of maskdata, you can mask email, phone number, card number, JSON fields, password etc.. 
+<br/>Also, it provides utility methods to get a field, or replace a field from any complex/nested json.
 
 # Table of Contents
 - [Features](#features)
@@ -42,12 +43,14 @@ Removed the below deprecated methods
 
 - **maskEmail()** method due to its complications in using the configs and some bugs -> To mask email, start using **maskEmail2()** method with the configs mentioned for maskEmail2 method
 
-All the above deprecated methods will be removed in the next version
+### Version: 1.1.2
+- Bug fix in maskCard function. Issue: https://github.com/Sumukha1496/maskdata/issues/10
 
 # How to Use
 ```javascript
 const MaskData = require('./maskdata');
 ```
+
 ## Mask Phone Number
 ```javascript
 const MaskData = require('./maskdata');
@@ -93,6 +96,7 @@ const maskedPhoneNumber = MaskData.maskPhone(phoneNumber);
 
 ```
 
+
 ## Mask Password
 ```javascript
 const MaskData = require('./maskdata');
@@ -130,6 +134,7 @@ const password = "Password1$";
 const maskedPassword = MaskData.maskPassword(password)
 
 ```
+
 
 ## Mask Email id
 Use this method instead of maskEmail(). To mask with the default options, dont pass the configurations.
@@ -198,6 +203,7 @@ const maskedEmail = MaskData.maskEmail2(email);
 
 ```
 
+
 ## Get Nested Json Property
 This method returns the value of nested Json property if exists. Otherwise it returns ```undefined```
 ```javascript
@@ -225,6 +231,7 @@ const innerPropety = Maskdata.getInnerProperty(nestedObject, 'level1.level2.leve
 
 ```
 
+
 ## Replace the value of a json field
 To replace a value by keeping the type.
 ```javascript
@@ -235,23 +242,19 @@ const input = {
   married: true
 }
 
-console.log("Before replacing: " + JSON.stringify(input));
-console.log("========================================");
 let afterReplacing = MaskData.replaceValue(input, 'age', 99);
 afterReplacing = MaskData.replaceValue(input, 'married', false);
-console.log("After replacing: " + JSON.stringify(afterReplacing));
-console.log("Type of age: "+ typeof(afterReplacing.age));
-console.log("Type of married: "+ typeof(afterReplacing.married));
 
 //Output: 
 
 Before replacing: {"name":"John","age":33,"married":true}
-========================================
 After replacing: {"name":"John","age":99,"married":false}
+
 Type of age: number
 Type of married: boolean
 
 ```
+
 
 ## Mask fields in a JSON 
 This method masks the field value if present in the given object
@@ -277,6 +280,8 @@ const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
 //Output: { password: '************', firstName: '***', lastName: 'Snoww' }
 
 ```
+
+
 ## Mask fields of a nested Object
 This method masks the field value if present in the given object
 
@@ -357,6 +362,7 @@ const maskedObject = MaskData.maskJSONFields(nestedObject, maskAllFields);
 
 ```
 
+
 ## Mask the exact substring from throughout the string
 This will mask the field value if present in the given object
 ```javascript
@@ -383,8 +389,9 @@ const strAfterMasking = MaskData.maskString(str, maskStringOptions);
 
 ```
 
+
 ## Mask card number
-This will mask the card numbers
+This will mask the digits in a card numbers.<br/>This will mask only the numerical data and not any non numeric delimeters, alphabets or any other types of data
 ```javascript
 const MaskData = require('./maskdata');
 
@@ -393,14 +400,13 @@ const maskCardOptions = {
   maskWith: "X",
 
   // Should be positive Integer
-  // If the starting 'n' numbers needs to be unmasked
+  // If the starting 'n' digits needs to be unmasked
   // Default value is 4
   unmaskedStartDigits: 4, 
   
   //Should be positive Integer
-  //If the ending 'n' numbers needs to be unmasked
+  //If the ending 'n' digits needs to be unmasked
   // Default value is 1. 
-  // Max possible value is 4
   unmaskedEndDigits: 1 
 };
 
@@ -411,6 +417,7 @@ const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
 //Output: 1234-XXXX-XXXX-XXX8
 
 ```
+
 
 # Report Bugs 
 Please raise an issue in github: https://github.com/Sumukha1496/maskdata/issues
