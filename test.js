@@ -2,14 +2,18 @@ const MaskData = require('./index');
 
 const passwordMaskOptions = {
   maxMaskedCharacters: 10,
-  maskWith: ""
+  maskWith: "X",
+  unmaskedStartCharacters: 7,
+  unmaskedEndCharacters: 3
 };
 
 const password = "Password1$";
-console.log(`Unmasked Password: ${password}`);
-console.log(`Password after masking: ${MaskData.maskPassword(password, passwordMaskOptions)}`);
+console.log(`Unmasked Password: ${password}` + " Length: " + password.length);
+const maskedP = MaskData.maskPassword(password, passwordMaskOptions);
+console.log("Password after masking:" + maskedP + " Length: " + maskedP.length);
 console.log("========================================");
-console.log(`Password after masking with default options: ${MaskData.maskPassword(password)}`);
+const maskedPD = MaskData.maskPassword(password);
+console.log("Password after masking with default options:" + maskedPD + " Length: " + maskedPD.length);
 console.log("========================================");
 
 

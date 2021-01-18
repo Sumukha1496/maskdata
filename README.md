@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.1.1 Features](#release-features)
+- [Version 1.1.3 Features](#release-features)
 - [How to Use](#how-to-use)
     - [Mask Phone Number](#mask-phone-number)
     - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
@@ -33,6 +33,37 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version: 1.1.3
+- Unmasked start and end characters feature in password masking. It is an can be used in cases where the password/Secret key has some metadata info which needs to be printed or shown to users. 
+Ticket: https://github.com/Sumukha1496/maskdata/issues/11. Both the fields are opional and can find more info here: [Mask Password](#mask-password)
+
+#### Example: Mask he secretKey with some meta info at the end
+
+```javascript
+const MaskData = require('./maskdata');
+
+const maskPasswordOptions = {
+  maskWith: "X",
+  maxMaskedCharacters: 20, // To limit the output String length to 20.
+  unmaskedStartCharacters: 4,
+  unmaskedEndCharacters: 9 // As last 9 characters of the secret key is a meta info which can be printed for debugging or other purpose
+};
+
+const password = "TEST:U2VjcmV0S2V5MQ==:CLIENT-A";
+
+const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
+//Output: TESTXXXXXXX:CLIENT-A
+
+maskPasswordOptions.unmaskedStartCharacters = 0;
+
+const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
+//Output: XXXXXXXXXXX:CLIENT-A
+```
+
+
+### Version: 1.1.2
+- Bug fix in maskCard function. Issue: https://github.com/Sumukha1496/maskdata/issues/10
+
 ### Version: 1.1.1
 Removed the below deprecated methods
 - **simplePasswordMask()** method -> To mask with default configs, simply dont pass the config argument to **maskPassword()** method.
@@ -42,9 +73,6 @@ Removed the below deprecated methods
 - **simpleEmailMask()** method -> To mask with default configs, simply dont pass the config argument to **maskEmail()** method.
 
 - **maskEmail()** method due to its complications in using the configs and some bugs -> To mask email, start using **maskEmail2()** method with the configs mentioned for maskEmail2 method
-
-### Version: 1.1.2
-- Bug fix in maskCard function. Issue: https://github.com/Sumukha1496/maskdata/issues/10
 
 # How to Use
 ```javascript
@@ -108,7 +136,15 @@ const maskPasswordOptions = {
 
   // To limit the *s in the response when the password length is more
   // Default value is 16
-  maxMaskedCharacters: 16
+  maxMaskedCharacters: 16,
+
+  // To show(not mask) first 'n' characters in the password/secret key. 
+  // Default value is 0. 
+  unmaskedStartCharacters: 0,
+
+  // To show(not mask) last 'n' characters in the password/secret key. 
+  // Default value is 0. 
+  unmaskedEndCharacters: 0
 };
 
 const password = "Password1$";
@@ -116,8 +152,6 @@ const password = "Password1$";
 const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
 
 //Output: **********
-
-```
 
 ## Mask Password with the default configuration
 To mask with the default options, dont pass the configurations.

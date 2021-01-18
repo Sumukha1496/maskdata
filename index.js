@@ -19,7 +19,9 @@ const defaultJsonMaskOptions = {
 
 const defaultPasswordMaskOptions = {
   maskWith: "*",
-  maxMaskedCharacters: 16
+  maxMaskedCharacters: 16,
+  unmaskedStartCharacters: 0,
+  unmaskedEndCharacters: 0
 };
 
 const defaultStringMaskOptions = {
@@ -31,17 +33,31 @@ const defaultStringMaskOptions = {
 class MaskData {
 
   static maskPassword(password, options) {
+    if(!password) {
+      return password;
+    }
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultPasswordMaskOptions);
       MaskHelper.validatePasswordOptions(options);
     } else {
       options = defaultPasswordMaskOptions;
     }
+    if(options.unmaskedStartCharacters + options.unmaskedEndCharacters >= password.length) {
+      return password;
+    }
     let maskPasswordLength = password.length;
     if(password.length > options.maxMaskedCharacters) {
       maskPasswordLength = parseInt(options.maxMaskedCharacters);
     }
-    return `${options.maskWith}`.repeat(maskPasswordLength);
+    let maskedPassword = "";
+
+    const maskingCharacters = maskPasswordLength - options.unmaskedStartCharacters - options.unmaskedEndCharacters;
+    maskedPassword = password.substr(0, options.unmaskedStartCharacters);
+    maskedPassword += `${options.maskWith}`.repeat(maskingCharacters)
+    for(let i = password.length-options.unmaskedEndCharacters; i < password.length; i++) {
+      maskedPassword += password[i];
+    } 
+    return maskedPassword;
   }
 
   static maskPhone(phone, options) {
