@@ -160,7 +160,9 @@ const MaskData = require('./maskdata');
 
   /** Default Options
     maskWith: "*"
-    maxMaskedCharacters: 16
+    maxMaskedCharacters: 16,
+    unmaskedStartCharacters: 0,
+    unmaskedEndCharacters: 0
   **/
 
 const password = "Password1$";
