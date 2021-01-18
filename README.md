@@ -37,7 +37,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 - Unmasked start and end characters feature in password masking. It is an can be used in cases where the password/Secret key has some metadata info which needs to be printed or shown to users. 
 Ticket: https://github.com/Sumukha1496/maskdata/issues/11. Both the fields are opional and can find more info here: [Mask Password](#mask-password)
 
-#### Example: Mask he secretKey with some meta info at the end
+#### Example: Mask password OR secretKey with some meta info at the end
 
 ```javascript
 const MaskData = require('./maskdata');
