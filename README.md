@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.1.3 Features](#release-features)
+- [Version 1.1.4 Features](#release-features)
 - [How to Use](#how-to-use)
     - [Mask Phone Number](#mask-phone-number)
     - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
@@ -33,6 +33,9 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version: 1.1.4
+- Password masking bug fix: https://github.com/Sumukha1496/maskdata/issues/12
+
 ### Version: 1.1.3
 - Unmasked start and end characters feature in password masking. It is an can be used in cases where the password/Secret key has some metadata info which needs to be printed or shown to users. 
 Ticket: https://github.com/Sumukha1496/maskdata/issues/11. Both the fields are opional and can find more info here: [Mask Password](#mask-password)
