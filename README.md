@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.1.4 Features](#release-features)
+- [Version 1.1.5 Features](#release-features)
 - [How to Use](#how-to-use)
     - [Mask Phone Number](#mask-phone-number)
     - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
@@ -16,9 +16,10 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
     - [Replace the value of a json field](#replace-the-value-of-a-json-field)
     - [Mask JSON fields](#mask-fields-in-a-json)
     - [Mask nested JSON fields](#mask-fields-of-a-nested-object)
-    - [Mask a value from the string](#mask-the-exact-substring-from-throughout-the-string)
+    - [Mask words/characters in a string](#mask-the-characters-or-words-in-the-string)
     - [Mask Card number](#mask-card-number)
 - [Report Bugs](#report-bugs)
+- [Give a Star](#give-a-star:)
 - [LICENSE - "MIT"](#license---mit)
 
 # Features
@@ -26,18 +27,23 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 * Mask Phone numbers
 * Mask Email
 * Mask desired fields in a JSON
-* Mask the given substring from throughout a String
+* Mask the given words/substrings from throughout a String
 * Mask the card number
+* Get nested field from JSON
+* Set/Replace nested field values from JSON
 
 # Install maskdata
 > npm i maskdata
 
 # Release Features
+### Version: 1.1.5
+- Feature to mask all the characters in the String along with mask/not mask spaces in the string.
+- [Mask all characters in the String](#mask-all-characters-in-the-string)
 ### Version: 1.1.4
 - Password masking bug fix: https://github.com/Sumukha1496/maskdata/issues/12
 
 ### Version: 1.1.3
-- Unmasked start and end characters feature in password masking. It is an can be used in cases where the password/Secret key has some metadata info which needs to be printed or shown to users. 
+- Unmasked start and end characters feature in password masking. It can be used in cases where the password/Secret key has some metadata info which needs to be printed or shown to users. 
 Ticket: https://github.com/Sumukha1496/maskdata/issues/11. Both the fields are opional and can find more info here: [Mask Password](#mask-password)
 
 #### Example: Mask password OR secretKey with some meta info at the end
@@ -62,20 +68,6 @@ maskPasswordOptions.unmaskedStartCharacters = 0;
 const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
 //Output: XXXXXXXXXXX:CLIENT-A
 ```
-
-
-### Version: 1.1.2
-- Bug fix in maskCard function. Issue: https://github.com/Sumukha1496/maskdata/issues/10
-
-### Version: 1.1.1
-Removed the below deprecated methods
-- **simplePasswordMask()** method -> To mask with default configs, simply dont pass the config argument to **maskPassword()** method.
-
-- **simplePhoneMask()** method -> To mask with default configs, simply dont pass the config argument to **maskPhone()** method.
-
-- **simpleEmailMask()** method -> To mask with default configs, simply dont pass the config argument to **maskEmail()** method.
-
-- **maskEmail()** method due to its complications in using the configs and some bugs -> To mask email, start using **maskEmail2()** method with the configs mentioned for maskEmail2 method
 
 # How to Use
 ```javascript
@@ -360,7 +352,27 @@ const nestedObject = {
 const maskedObj = MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2);
 
 //Output: 
-{"level1":{"field1":"******","level2":{"field2":"******","level3":{"field3":"******","field4":[{"Hello":null},{"Hello":"Newworld"},"*************"]}}},"value1":"*****"}
+{
+  "level1": {
+    "field1": "******",
+    "level2": {
+      "field2": "******",
+      "level3": {
+        "field3": "******",
+        "field4": [
+          {
+            "Hello": null
+          },
+          {
+            "Hello": "Newworld"
+          },
+          "*************"
+        ]
+      }
+    }
+  },
+  "value1": "*****"
+}
 ```
 
 
@@ -396,14 +408,31 @@ const maskAllFields = {
 const maskedObject = MaskData.maskJSONFields(nestedObject, maskAllFields);
 
 // Output: 
-{"level1":{"field1":"field1Value","level2":{"field2":"field2Value","field3":[{"Hello":"*****","Hi":"one"},{"Hello":"***********"}],"level3":{"field4":"***********","field5":"***********"}}},"value1":"value"}
-
-
+{
+  "level1": {
+    "field1": "field1Value",
+    "level2": {
+      "field2": "field2Value",
+      "field3": [
+        {
+          "Hello": "*****",
+          "Hi": "one"
+        },
+        {
+          "Hello": "***********"
+        }
+      ],
+      "level3": {
+        "field4": "***********",
+        "field5": "***********"
+      }
+    }
+  },
+  "value1": "value"
+}
 ```
-
-
-## Mask the exact substring from throughout the string
-This will mask the field value if present in the given object
+## Mask the characters or words in the string
+This will mask the characters or words value if present in the given string.
 ```javascript
 const MaskData = require('./maskdata');
 
@@ -411,13 +440,36 @@ const maskStringOptions = {
   // Character to mask the data. Default value is '*'
   maskWith: "*",
 
-  // It should be an array of strings
-  // Field names to mask. Can give multiple fields.
+  /** 
+   * It is the words/substrings to mask. 
+   * Should be an array of strings.
+   * Can give multiple words/substrings.
+   * values[] can be used only when maskAll is false. If maskAll is true, then this is of no use.
+  */
   values: ['is', 'test'], 
 
-  // Should be boolean
-  // If to mask only the first occurance of each value in the given string
-  maskOnlyFirstOccurance: false
+  /** 
+   * If to mask only the first occurance of each word/substring in the given string
+   * Should be boolean
+   * Default value is false
+  */
+  maskOnlyFirstOccurance: false,
+
+  /** 
+   * If to mask all the characters in a string make maskAll: true
+   * If maskAll is true, the words/substrings inside values[] will not be considered. 
+   * Default value is false
+  */
+  maskAll: false,
+
+  /** 
+   * This is to mask/not mask the spaces in a string when masking all the characters.
+   * Can be used ONLY when maskAll: true
+   * If maskSpace is true, the spaces in the string will be masked.
+   * This feature is to know the words and each word length but to hide the content
+   * Default value is true
+  */
+  maskSpace: true
 };
 
 const str = "This is a test String";
@@ -428,6 +480,36 @@ const strAfterMasking = MaskData.maskString(str, maskStringOptions);
 
 ```
 
+### Mask all characters in the String
+```
+const str = "This is a test String";
+
+const strAfterMasking = MaskData.maskString(str, maskStringOptions);
+
+const stringMaskOptions = {
+  maskWith: "*",
+  values: [],
+  maskAll: true,
+  maskSpace: false   // Do not mask space
+};
+
+// Output: **** ** * **** *****
+-------------------------------------------------------------------
+
+const str = "This is a test String";
+
+const strAfterMasking = MaskData.maskString(str, maskStringOptions);
+
+const stringMaskOptions = {
+  maskWith: "*",
+  values: [],
+  maskAll: true,
+  maskSpace: false   // Mask spaces also
+};
+
+// Output: ********************
+
+```
 
 ## Mask card number
 This will mask the digits in a card numbers.<br/>This will mask only the numerical data and not any non numeric delimeters, alphabets or any other types of data
@@ -456,7 +538,6 @@ const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
 //Output: 1234-XXXX-XXXX-XXX8
 
 ```
-
 
 # Report Bugs 
 Please raise an issue in github: https://github.com/Sumukha1496/maskdata/issues
