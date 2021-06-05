@@ -149,21 +149,19 @@ class MaskData {
     }
     let values = options.values;
     if(options.maskAll === true) {
-      var result = '';
+      let result = '';
        if(options.maskSpace === true) {
-        for(const eachChar of str) {
-           result += '*';
-          }
+          result = options.maskWith.repeat(str.length);
        } else {
-          for(const eachChar of str) {
+          for(let eachChar of str) {
             if(/\s/.test(eachChar)) {
               result += ' ';
             } else {
-              result += '*';
+              result += options.maskWith;
             }
            }
        }
-       str = result;
+      return result;
     }
     else if(options.maskOnlyFirstOccurance == true) {
       for(const value of Object.values(values)) {
