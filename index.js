@@ -1,6 +1,7 @@
 'use strict';
 
 const MaskHelper = require('./lib/helpers/MaskHelper');
+const StringHelper = require('./lib/helpers/StringHelper');
 const MaskEmail = require('./lib/emailMask/EmailMask');
 const MaskCard = require('./lib/cardMask/CardMask');
 const get = require('lodash.get');
@@ -27,7 +28,9 @@ const defaultPasswordMaskOptions = {
 const defaultStringMaskOptions = {
   maskWith: "*",
   maskOnlyFirstOccurance: false,
-  values: []
+  values: [],
+  maskAll: false,
+  maskSpace: true
 };
 
 class MaskData {
@@ -146,7 +149,22 @@ class MaskData {
       options = defaultStringMaskOptions;
     }
     let values = options.values;
-    if(options.maskOnlyFirstOccurance == true) {
+    if(options.maskAll == true) {
+       if(options.maskSpace == true) {
+        for(var i=0; i< str.length; i++) {
+           str = StringHelper.setCharAt(str,i,options.maskWith);
+          }
+       } else {
+           for(var i=0; i< str.length; i++) {
+             if(/\s/.test(str.charAt(i))) {
+              str = StringHelper.setCharAt(str,i,' ');
+             } else {
+              str = StringHelper.setCharAt(str,i,options.maskWith);
+             }
+          }
+       }
+    }
+    else if(options.maskOnlyFirstOccurance == true) {
       for(const value of Object.values(values)) {
         str = str.replace(value, `${options.maskWith}`.repeat(value.length));
       }
