@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sumukha1496/maskdata.git"
+    "url": "https://github.com/Sumukha1496/maskdata"
   },
   "scripts": {
     "test": "node test.js"
@@ -27,17 +27,10 @@
     "Set json fields",
     "Replcae json fields"
   ],
-  "author": "sumukha.s <sumukha.hs369@gmail.com>",
+  "author": "sumukha.s<sumukha.hs369@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2"
-  },
-  "bugs": {
-    "url": "https://github.com/Sumukha1496/maskdata/issues"
-  },
-  "homepage": "https://github.com/Sumukha1496/maskdata#readme",
-  "directories": {
-    "lib": "lib"
   }
 }
