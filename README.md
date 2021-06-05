@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.1.5 Features](#release-features)
+- [Version 1.1.6 Features](#release-features)
 - [How to Use](#how-to-use)
     - [Mask Phone Number](#mask-phone-number)
     - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
@@ -19,7 +19,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
     - [Mask words/characters in a string](#mask-the-characters-or-words-in-the-string)
     - [Mask Card number](#mask-card-number)
 - [Report Bugs](#report-bugs)
-- [Give a Star](#give-a-star:)
+- [Give a Star](#give-a-star)
 - [LICENSE - "MIT"](#license---mit)
 
 # Features
@@ -36,7 +36,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
-### Version: 1.1.5
+### Version: 1.1.6
 - Feature to mask all the characters in the String along with mask/not mask spaces in the string.
 - [Mask all characters in the String](#mask-all-characters-in-the-string)
 ### Version: 1.1.4
@@ -542,7 +542,7 @@ const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
 # Report Bugs 
 Please raise an issue in github: https://github.com/Sumukha1496/maskdata/issues
 
-# Give a Star:
+# Give a Star
 You can give a start at: https://github.com/Sumukha1496/maskdata/stargazers 
 
 # LICENSE - "MIT" 
