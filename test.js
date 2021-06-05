@@ -125,6 +125,19 @@ const stringMaskOptions = {
   values: ['is', 'API']
 };
 
+const fullStringMaskOptions = {
+  maskWith: "*",
+  values: ['is', 'API'],
+  maskAll: true
+};
+
+const fullStringMaskOptionsWithoutSpace = {
+  maskWith: "*",
+  values: ['is', 'API'],
+  maskAll: true,
+  maskSpace: false
+};
+
 let str = "This is a testingAPI String";
 console.log(`Unmasked string: ${str}`);
 console.log(`String after masking: ${MaskData.maskString(str, stringMaskOptions)}`);
@@ -133,7 +146,19 @@ console.log("========================================");
 str = "This is a testingAPI String";
 stringMaskOptions.maskOnlyFirstOccurance = true;
 console.log(`Unmasked string: ${str}`);
+console.log(`String after masking entire string: ${MaskData.maskString(str, fullStringMaskOptions)}`);
+console.log("========================================");
+
+str = "This is a testingAPI String";
+stringMaskOptions.maskOnlyFirstOccurance = true;
+console.log(`Unmasked string: ${str}`);
 console.log(`String after masking only first occurances: ${MaskData.maskString(str, stringMaskOptions)}`);
+console.log("========================================");
+
+str = "This is a testingAPI String";
+stringMaskOptions.maskOnlyFirstOccurance = true;
+console.log(`Unmasked string: ${str}`);
+console.log(`String after masking entire string without spaces: ${MaskData.maskString(str, fullStringMaskOptionsWithoutSpace)}`);
 console.log("========================================");
 
 const cardMaskOptions = {

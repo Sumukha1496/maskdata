@@ -27,7 +27,9 @@ const defaultPasswordMaskOptions = {
 const defaultStringMaskOptions = {
   maskWith: "*",
   maskOnlyFirstOccurance: false,
-  values: []
+  values: [],
+  maskAll: false,
+  maskSpace: true
 };
 
 class MaskData {
@@ -146,7 +148,22 @@ class MaskData {
       options = defaultStringMaskOptions;
     }
     let values = options.values;
-    if(options.maskOnlyFirstOccurance == true) {
+    if(options.maskAll === true) {
+      let result = '';
+       if(options.maskSpace === true) {
+          result = options.maskWith.repeat(str.length);
+       } else {
+          for(let eachChar of str) {
+            if(eachChar === ' ') {
+              result += ' ';
+            } else {
+              result += options.maskWith;
+            }
+           }
+       }
+      return result;
+    }
+    else if(options.maskOnlyFirstOccurance == true) {
       for(const value of Object.values(values)) {
         str = str.replace(value, `${options.maskWith}`.repeat(value.length));
       }
