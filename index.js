@@ -154,7 +154,7 @@ class MaskData {
           result = options.maskWith.repeat(str.length);
        } else {
           for(let eachChar of str) {
-            if(/\s/.test(eachChar)) {
+            if(eachChar === ' ') {
               result += ' ';
             } else {
               result += options.maskWith;
