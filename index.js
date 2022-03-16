@@ -3,8 +3,7 @@
 const MaskHelper = require('./lib/helpers/MaskHelper');
 const MaskEmail = require('./lib/emailMask/EmailMask');
 const MaskCard = require('./lib/cardMask/CardMask');
-const get = require('lodash.get');
-const set = require('lodash.set');
+const {get, set} = require('lodash');
 
 const defaultPhoneMaskOptions = {
   maskWith: "*",
@@ -58,7 +57,7 @@ class MaskData {
         const remainingChars = maskPasswordLength - options.unmaskedStartCharacters;
         for(let i = password.length-remainingChars; i < password.length; i++) {
           maskedPassword += password[i];
-        } 
+        }
         return maskedPassword;
       }
     }
@@ -67,7 +66,7 @@ class MaskData {
     maskedPassword += `${options.maskWith}`.repeat(maskingCharacters)
     for(let i = password.length-options.unmaskedEndCharacters; i < password.length; i++) {
       maskedPassword += password[i];
-    } 
+    }
     return maskedPassword;
   }
 
