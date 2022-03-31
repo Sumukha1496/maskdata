@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.1.6 Features](#release-features)
+- [Version 1.1.8 Features](#release-features)
 - [How to Use](#how-to-use)
     - [Mask Phone Number](#mask-phone-number)
     - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
@@ -19,6 +19,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
     - [Mask words/characters in a string](#mask-the-characters-or-words-in-the-string)
     - [Mask Card number](#mask-card-number)
 - [Report Bugs](#report-bugs)
+- [How to run test cases](#run-tests)
 - [Give a Star](#give-a-star)
 - [LICENSE - "MIT"](#license---mit)
 
@@ -36,6 +37,10 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version: 1.1.8
+- Mocha test cases for most of the usecases.
+https://github.com/Sumukha1496/maskdata/pull/23
+- Handling null/Empty inputs --> Mask function will return the input itself.
 ### Version: 1.1.6
 - Feature to mask all the characters in the String along with mask/not mask spaces in the string.
 - [Mask all characters in the String](#mask-all-characters-in-the-string)
@@ -541,6 +546,10 @@ const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
 
 # Report Bugs 
 Please raise an issue in github: https://github.com/Sumukha1496/maskdata/issues
+
+# Run Tests
+Below command will run mocha tests and also the test cases present in test.js file. Install all the dependencies using npm i before runnning the below command.
+> npm run test
 
 # Give a Star
 You can give a start at: https://github.com/Sumukha1496/maskdata/stargazers 
