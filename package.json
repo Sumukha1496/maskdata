@@ -8,7 +8,8 @@
     "url": "https://github.com/Sumukha1496/maskdata"
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js && mocha --timeout 5000 --exit",
+    "coverage": "nyc --reporter=lcov --report-dir coverage/ mocha --timeout 5000 --reporter mocha-junit-reporter --reporter-options mochaFile=coverage/junit.xml --exit"
   },
   "keywords": [
     "mask",
@@ -32,5 +33,11 @@
   "dependencies": {
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2"
+  },
+  "devDependencies": {
+    "mocha": "^9.2.2",
+    "mocha-junit-reporter": "^2.0.2",
+    "chai": "^4.3.6",
+    "nyc": "^15.1.0"
   }
 }
