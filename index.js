@@ -3,8 +3,7 @@
 const MaskHelper = require('./lib/helpers/MaskHelper');
 const MaskEmail = require('./lib/emailMask/EmailMask');
 const MaskCard = require('./lib/cardMask/CardMask');
-const get = require('lodash.get');
-const set = require('lodash.set');
+const {get, set} = require('lodash');
 
 const defaultPhoneMaskOptions = {
   maskWith: "*",
@@ -72,6 +71,7 @@ class MaskData {
   }
 
   static maskPhone(phone, options) {
+    if(!phone) return phone;
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultPhoneMaskOptions);
       MaskHelper.validatePhoneOptions(options);
@@ -140,6 +140,7 @@ class MaskData {
   }
 
   static maskString(str, options) {
+    if(!str) return str;
     str = str + '';
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultStringMaskOptions);
