@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.1.8 Features](#release-features)
+- [Version 1.1.9 Features](#release-features)
 - [How to Use](#how-to-use)
     - [Mask Phone Number](#mask-phone-number)
     - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
@@ -37,6 +37,9 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version: 1.1.9
+- Support of maxMaskedCharacters in masking json fields: https://github.com/Sumukha1496/maskdata/issues/21
+- This is applicable only if the type of value is string. Details: [Mask JSON fields](#mask-fields-in-a-json)
 ### Version: 1.1.8
 - Mocha test cases for most of the usecases.
 https://github.com/Sumukha1496/maskdata/pull/23
@@ -303,7 +306,10 @@ const maskJSONOptions = {
 
   // It should be an array
   // Field names to mask. Can give multiple fields.
-  fields: ['password', 'firstName'] 
+  fields: ['password', 'firstName'],
+  
+  // If the type of value is string and if we want to limit the number of characters in the output, then we can use this. Default value is -1 means, by default this feature is disabled. It is enabled if we provide positive integer value. This is not a mandatory field in the config and if not provided, it will take the default value -1 and disable the feature.
+  maxMaskedCharactersStr: 4  // Default value is -1 (Disable feature)
 };
 
 const obj = {
@@ -311,9 +317,10 @@ const obj = {
   firstName: "Jon",
   lastName: "Snoww"
 };
+
 const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
 
-//Output: { password: '************', firstName: '***', lastName: 'Snoww' }
+//Output: { password: '****', firstName: '***', lastName: 'Snoww' }
 
 ```
 
@@ -389,7 +396,7 @@ Limititions:
 2. It will not work for the nested fields like ARRAY[*].FIELD1.FIELD2
 3. It will not mask all array elements if given ARRAY[*] or ARRAY[*].
 4. Will not mask null values.
-5. If ARRAY[*].FIELD is an object, then it will mask that entire object include key.
+5. If ARRAY[*].FIELD is an object, then it will mask that entire object including the key.
 
 const nestedObject = {
   level1: {
