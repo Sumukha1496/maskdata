@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.1.9 Features](#release-features)
+- [Version 1.1.10 Features](#release-features)
 - [How to Use](#how-to-use)
     - [Mask Phone Number](#mask-phone-number)
     - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
@@ -37,7 +37,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
-### Version: 1.1.9
+### Version: 1.1.10
 - Support of maxMaskedCharacters in masking json fields: https://github.com/Sumukha1496/maskdata/issues/21
 - This is applicable only if the type of value is string. Details: [Mask JSON fields](#mask-fields-in-a-json)
 ### Version: 1.1.8
