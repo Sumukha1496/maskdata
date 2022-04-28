@@ -13,7 +13,8 @@ const defaultPhoneMaskOptions = {
 
 const defaultJsonMaskOptions = {
   maskWith: "*",
-  fields: []
+  fields: [],
+  maxMaskedCharactersStr: -1
 };
 
 const defaultPasswordMaskOptions = {
@@ -115,8 +116,14 @@ class MaskData {
           const arrayValue = get(maskedObj, arrayFieldName);
           for(const arrayElement of arrayValue) {
             const value = arrayElement[subField];
-            if(value !== undefined && value !== null) {
-              set(arrayElement, subField, (`${options.maskWith}`.repeat(value.toString().length)))
+            if(value === undefined || value === null) {
+              continue;
+            } else {
+              if(typeof(value) == 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
+                set(arrayElement, subField, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
+              } else {
+                set(arrayElement, subField, (`${options.maskWith}`.repeat(value.toString().length)));
+              }
             }
           }
         } else if(field.includes('.*')) {
@@ -124,15 +131,26 @@ class MaskData {
           const innerObject = get(maskedObj, subField);
           for(const innerObjectField of Object.keys(innerObject)) {
             const value = innerObject[innerObjectField];
-            if(value !== undefined && value !== null) {
-              set(innerObject, innerObjectField, (`${options.maskWith}`.repeat(value.toString().length)))
+            if(value === undefined || value === null) {
+              continue;
+            } else {
+              if(typeof(value) == 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
+                set(innerObject, innerObjectField, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
+              } else {
+                set(innerObject, innerObjectField, (`${options.maskWith}`.repeat(value.toString().length)));
+              }
             }
           }
         } else {
-          const value = get(maskedObj, field);
-          if(value !== undefined && value !== null) {
-          set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
-        }
+            const value = get(maskedObj, field);
+            if(value === undefined || value === null) {
+              continue;
+            }
+            if(typeof(value) == 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
+              set(maskedObj, field, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
+            } else {
+              set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
+            }
         }
       } catch(ex) { continue; }
     }

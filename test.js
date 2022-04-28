@@ -53,7 +53,8 @@ console.log(`shortEmail after masking: ${MaskData.maskEmail2(shortEmail, emailMa
 console.log("========================================");
 
 const jsonMaskOptions = {
-  fields: ['password', 'firstName']
+  fields: ['password', 'firstName'],
+  maxMaskedCharactersStr: 3
 };
 const json = {
   password: "PasswordValue",
@@ -78,7 +79,7 @@ const nestedAllObject = {
     field1: "field1Value",
     level2: {
       field2: "field2Value",
-      field3: [ { Hello: "Hello", Hi: "one" }, { Hello: "Hello again" } ],
+      field3: [ { Hello: "HelloValue", Hi: "one" }, { Hello: "Hello again" } ],
       level3: {
         field4: "field4Value",
         field5: "field5Value"
