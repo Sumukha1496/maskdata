@@ -119,9 +119,6 @@ class MaskData {
             if(value === undefined || value === null) {
               continue;
             } else {
-              console.log("1 --> " + typeof(value) + " - " + value);
-              console.log(typeof(options.maxMaskedCharactersStr))
-              console.log(value.length)
               if(typeof(value) == 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
                 set(arrayElement, subField, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
               } else {
@@ -137,7 +134,6 @@ class MaskData {
             if(value === undefined || value === null) {
               continue;
             } else {
-              console.log("2 --> " + typeof(value) + " - " + value);
               if(typeof(value) == 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
                 set(innerObject, innerObjectField, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
               } else {
@@ -150,7 +146,6 @@ class MaskData {
             if(value === undefined || value === null) {
               continue;
             }
-            console.log("3 --> " + typeof(value) + " - " + value);
             if(typeof(value) == 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
               set(maskedObj, field, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
             } else {
