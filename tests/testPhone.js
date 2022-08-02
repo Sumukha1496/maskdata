@@ -122,7 +122,7 @@ describe('Masking phone numbers', function() {
         {
           title: 'test input as number',
           input: 1234567,
-          output: 'xx'      // TODO - ok to convert number into string? Or should it fail?
+          output: '12xxx67'      // ok to convert number into string? Or should it fail?
         },
       ]
 
@@ -152,8 +152,13 @@ describe('Masking phone numbers', function() {
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
-          const masked = maskData.maskPhone(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
+          try {
+            const masked = maskData.maskPhone(input, maskOptions);
+            expect.fail('maskPhone shall throw an error');
+          } catch(e) {
+            expect(e).to.be.instanceOf(TypeError);
+            expect(e.message).to.equal('Invalid phone parameter format');
+          }
         });
       });
     });

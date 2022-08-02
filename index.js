@@ -79,6 +79,8 @@ class MaskData {
     } else {
       options = defaultPhoneMaskOptions;
     }
+    if (typeof phone === 'number') phone = phone + '';
+    if (typeof phone !== 'string') throw new TypeError('Invalid phone parameter format');
     let maskLength = phone.length - options.unmaskedStartDigits - options.unmaskedEndDigits;
     if((options.unmaskedStartDigits + options.unmaskedEndDigits) >= phone.length) {
       return phone;
