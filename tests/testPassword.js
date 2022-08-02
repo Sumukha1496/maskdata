@@ -174,8 +174,14 @@ describe('Masking password', function() {
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
-          const masked = maskData.maskPassword(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
+          try {
+            const masked = maskData.maskPassword(input, maskOptions);
+            expect.fail('maskPassword shall throw error on invalid input');
+          }
+          catch(e) {
+            expect(e).to.be.instanceOf(TypeError);
+            expect(e.message).to.equal('Invalid password parameter format');
+          }
         });
       });
     });

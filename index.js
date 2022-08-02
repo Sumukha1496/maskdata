@@ -35,15 +35,15 @@ const defaultStringMaskOptions = {
 class MaskData {
 
   static maskPassword(password, options) {
-    if(!password) {
-      return password;
-    }
+    if(!password) return password;
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultPasswordMaskOptions);
       MaskHelper.validatePasswordOptions(options);
     } else {
       options = defaultPasswordMaskOptions;
     }
+
+    if (typeof password !== 'string') throw new TypeError('Invalid password parameter format');
     let maskPasswordLength = password.length;
     if(password.length > options.maxMaskedCharacters) {
       maskPasswordLength = parseInt(options.maxMaskedCharacters);
