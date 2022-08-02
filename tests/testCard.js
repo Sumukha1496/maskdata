@@ -118,12 +118,17 @@ describe('Masking card numbers', function() {
           title: 'test input null',
           input: null,
           output: null
-        }
+        },
+        {
+          title: 'test input as number',
+          input: 12,
+          output: '12'
+        },
       ]
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
-          const masked = maskData.maskPassword(input, maskOptions);
+          const masked = maskData.maskCard(input, maskOptions);
           expect(masked).to.equal(output, 'masked output does not match expected value');
         });
       });
@@ -134,13 +139,13 @@ describe('Masking card numbers', function() {
       // set with input generating an error / exception
       let testData = [
         {
-          title: 'test input as number',
-          input: 12,
+          title: 'test input as array length 1',
+          input: ['12'],
           output: '12'
         },
         {
-          title: 'test input as array',
-          input: ['12'],
+          title: 'test input as array length 2',
+          input: ['12', '34'],
           output: '12'
         },
         {
@@ -152,8 +157,14 @@ describe('Masking card numbers', function() {
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
-          const masked = maskData.maskPassword(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
+          try {
+            const masked = maskData.maskCard(input, maskOptions);
+            expect.fail('maskCard shall throw an error')
+          }
+          catch(e) {
+            expect(e).to.be.instanceOf(TypeError);
+            expect(e.message).to.equal('Invalid card parameter format');
+          }
         });
       });
     });
