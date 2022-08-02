@@ -226,8 +226,14 @@ describe('Masking email addresses', function() {
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
-          const masked = maskData.maskPassword(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
+          try {
+            const masked = maskData.maskEmail2(input, maskOptions);
+            expect.fail('maskEmail2 did not throw an error')
+          }
+          catch(e) {
+            expect(e).to.be.a('string');
+            expect(e.startsWith('Bad config value', 'Shall be a Bad config value error')).to.be.true;
+          }
         });
       });
     });
