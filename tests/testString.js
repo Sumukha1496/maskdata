@@ -238,19 +238,25 @@ describe('Masking strings', function() {
         {
           title: 'test input as array',
           input: ['12', 'ab'],
-          output: 'xx'      // mask method seems to join all strings in the array into on big string and masks it?
+          output: 'aa'
         },
         {
           title: 'test input as object',
           input: {a: 'b', x: 'y'},
-          output: '12'  // json stringified and masked?
+          output: 'aa'
         }
       ]
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
-          const masked = maskData.maskString(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
+          try {
+            const masked = maskData.maskString(input, maskOptions);
+            expect.fail('maskString invalid input format')
+          }
+          catch(e) {
+            expect(e).to.be.instanceOf(TypeError);
+            expect(e.message).to.equal('Invalid str parameter format');
+          }
         });
       });
     });

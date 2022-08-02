@@ -161,7 +161,8 @@ class MaskData {
 
   static maskString(str, options) {
     if(!str) return str;
-    str = str + '';
+    if (typeof str === 'number') str = str + '';  // be nice, convert number to string as current implementation does
+    if (typeof str === 'object') throw new TypeError('Invalid str parameter format');
     if(options) {
       options = MaskHelper.mapWithDefaultValues(options, defaultStringMaskOptions);
       MaskHelper.validateStringOptions(options);
