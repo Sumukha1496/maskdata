@@ -392,11 +392,8 @@ const maskedObj = MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2)
 
 ```javascript
 Limititions: 
-1. Only one * is allowed per field. Either ARRAY[*].FIELD or JSON.* 
-2. It will not work for the nested fields like ARRAY[*].FIELD1.FIELD2
-3. It will not mask all array elements if given ARRAY[*] or ARRAY[*].
-4. Will not mask null values.
-5. If ARRAY[*].FIELD is an object, then it will mask that entire object including the key.
+1. Will not mask null values.
+2. If ARRAY[*].FIELD is an object, then it will mask that entire object including the key.
 
 const nestedObject = {
   level1: {

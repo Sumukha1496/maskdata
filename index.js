@@ -58,7 +58,7 @@ class MaskData {
         const remainingChars = maskPasswordLength - options.unmaskedStartCharacters;
         for(let i = password.length-remainingChars; i < password.length; i++) {
           maskedPassword += password[i];
-        } 
+        }
         return maskedPassword;
       }
     }
@@ -67,7 +67,7 @@ class MaskData {
     maskedPassword += `${options.maskWith}`.repeat(maskingCharacters)
     for(let i = password.length-options.unmaskedEndCharacters; i < password.length; i++) {
       maskedPassword += password[i];
-    } 
+    }
     return maskedPassword;
   }
 
@@ -108,49 +108,62 @@ class MaskData {
       return obj;
     }
     const fields = options.fields;
+    const setValueFunc = function(jsonObj, value, subField, options) {
+      if (typeof(value) === 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
+        set(jsonObj, subField, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
+      }
+      else {
+        set(jsonObj, subField, (`${options.maskWith}`.repeat(value.toString().length)));
+      }
+    }
 
     for(const field of fields) {
       try {
-        if(field.includes('[*].')) {
-          let [arrayFieldName, subField] = field.split('[*].');
+        if(field.includes('[*]')) {
+          const splitIdx = field.indexOf('[*]');
+          const arrayFieldName  = field.substring(0, splitIdx);
+          const subField = field.substring(splitIdx + 4);  // length of search string "[*]." - need trailing dot here for subpatterns
           const arrayValue = get(maskedObj, arrayFieldName);
-          for(const arrayElement of arrayValue) {
-            const value = arrayElement[subField];
-            if(value === undefined || value === null) {
-              continue;
-            } else {
-              if(typeof(value) == 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
-                set(arrayElement, subField, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
-              } else {
-                set(arrayElement, subField, (`${options.maskWith}`.repeat(value.toString().length)));
-              }
+          for(let idx in arrayValue) {
+            if (subField === '') {
+              setValueFunc(arrayValue, arrayValue[idx], idx, options);
+            }
+            if (subField.includes('.')) {
+              const subOptions = Object.assign({}, options);
+              subOptions.fields = [subField];
+              arrayValue[idx] = this.maskJSONFields(arrayValue[idx], subOptions);
+            }
+            else {
+              const value = arrayValue[idx][subField];
+              if (value === undefined || value === null) continue;
+              setValueFunc(arrayValue[idx], value, subField, options);
             }
           }
-        } else if(field.includes('.*')) {
-          let subField = field.split('.*')[0];
-          const innerObject = get(maskedObj, subField);
+        }
+        else if(field.includes('.*')) {
+          const splitIdx = field.indexOf('.*');
+          const jsonPath = field.substring(0, splitIdx);
+          const innerObject = get(maskedObj, jsonPath);
+          let subField = field.substring(splitIdx + 2);
+          if (subField.startsWith('.')) subField = subField.slice(1);
           for(const innerObjectField of Object.keys(innerObject)) {
             const value = innerObject[innerObjectField];
-            if(value === undefined || value === null) {
-              continue;
-            } else {
-              if(typeof(value) == 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
-                set(innerObject, innerObjectField, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
-              } else {
-                set(innerObject, innerObjectField, (`${options.maskWith}`.repeat(value.toString().length)));
+            if (value === undefined || value === null) continue;
+            if ((typeof value === 'object' || Array.isArray(value)) && subField !== '') {
+              const subOptions = Object.assign({}, options);
+              subOptions.fields = [subField];
+              set(maskedObj, jsonPath + '.' + innerObjectField, this.maskJSONFields(innerObject[innerObjectField], subOptions));
+            }
+            else {
+              if (innerObjectField === subField || subField === '') {
+                setValueFunc(innerObject, value, innerObjectField, options);
               }
             }
           }
         } else {
-            const value = get(maskedObj, field);
-            if(value === undefined || value === null) {
-              continue;
-            }
-            if(typeof(value) == 'string' && options.maxMaskedCharactersStr != -1 && options.maxMaskedCharactersStr < value.length) {
-              set(maskedObj, field, (`${options.maskWith}`.repeat(options.maxMaskedCharactersStr)))
-            } else {
-              set(maskedObj, field, (`${options.maskWith}`.repeat(value.toString().length)))
-            }
+          const value = get(maskedObj, field);
+          if(value === undefined || value === null) continue;
+          setValueFunc(maskedObj, value, field, options);
         }
       } catch(ex) { continue; }
     }
