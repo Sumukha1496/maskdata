@@ -50,8 +50,8 @@ describe('Masking phone numbers', function() {
     let testData = [
       {
         title: 'test default string',
-        input: '1234-5678-1234-5678',
-        output: '12xxxxxxxxxxxxxx678'
+        input: '1234567812345678',
+        output: '12xxxxxxxxxxx678'
       },
       {
         title: 'test number length equal than start + end',
@@ -122,7 +122,7 @@ describe('Masking phone numbers', function() {
         {
           title: 'test input as number',
           input: 1234567,
-          output: 'xx'      // TODO - ok to convert number into string? Or should it fail?
+          output: '12xxx67'
         },
       ]
 
@@ -134,26 +134,24 @@ describe('Masking phone numbers', function() {
       });
     });
 
-    describe('Mask with special input - input shall throw error', function() {
+    describe('Mask with special input - input won\'t be masked', function() {
 
       // set with input generating an error / exception
       let testData = [
         {
           title: 'test input as array',
           input: ['12', '34'],
-          output: 'xx'
         },
         {
           title: 'test input as object',
           input: {a: 'b', x: 'y'},
-          output: '12'
         }
       ]
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
           const masked = maskData.maskPhone(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
+          expect(masked).to.equal(input, 'input won\'t be masked');
         });
       });
     });

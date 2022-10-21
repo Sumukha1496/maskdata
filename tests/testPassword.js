@@ -56,7 +56,7 @@ describe('Masking password', function() {
         output: '1xxx78'
       },
       {
-        title: 'test string length equal than start + end',
+        title: 'test string length equal to start + end',
         input: '12-345',
         output: '1xxx45'
       },
@@ -87,8 +87,7 @@ describe('Masking password', function() {
       expect(masked).to.equal(output, 'masked output does not match expected value');
     });
 
-    it('custom mask - test with maxMasked shorter than start + end', function() {
-      // TODO - should this throw an error? there is no masking at all
+    it('custom mask - test with maxMasked shorter than start + end: No masking done', function() {
       const shortMaxCharsOption = {
         maskWith: 'x',
         maxMaskedCharacters: 6,
@@ -98,12 +97,10 @@ describe('Masking password', function() {
       const input = '1234-5678-1234-5678'
       const output = '123478'
       const masked = maskData.maskPassword(input, shortMaxCharsOption);
-      expect(masked).to.equal(output, 'masked output does not match expected value');
-      expect.fail('Shall this test fail because options prevent full masking?')
+      expect(masked).to.equal(output, 'No masking done because maxMasked(max output characters) shorter than start + end');
     });
 
-    it('custom mask - test with maxMasked equal than start + end', function() {
-      // TODO - should this throw an error? there is no masking at all
+    it('custom mask - test with maxMasked equal to start + end: No masking done', function() {
       const shortMaxCharsOption = {
         maskWith: 'x',
         maxMaskedCharacters: 8,
@@ -113,8 +110,7 @@ describe('Masking password', function() {
       const input = '1234-abcd-efgh-5678'
       const output = '12345678'
       const masked = maskData.maskPassword(input, shortMaxCharsOption);
-      expect(masked).to.equal(output, 'masked output does not match expected value');
-      expect.fail('Shall this test fail because options prevent full masking?')
+      expect(masked).to.equal(output, 'No masking done because maxMasked(max output characters) equal to start + end');
     });
   });
 
@@ -140,7 +136,12 @@ describe('Masking password', function() {
           title: 'test input null',
           input: null,
           output: null
-        }
+        },
+        {
+          title: 'test input as number',
+          input: 12,
+          output: '12'
+        },
       ]
 
       testData.forEach(({title, input, output}) => {
@@ -151,15 +152,9 @@ describe('Masking password', function() {
       });
     });
 
-    describe('Mask with special input - input shall throw error', function() {
+    describe('Mask with object type input - input won\'t be masked', function() {
 
-      // set with input generating an error / exception
       let testData = [
-        {
-          title: 'test input as number',
-          input: 12,
-          output: '12'
-        },
         {
           title: 'test input as array',
           input: ['12'],
@@ -168,14 +163,14 @@ describe('Masking password', function() {
         {
           title: 'test input as object',
           input: {a: 'b', x: 'y'},
-          output: '12'
+          output: {a: 'b', x: 'y'}
         }
       ]
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
           const masked = maskData.maskPassword(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
+          expect(masked).to.equal(input, 'input won\'t be masked');
         });
       });
     });

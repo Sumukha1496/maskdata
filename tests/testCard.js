@@ -123,36 +123,7 @@ describe('Masking card numbers', function() {
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
-          const masked = maskData.maskPassword(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
-        });
-      });
-    });
-
-    describe('Mask with special input - input shall throw error', function() {
-
-      // set with input generating an error / exception
-      let testData = [
-        {
-          title: 'test input as number',
-          input: 12,
-          output: '12'
-        },
-        {
-          title: 'test input as array',
-          input: ['12'],
-          output: '12'
-        },
-        {
-          title: 'test input as object',
-          input: {a: 'b', x: 'y'},
-          output: '12'
-        }
-      ]
-
-      testData.forEach(({title, input, output}) => {
-        it(`special input - ${title}`, function() {
-          const masked = maskData.maskPassword(input, maskOptions);
+          const masked = maskData.maskCard(input, maskOptions);
           expect(masked).to.equal(output, 'masked output does not match expected value');
         });
       });

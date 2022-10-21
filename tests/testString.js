@@ -219,7 +219,7 @@ describe('Masking strings', function() {
         {
           title: 'test input as number',
           input: 12,
-          output: 'xx'      // TODO - ok to convert number into string? Or should it fail?
+          output: 'xx'
         },
       ]
 
@@ -231,26 +231,23 @@ describe('Masking strings', function() {
       });
     });
 
-    describe('Mask with special input - input shall throw error', function() {
+    describe('Mask with improper input - input won\'t be masked', function() {
 
-      // set with input generating an error / exception
       let testData = [
         {
           title: 'test input as array',
           input: ['12', 'ab'],
-          output: 'xx'      // mask method seems to join all strings in the array into on big string and masks it?
         },
         {
           title: 'test input as object',
           input: {a: 'b', x: 'y'},
-          output: '12'  // json stringified and masked?
         }
       ]
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
           const masked = maskData.maskString(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
+          expect(masked).to.equal(input, 'input won\'t be masked');
         });
       });
     });
