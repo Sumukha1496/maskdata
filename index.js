@@ -1,6 +1,5 @@
 'use strict';
 
-const MaskHelper = require('./lib/helpers/MaskHelper');
 const MaskEmail = require('./lib/maskService/EmailMask');
 const MaskCard = require('./lib/maskService/CardMask');
 const MaskPhone = require('./lib/maskService/PhoneMask');
@@ -8,8 +7,7 @@ const MaskString = require('./lib/maskService/StringMask');
 const MaskPassword = require('./lib/maskService/PasswordMask');
 const MaskUuid = require('./lib/maskService/UuidMask');
 const JsonMask = require('./lib/maskService/JsonMask');
-
-const {get, set} = require('lodash');
+const JsonGetSet = require('./lib/helpers/jsonGetSet');
 
 class MaskData {
   
@@ -46,11 +44,11 @@ class MaskData {
   }
 
   static getInnerProperty(object, field) {
-    return get(object, field);
+    return JsonGetSet.get(object, field);
   }
 
   static replaceValue(object, field, value) {
-    return set(object, field, value);
+    return JsonGetSet.set(object, field, value);
   }
 
 }

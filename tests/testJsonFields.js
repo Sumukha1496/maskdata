@@ -176,6 +176,85 @@ describe('JSON mask2', function() {
     })
   });
 
+  describe('Mask all nested fields with default options', function() {
+    const jsonInput2 = {
+      cards: {
+        creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222'],
+        debitCards: ['0000-1111-2222-3333', '2222-1111-3333-4444']
+      },
+      emails: {
+        primaryEmail: 'primary@Email.com', 
+        secondaryEmail: 'secondary@Email.com'
+      },
+      password: 'dummyPasswordANDdummyPassword',
+      phones: {
+        homePhone: "+1 1234567890",
+        workPhone: "+1 9876543210",
+      },
+      address: {
+        addressLine1: "This is my addressline 1. This is my home",
+        addressLine2: "AddressLine 2"
+      },
+      uuids: {
+        uuid1: '123e4567-e89b-12d3-a456-426614174000'
+      }
+    };
+
+    let testData = [
+      {
+        title: 'test json masking with default options and all types of fields',
+        input: jsonInput2,
+        outputCredit: '1234-****-****-***4', 
+        outputDebit: '0000-****-****-***3', 
+        outputPrimaryEmail: 'pri****@*******om', 
+        outputSecondaryEmail: 'sec******@*******om',
+        outputPassword: '****************',
+        outputHomePhone: "+1 1********0",
+        outputWorkPhone: "+1 9********0",
+        outputAddressLine1: "This is my addressline 1. This is my home",
+        outputAddressLine2: "AddressLine 2",
+        outputUuid: "********-****-****-****-************"
+      },
+    ]
+
+    testData.forEach(({title, input, outputCredit, outputDebit, outputPrimaryEmail, outputSecondaryEmail, 
+      outputPassword, outputHomePhone, outputWorkPhone, outputAddressLine1, outputAddressLine2, outputUuid}) => {
+        
+      const jsonMaskConfig = JSON.parse(JSON.stringify(Constants.defaultjsonMask2Configs));
+      jsonMaskConfig['cardFields'] = ['cards.creditCards[0]', 'cards.creditCards[1]', 'cards.debitCards[0]', 'cards.debitCards[1]'];
+      jsonMaskConfig['emailFields'] = ['emails.primaryEmail', 'emails.secondaryEmail'];
+      jsonMaskConfig['passwordFields'] = ['password'];
+      jsonMaskConfig['phoneFields'] = ['phones.homePhone', 'phones.workPhone'];
+      jsonMaskConfig['stringFields'] = ['address.addressLine1', 'address.addressLine2'];
+      jsonMaskConfig['uuidFields'] = ['uuids.uuid1'];
+      it(`${title}`, function() {
+        const masked = maskData.maskJSON2(input, jsonMaskConfig);
+        expect(masked['cards']['creditCards'][0]).to.equal(outputCredit);
+        expect(masked['cards']['creditCards'][1]).to.equal('1111-****-****-***2');
+        expect(masked['cards']['debitCards'][0]).to.equal(outputDebit);
+        expect(masked['cards']['debitCards'][1]).to.equal('2222-****-****-***4');
+
+        expect(masked['emails']['primaryEmail']).to.equal(outputPrimaryEmail);
+        expect(masked['emails']['secondaryEmail']).to.equal(outputSecondaryEmail);
+
+        expect(masked['password']).to.equal(outputPassword);
+
+        expect(masked['phones']['homePhone']).to.equal(outputHomePhone);
+        expect(masked['phones']['workPhone']).to.equal(outputWorkPhone);
+
+        expect(masked['address']['addressLine1']).to.equal(outputAddressLine1);
+        expect(masked['address']['addressLine2']).to.equal(outputAddressLine2);
+
+        expect(masked['uuids']['uuid1']).to.equal(outputUuid);
+      });
+      it('Test masking improper JSON', function() {
+        const notAJson = "Not a JSON. Just a String";
+        const masked = maskData.maskJSON2(notAJson, jsonMaskConfig);
+        expect(masked).to.equal(notAJson);
+      });
+    })
+  });
+
   describe('Mask card fields with custom options', function() {
     let testData = [
       {
