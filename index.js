@@ -1,12 +1,13 @@
 'use strict';
 
 const MaskHelper = require('./lib/helpers/MaskHelper');
-const MaskEmail = require('./lib/emailMask/EmailMask');
-const MaskCard = require('./lib/cardMask/CardMask');
-const MaskPhone = require('./lib/phoneMask/PhoneMask');
-const MaskString = require('./lib/stringMask/StringMask');
-const MaskPassword = require('./lib/passwordMask/PasswordMask');
-const JsonMask = require('./lib/jsonMask/JsonMask');
+const MaskEmail = require('./lib/maskService/EmailMask');
+const MaskCard = require('./lib/maskService/CardMask');
+const MaskPhone = require('./lib/maskService/PhoneMask');
+const MaskString = require('./lib/maskService/StringMask');
+const MaskPassword = require('./lib/maskService/PasswordMask');
+const MaskUuid = require('./lib/maskService/UuidMask');
+const JsonMask = require('./lib/maskService/JsonMask');
 
 const {get, set} = require('lodash');
 
@@ -16,8 +17,12 @@ class MaskData {
     return MaskPassword.maskPassword(password, options);
   }
 
-  static maskJSONFields(password, options) {
-    return JsonMask.maskJSONFields(password, options);
+  static maskJSONFields(json, options) {
+    return JsonMask.maskJSONFields(json, options);
+  }
+
+  static maskJSON2(json, options) {
+    return JsonMask.maskJSON2(json, options);
   }
 
   static maskPhone(phone, options) {
@@ -34,6 +39,10 @@ class MaskData {
 
   static maskString(str, options) {
     return MaskString.maskString(str, options);
+  }
+
+  static maskUuid(uuid, options) {
+    return MaskUuid.maskUuid(uuid, options);
   }
 
   static getInnerProperty(object, field) {

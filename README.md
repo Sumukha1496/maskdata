@@ -1,23 +1,25 @@
 maskdata is a Node.js module to mask various kinds of data. With the help of maskdata, you can mask email, phone number, card number, JSON fields, password etc.. 
-<br/>Also, it provides utility methods to get a field, or replace a field from any complex/nested json.
+<br/>Also, it provides utility methods to get a field, or replace a field from any complex/nested json. 
 
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.1.10 Features](#release-features)
+- [Version 1.1.11 Features](#release-features)
 - [How to Use](#how-to-use)
-    - [Mask Phone Number](#mask-phone-number)
-    - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
-    - [Mask Password](#mask-password)
-    - [Mask Password with the default configuration](#mask-password-with-the-default-configuration)
+    - [Mask Card number](#mask-card-number)
     - [Mask Email](#mask-email-id)
-    - [Mask Email id with the default configuration](#mask-email-id-with-the-default-configuration)
+      - [Mask Email id with the default configuration](#mask-email-id-with-the-default-configuration)
+    - [Mask JSON fields](#mask-json)
+    - [Mask Password](#mask-password)
+      - [Mask Password with the default configuration](#mask-password-with-the-default-configuration)
+    - [Mask Phone Number](#mask-phone-number)
+      - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
+    - [Mask words/characters in a string](#mask-the-characters-or-words-in-the-string)
     - [Get Nested Json Property](#get-nested-json-property)
     - [Replace the value of a json field](#replace-the-value-of-a-json-field)
     - [Mask JSON fields](#mask-fields-in-a-json)
-    - [Mask nested JSON fields](#mask-fields-of-a-nested-object)
-    - [Mask words/characters in a string](#mask-the-characters-or-words-in-the-string)
-    - [Mask Card number](#mask-card-number)
+      - [Mask nested JSON fields](#mask-fields-of-a-nested-object)
+    
 - [Report Bugs](#report-bugs)
 - [How to run test cases](#run-tests)
 - [Give a Star](#give-a-star)
@@ -82,95 +84,31 @@ const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
 const MaskData = require('./maskdata');
 ```
 
-## Mask Phone Number
+## Mask card number
+This will mask the digits in a card numbers.<br/>This will mask only the numerical data and not any non numeric delimeters, alphabets or any other types of data
 ```javascript
 const MaskData = require('./maskdata');
 
-const maskPhoneOptions = {
-  // Character to mask the data
-  // default value is '*'
-  maskWith: "*",
-
-  //Should be positive Integer
-  // If the starting 'n' digits needs to be unmasked
-  // Default value is 4
-  unmaskedStartDigits: 5, 
+const maskCardOptions = {
+  // Character to mask the data. Default value is 'X'
+  maskWith: "X",
 
   // Should be positive Integer
+  // If the starting 'n' digits needs to be unmasked
+  // Default value is 4
+  unmaskedStartDigits: 4, 
+  
+  //Should be positive Integer
   //If the ending 'n' digits needs to be unmasked
-  // Default value is 1
+  // Default value is 1. 
   unmaskedEndDigits: 1 
 };
 
-const phoneNumber = "+911234567890";
+const cardNumber = "1234-5678-1234-5678";
 
-const maskedPhoneNumber = MaskData.maskPhone(phoneNumber, maskPhoneOptions);
-//Output: +9112*******0
+const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
 
-```
-
-## Mask Phone Number with the default configuration
-To mask with the default options, dont pass the configurations.
-```javascript
-const MaskData = require('./maskdata');
-
-/** Default Options
-  maskWith: "*"
-  unmaskedStartDigits: 4
-  unmaskedEndDigits: 1 
-**/
-const phoneNumber = "+111234567890";
-
-const maskedPhoneNumber = MaskData.maskPhone(phoneNumber);
-
-//Output: +911********0
-
-```
-
-
-## Mask Password
-```javascript
-const MaskData = require('./maskdata');
-
-const maskPasswordOptions = {
-  // Character to mask the data
-  // default value is '*'
-  maskWith: "*",
-
-  // To limit the *s in the response when the password length is more
-  // Default value is 16
-  maxMaskedCharacters: 16,
-
-  // To show(not mask) first 'n' characters in the password/secret key. 
-  // Default value is 0. 
-  unmaskedStartCharacters: 0,
-
-  // To show(not mask) last 'n' characters in the password/secret key. 
-  // Default value is 0. 
-  unmaskedEndCharacters: 0
-};
-
-const password = "Password1$";
-
-const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
-
-//Output: **********
-
-## Mask Password with the default configuration
-To mask with the default options, dont pass the configurations.
-```javascript
-const MaskData = require('./maskdata');
-
-  /** Default Options
-    maskWith: "*"
-    maxMaskedCharacters: 16,
-    unmaskedStartCharacters: 0,
-    unmaskedEndCharacters: 0
-  **/
-
-const password = "Password1$";
-
-const maskedPassword = MaskData.maskPassword(password)
+//Output: 1234-XXXX-XXXX-XXX8
 
 ```
 
@@ -242,6 +180,254 @@ const maskedEmail = MaskData.maskEmail2(email);
 
 ```
 
+## Mask JSON
+This is the new functionalty in the version 1.1.11 to handle masking of multiple types of data in the JSON object with a single function call.  Use this function instead of previous function maskJsonFields(). To mask with the default options, just pass the required fields(cardFields[] and/or emailFields[] and/or passwordFields[] and/or phoneFields[] and/or stringFields[] and/or uuidFields[]) in the second argument to the function.
+
+```javascript
+const MaskData = require('./maskdata');
+
+// Default configs are as below. If masking with default configs are fine, just pass the list of card/email/password/phone/string/uuid fields. If specific masking changes are needed, use the corresponding configs for each type of field.
+const defaultjsonMask2Configs = {
+    cardMaskOptions: defaultCardMaskOptions,
+    cardFields: [], // List of card fields to be masked
+
+    emailMaskOptions: defaultEmailMask2Options, 
+    emailFields: [], // List of email fields to be masked
+
+    passwordMaskOptions: defaultPasswordMaskOptions,
+    passwordFields: [], // List of password fields to be masked
+
+    phoneMaskOptions: defaultPhoneMaskOptions,
+    phoneFields: [], // List of phone fields to be masked
+
+    stringMaskOptions:  defaultStringMaskOptions,
+    stringFields: [], // List of String fields to be masked
+
+    uuidMaskOptions: defaultUuidMaskOptions,
+    uuidFields: [] // List of UUID fields to be masked
+};
+
+Example: 
+
+const jsonInput = {
+  'credit': '1234-5678-8765-1234', 
+  'debit': '0000-1111-2222-3333', 
+  'primaryEmail': 'primary@Email.com', 
+  'secondaryEmail': 'secondary@Email.com',
+  'password': 'dummyPassword',
+  'homePhone': "+1 1234567890",
+  'workPhone': "+1 9876543210",
+  'addressLine1': "This is my addressline 1. This is my home",
+  'addressLine2': "AddressLine 2",
+  'uuid1': '123e4567-e89b-12d3-a456-426614174000'
+};
+
+const jsonMaskConfig = {
+    cardFields: ['credit', 'debit'],
+    emailFields: ['primaryEmail', 'secondaryEmail'],
+    passwordFields: ['password'],
+    phoneFields: ['homePhone', 'workPhone'],
+    stringMaskOptions:  {
+      maskWith: "*",
+      maskOnlyFirstOccurance: false,
+      values: ["This"]
+    },
+    stringFields: ['addressLine1', 'addressLine2'],
+    uuidFields: ['uuid1']
+};
+
+const maskedJsonOutput = maskData.maskJSON2(jsonInput, jsonMaskConfig);
+
+Output:
+
+{
+  credit: '1234-****-****-***4',
+  debit: '0000-****-****-***3',
+  primaryEmail: 'pri****@*******om',
+  secondaryEmail: 'sec******@*******om',
+  password: '*************',
+  homePhone: '+1 1********0',
+  workPhone: '+1 9********0',
+  addressLine1: '**** is my addressline 1. **** is my home',
+  addressLine2: 'AddressLine 2',
+  uuid1: '********-****-****-****-************'
+}
+
+```
+
+
+## Mask Password
+```javascript
+const MaskData = require('./maskdata');
+
+const maskPasswordOptions = {
+  // Character to mask the data
+  // default value is '*'
+  maskWith: "*",
+
+  // To limit the *s in the response when the password length is more
+  // Default value is 16
+  maxMaskedCharacters: 16,
+
+  // To show(not mask) first 'n' characters in the password/secret key. 
+  // Default value is 0. 
+  unmaskedStartCharacters: 0,
+
+  // To show(not mask) last 'n' characters in the password/secret key. 
+  // Default value is 0. 
+  unmaskedEndCharacters: 0
+};
+
+const password = "Password1$";
+
+const maskedPassword = MaskData.maskPassword(password, maskPasswordOptions);
+
+//Output: **********
+
+## Mask Password with the default configuration
+To mask with the default options, dont pass the configurations.
+```javascript
+const MaskData = require('./maskdata');
+
+  /** Default Options
+    maskWith: "*"
+    maxMaskedCharacters: 16,
+    unmaskedStartCharacters: 0,
+    unmaskedEndCharacters: 0
+  **/
+
+const password = "Password1$";
+
+const maskedPassword = MaskData.maskPassword(password)
+
+```
+
+
+## Mask Phone Number
+```javascript
+const MaskData = require('./maskdata');
+
+const maskPhoneOptions = {
+  // Character to mask the data
+  // default value is '*'
+  maskWith: "*",
+
+  //Should be positive Integer
+  // If the starting 'n' digits needs to be unmasked
+  // Default value is 4
+  unmaskedStartDigits: 5, 
+
+  // Should be positive Integer
+  //If the ending 'n' digits needs to be unmasked
+  // Default value is 1
+  unmaskedEndDigits: 1 
+};
+
+const phoneNumber = "+911234567890";
+
+const maskedPhoneNumber = MaskData.maskPhone(phoneNumber, maskPhoneOptions);
+//Output: +9112*******0
+
+```
+
+## Mask Phone Number with the default configuration
+To mask with the default options, dont pass the configurations.
+```javascript
+const MaskData = require('./maskdata');
+
+/** Default Options
+  maskWith: "*"
+  unmaskedStartDigits: 4
+  unmaskedEndDigits: 1 
+**/
+const phoneNumber = "+111234567890";
+
+const maskedPhoneNumber = MaskData.maskPhone(phoneNumber);
+
+//Output: +911********0
+
+```
+
+
+## Mask the characters or words in the string
+This will mask the characters or words value if present in the given string.
+```javascript
+const MaskData = require('./maskdata');
+
+const maskStringOptions = {
+  // Character to mask the data. Default value is '*'
+  maskWith: "*",
+
+  /** 
+   * It is the words/substrings to mask. 
+   * Should be an array of strings.
+   * Can give multiple words/substrings.
+   * values[] can be used only when maskAll is false. If maskAll is true, then this is of no use.
+  */
+  values: ['is', 'test'], 
+
+  /** 
+   * If to mask only the first occurance of each word/substring in the given string
+   * Should be boolean
+   * Default value is false
+  */
+  maskOnlyFirstOccurance: false,
+
+  /** 
+   * If to mask all the characters in a string make maskAll: true
+   * If maskAll is true, the words/substrings inside values[] will not be considered. 
+   * Default value is false
+  */
+  maskAll: false,
+
+  /** 
+   * This is to mask/not mask the spaces in a string when masking all the characters.
+   * Can be used ONLY when maskAll: true
+   * If maskSpace is true, the spaces in the string will be masked.
+   * This feature is to know the words and each word length but to hide the content
+   * Default value is true
+  */
+  maskSpace: true
+};
+
+const str = "This is a test String";
+
+const strAfterMasking = MaskData.maskString(str, maskStringOptions);
+
+//Output: Th** ** a **** String
+
+```
+
+### Mask all characters in the String
+```
+const str = "This is a test String";
+
+const strAfterMasking = MaskData.maskString(str, maskStringOptions);
+
+const stringMaskOptions = {
+  maskWith: "*",
+  values: [],
+  maskAll: true,
+  maskSpace: false   // Do not mask space
+};
+
+// Output: **** ** * **** *****
+-------------------------------------------------------------------
+
+const str = "This is a test String";
+
+const strAfterMasking = MaskData.maskString(str, maskStringOptions);
+
+const stringMaskOptions = {
+  maskWith: "*",
+  values: [],
+  maskAll: true,
+  maskSpace: false   // Mask spaces also
+};
+
+// Output: ********************
+
+```
 
 ## Get Nested Json Property
 This method returns the value of nested Json property if exists. Otherwise it returns ```undefined```
@@ -294,9 +480,9 @@ Type of married: boolean
 
 ```
 
-
 ## Mask fields in a JSON 
-This method masks the field value if present in the given object
+This method masks the field value if present in the given object.
+This is an old functionality. For more flexibility and single masking call to mask different types of data in the json object, star using the new maskJson2() function. 
 ```javascript
 const MaskData = require('./maskdata');
 
@@ -442,113 +628,6 @@ const maskedObject = MaskData.maskJSONFields(nestedObject, maskAllFields);
   },
   "value1": "value"
 }
-```
-## Mask the characters or words in the string
-This will mask the characters or words value if present in the given string.
-```javascript
-const MaskData = require('./maskdata');
-
-const maskStringOptions = {
-  // Character to mask the data. Default value is '*'
-  maskWith: "*",
-
-  /** 
-   * It is the words/substrings to mask. 
-   * Should be an array of strings.
-   * Can give multiple words/substrings.
-   * values[] can be used only when maskAll is false. If maskAll is true, then this is of no use.
-  */
-  values: ['is', 'test'], 
-
-  /** 
-   * If to mask only the first occurance of each word/substring in the given string
-   * Should be boolean
-   * Default value is false
-  */
-  maskOnlyFirstOccurance: false,
-
-  /** 
-   * If to mask all the characters in a string make maskAll: true
-   * If maskAll is true, the words/substrings inside values[] will not be considered. 
-   * Default value is false
-  */
-  maskAll: false,
-
-  /** 
-   * This is to mask/not mask the spaces in a string when masking all the characters.
-   * Can be used ONLY when maskAll: true
-   * If maskSpace is true, the spaces in the string will be masked.
-   * This feature is to know the words and each word length but to hide the content
-   * Default value is true
-  */
-  maskSpace: true
-};
-
-const str = "This is a test String";
-
-const strAfterMasking = MaskData.maskString(str, maskStringOptions);
-
-//Output: Th** ** a **** String
-
-```
-
-### Mask all characters in the String
-```
-const str = "This is a test String";
-
-const strAfterMasking = MaskData.maskString(str, maskStringOptions);
-
-const stringMaskOptions = {
-  maskWith: "*",
-  values: [],
-  maskAll: true,
-  maskSpace: false   // Do not mask space
-};
-
-// Output: **** ** * **** *****
--------------------------------------------------------------------
-
-const str = "This is a test String";
-
-const strAfterMasking = MaskData.maskString(str, maskStringOptions);
-
-const stringMaskOptions = {
-  maskWith: "*",
-  values: [],
-  maskAll: true,
-  maskSpace: false   // Mask spaces also
-};
-
-// Output: ********************
-
-```
-
-## Mask card number
-This will mask the digits in a card numbers.<br/>This will mask only the numerical data and not any non numeric delimeters, alphabets or any other types of data
-```javascript
-const MaskData = require('./maskdata');
-
-const maskCardOptions = {
-  // Character to mask the data. Default value is 'X'
-  maskWith: "X",
-
-  // Should be positive Integer
-  // If the starting 'n' digits needs to be unmasked
-  // Default value is 4
-  unmaskedStartDigits: 4, 
-  
-  //Should be positive Integer
-  //If the ending 'n' digits needs to be unmasked
-  // Default value is 1. 
-  unmaskedEndDigits: 1 
-};
-
-const cardNumber = "1234-5678-1234-5678";
-
-const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
-
-//Output: 1234-XXXX-XXXX-XXX8
-
 ```
 
 # Report Bugs 

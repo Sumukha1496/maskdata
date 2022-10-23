@@ -95,6 +95,30 @@ describe('Masking card numbers', function() {
       const masked = maskData.maskCard(input, negativeEndOption);
       expect(masked).to.equal(output, 'masked output does not match expected value');
     });
+
+    it('test with 0 unmasked start and end digits', function() {
+      const _0UnmaskedOption = {
+        maskWith: 'x',
+        unmaskedStartDigits: 0,
+        unmaskedEndDigits: 0
+      }
+      const input = '1234-5678-1234-5678'
+      const output = 'xxxx-xxxx-xxxx-xxxx'
+      const masked = maskData.maskCard(input, _0UnmaskedOption);
+      expect(masked).to.equal(output);
+    });
+
+    it('test with non number card data', function() {
+      const cardMaskOptions = {
+        maskWith: 'x',
+        unmaskedStartDigits: 1,
+        unmaskedEndDigits: 1
+      }
+      const input = 'm1234-5678-1234-5678'
+      const output = 'm1xxx-xxxx-xxxx-xxx8'
+      const masked = maskData.maskCard(input, cardMaskOptions);
+      expect(masked).to.equal(output);
+    });
   });
 
   describe('Mask with special input strings', function() {
