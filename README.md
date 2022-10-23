@@ -1,5 +1,5 @@
 maskdata is a Node.js module to mask various kinds of data. With the help of maskdata, you can mask email, phone number, card number, JSON fields, password etc.. 
-<br/>Also, it provides utility methods to get a field, or replace a field from any complex/nested json. 
+<br/>Also, it provides utility methods to get a field, or replace a field from any complex/nested json.
 
 # Table of Contents
 - [Features](#features)
@@ -15,23 +15,23 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
     - [Mask Phone Number](#mask-phone-number)
       - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
     - [Mask words/characters in a string](#mask-the-characters-or-words-in-the-string)
+    - [Mask UUID](#mask-uuid)
     - [Get Nested Json Property](#get-nested-json-property)
     - [Replace the value of a json field](#replace-the-value-of-a-json-field)
     - [Mask JSON fields](#mask-fields-in-a-json)
       - [Mask nested JSON fields](#mask-fields-of-a-nested-object)
-    
 - [Report Bugs](#report-bugs)
-- [How to run test cases](#run-tests)
 - [Give a Star](#give-a-star)
 - [LICENSE - "MIT"](#license---mit)
 
 # Features
-* Mask password
+* Mask Card numbers
+* Mask Email ids
+* Mask Password
 * Mask Phone numbers
-* Mask Email
-* Mask desired fields in a JSON
 * Mask the given words/substrings from throughout a String
-* Mask the card number
+* Mask UUIDs
+* Mask JSON - JSON can contain cards, emails, passwords, phones, strings and UUIDs. Mask all of them with a single call using - [Mask JSON fields](#mask-json)
 * Get nested field from JSON
 * Set/Replace nested field values from JSON
 
@@ -39,6 +39,12 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version 1.1.11
+- Support for masking cards, emails, passwords, phones, strings and UUIDs. Mask all of them with a single call using - [Mask JSON fields](#mask-json)
+- Support for masking UUID - [Mask UUID](#mask-uuid)
+- Minor bug fix in card masking.
+- Extensive testing with the help of mocha test cases for all features covering more than 110 test cases.
+- Improved Documentation
 ### Version: 1.1.10
 - Support of maxMaskedCharacters in masking json fields: https://github.com/Sumukha1496/maskdata/issues/21
 - This is applicable only if the type of value is string. Details: [Mask JSON fields](#mask-fields-in-a-json)
@@ -47,14 +53,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 https://github.com/Sumukha1496/maskdata/pull/23
 - Handling null/Empty inputs --> Mask function will return the input itself.
 ### Version: 1.1.6
-- Feature to mask all the characters in the String along with mask/not mask spaces in the string.
-- [Mask all characters in the String](#mask-all-characters-in-the-string)
-### Version: 1.1.4
-- Password masking bug fix: https://github.com/Sumukha1496/maskdata/issues/12
-
-### Version: 1.1.3
-- Unmasked start and end characters feature in password masking. It can be used in cases where the password/Secret key has some metadata info which needs to be printed or shown to users. 
-Ticket: https://github.com/Sumukha1496/maskdata/issues/11. Both the fields are opional and can find more info here: [Mask Password](#mask-password)
+- Feature to mask all the characters in the String along with mask/visible spaces in the string.
 
 #### Example: Mask password OR secretKey with some meta info at the end
 
@@ -90,8 +89,8 @@ This will mask the digits in a card numbers.<br/>This will mask only the numeric
 const MaskData = require('./maskdata');
 
 const maskCardOptions = {
-  // Character to mask the data. Default value is 'X'
-  maskWith: "X",
+  // Character to mask the data. Default value is '*'
+  maskWith: "*",
 
   // Should be positive Integer
   // If the starting 'n' digits needs to be unmasked
@@ -108,7 +107,7 @@ const cardNumber = "1234-5678-1234-5678";
 
 const cardAfterMasking = MaskData.maskCard(cardNumber, maskCardOptions);
 
-//Output: 1234-XXXX-XXXX-XXX8
+//Output: 1234-****-****-***8
 
 ```
 
@@ -181,32 +180,37 @@ const maskedEmail = MaskData.maskEmail2(email);
 ```
 
 ## Mask JSON
-This is the new functionalty in the version 1.1.11 to handle masking of multiple types of data in the JSON object with a single function call.  Use this function instead of previous function maskJsonFields(). To mask with the default options, just pass the required fields(cardFields[] and/or emailFields[] and/or passwordFields[] and/or phoneFields[] and/or stringFields[] and/or uuidFields[]) in the second argument to the function.
+This is the new functionalty in the version 1.1.11 to handle masking of multiple types of data in the JSON object with a single mask function call. Use this function instead of previous function maskJsonFields(). <br><br>To mask with the default options, just pass the required fields(cardFields[] and/or emailFields[] and/or passwordFields[] and/or phoneFields[] and/or stringFields[] and/or uuidFields[]) in the second argument to the function.
 
 ```javascript
 const MaskData = require('./maskdata');
 
-// Default configs are as below. If masking with default configs are fine, just pass the list of card/email/password/phone/string/uuid fields. If specific masking changes are needed, use the corresponding configs for each type of field.
+// Default configs are as below. If specific masking changes are needed, use the corresponding configs for each type of field.
 const defaultjsonMask2Configs = {
-    cardMaskOptions: defaultCardMaskOptions,
+    cardMaskOptions: defaultCardMaskOptions, // Optional 
     cardFields: [], // List of card fields to be masked
 
-    emailMaskOptions: defaultEmailMask2Options, 
+    emailMaskOptions: defaultEmailMask2Options, // Optional 
     emailFields: [], // List of email fields to be masked
 
-    passwordMaskOptions: defaultPasswordMaskOptions,
+    // For passwords, tokens etc...
+    passwordMaskOptions: defaultPasswordMaskOptions, // Optional 
     passwordFields: [], // List of password fields to be masked
 
-    phoneMaskOptions: defaultPhoneMaskOptions,
+    phoneMaskOptions: defaultPhoneMaskOptions, // Optional 
     phoneFields: [], // List of phone fields to be masked
 
-    stringMaskOptions:  defaultStringMaskOptions,
+    stringMaskOptions:  defaultStringMaskOptions, // Mandatory if stringFields are given. Otherwise, stringFields won't be masked
     stringFields: [], // List of String fields to be masked
 
-    uuidMaskOptions: defaultUuidMaskOptions,
+    uuidMaskOptions: defaultUuidMaskOptions, // Optional 
     uuidFields: [] // List of UUID fields to be masked
 };
+```
 
+<b>NOTE: For defaultCardMaskOptions, defaultEmailMask2Options, defaultPasswordMaskOptions, defaultPhoneMaskOptions, defaultStringMaskOptions and defaultUuidMaskOptions refer the corresponding masking features. </b>
+
+```javascript
 Example: 
 
 const jsonInput = {
@@ -252,6 +256,66 @@ Output:
   addressLine2: 'AddressLine 2',
   uuid1: '********-****-****-****-************'
 }
+
+
+Example2: Mask with custom configs for each/any type of fields
+
+const jsonInput2 = {
+  'credit': '1234-5678-8765-1234', 
+  'debit': '0000-1111-2222-3333', 
+  'primaryEmail': 'primary@Email.com', 
+  'secondaryEmail': 'secondary@Email.com',
+  'password': 'dummyPasswordANDdummyPassword',
+  'homePhone': "+1 1234567890",
+  'workPhone': "+1 9876543210",
+  'addressLine1': "This is my addressline 1. This is my home",
+  'addressLine2': "AddressLine 2",
+  'uuid1': '123e4567-e89b-12d3-a456-426614174000'
+};
+
+const jsonMaskConfig2 = {
+    // Card
+    cardMaskOptions: { maskWith: "X", unmaskedStartDigits: 2,unmaskedEndDigits: 4 },
+    cardFields: ['credit', 'debit'],
+
+    // Email
+    emailMaskOptions: { maskWith: "*", unmaskedStartCharactersBeforeAt: 2, unmaskedEndCharactersAfterAt: 2, maskAtTheRate: false },
+    emailFields: ['primaryEmail', 'secondaryEmail'],
+
+    // Password
+    passwordMaskOptions: { maskWith: "*", maxMaskedCharacters: 10, unmaskedStartCharacters: 0, unmaskedEndCharacters: 0 },
+    passwordFields: ['password'],
+
+    // Phone
+    phoneMaskOptions: { maskWith: "*", unmaskedStartDigits: 2, unmaskedEndDigits: 1 },
+    phoneFields: ['homePhone', 'workPhone'],
+
+    // String
+    stringMaskOptions: { maskWith: "*", maskOnlyFirstOccurance: false, values: [], maskAll: true, maskSpace: false },
+    stringFields: ['addressLine1', 'addressLine2'],
+
+    // UUID
+    uuidMaskOptions: { maskWith: "*", unmaskedStartCharacters: 4, unmaskedEndCharacters: 2 },
+    uuidFields: ['uuid1']
+};
+
+const maskedJsonOutput2 = maskData.maskJSON2(jsonInput2, jsonMaskConfig2);
+
+Output:
+
+{
+  credit: '12XX-XXXX-XXXX-1234',
+  debit: '00XX-XXXX-XXXX-3333',
+  primaryEmail: 'pr*****@*******om',
+  secondaryEmail: 'se*******@*******om',
+  password: '**********',
+  homePhone: '+1**********0',
+  workPhone: '+1**********0',
+  addressLine1: '**** ** ** *********** ** **** ** ** ****',
+  addressLine2: '*********** *',
+  uuid1: '123e****-****-****-****-**********00'
+}
+
 
 ```
 
@@ -399,7 +463,7 @@ const strAfterMasking = MaskData.maskString(str, maskStringOptions);
 ```
 
 ### Mask all characters in the String
-```
+```javascript
 const str = "This is a test String";
 
 const strAfterMasking = MaskData.maskString(str, maskStringOptions);
@@ -408,11 +472,10 @@ const stringMaskOptions = {
   maskWith: "*",
   values: [],
   maskAll: true,
-  maskSpace: false   // Do not mask space
+  maskSpace: false   // Maks all characters except spaces
 };
 
 // Output: **** ** * **** *****
--------------------------------------------------------------------
 
 const str = "This is a test String";
 
@@ -422,10 +485,39 @@ const stringMaskOptions = {
   maskWith: "*",
   values: [],
   maskAll: true,
-  maskSpace: false   // Mask spaces also
+  maskSpace: true   // Mask all characters including spaces
 };
 
 // Output: ********************
+
+```
+
+
+## Mask UUID
+This will mask the alpha numeric characters in an UUID.<br/>This will not mask the hyphen present in the UUID. Masking is done, only when the input is a valid UUID with only a-f, A-F and 0-9 and has 36 character(32 alphanumeric + 4 hyphens). If the inut is not a valid UUID, it will return the input itself without masking.
+```javascript
+const MaskData = require('./maskdata');
+
+const maskUuidOptions = {
+  // Character to mask the data. Default value is '*'
+  maskWith: "*",
+
+  // Should be a positive Integer <= 32
+  // If the starting 'n' alphanumeric characters need to be visible/unmasked
+  // Default value is 0
+  unmaskedStartCharacters: 0, 
+  
+  //Should be a positive Integer <= 32
+  //If the ending 'n' alphanumeric characters need to be visible/unmasked
+  // Default value is 0 
+  unmaskedEndCharacters: 0
+};
+
+const uuidInput = "123e4567-e89b-12d3-a456-426614174000";
+
+const uuidAfterMasking = MaskData.maskUuid(uuidInput, maskUuidOptions);
+
+// Output: ********-****-****-****-************
 
 ```
 
@@ -471,7 +563,6 @@ let afterReplacing = MaskData.replaceValue(input, 'age', 99);
 afterReplacing = MaskData.replaceValue(input, 'married', false);
 
 //Output: 
-
 Before replacing: {"name":"John","age":33,"married":true}
 After replacing: {"name":"John","age":99,"married":false}
 
@@ -480,9 +571,10 @@ Type of married: boolean
 
 ```
 
-## Mask fields in a JSON 
+## Mask fields in a JSON  
+<b> NOTE: This is an old functionality. For more flexibility and single masking call to mask different types of data in the json object, start using the new maskJson2() function - [Mask JSON fields](#mask-json)</b>
+
 This method masks the field value if present in the given object.
-This is an old functionality. For more flexibility and single masking call to mask different types of data in the json object, star using the new maskJson2() function. 
 ```javascript
 const MaskData = require('./maskdata');
 
@@ -512,8 +604,9 @@ const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
 
 
 ## Mask fields of a nested Object
-This method masks the field value if present in the given object
+<b>NOTE: USE [Mask JSON fields](#mask-json) for better functionalities.</b>
 
+This method masks the field value if present in the given object.
 The masked value type will always be string. Won't mask if the value is ```null```.
 
 If the field doesn't exist or if there is any syntax error, then it will ignore without throwing any error.
@@ -631,11 +724,7 @@ const maskedObject = MaskData.maskJSONFields(nestedObject, maskAllFields);
 ```
 
 # Report Bugs 
-Please raise an issue in github: https://github.com/Sumukha1496/maskdata/issues
-
-# Run Tests
-Below command will run mocha tests and also the test cases present in test.js file. Install all the dependencies using npm i before runnning the below command.
-> npm run test
+If there is any help needed with the library functionalities or if there is any bug/issue, please raise an issue in github: https://github.com/Sumukha1496/maskdata/issues
 
 # Give a Star
 You can give a start at: https://github.com/Sumukha1496/maskdata/stargazers 

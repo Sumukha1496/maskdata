@@ -233,3 +233,47 @@ const jsonMaskConfig = {
 
 const maskedJsonOutput = MaskData.maskJSON2(jsonInput, jsonMaskConfig);
 console.log(maskedJsonOutput);
+
+
+const jsonInput2 = {
+  'credit': '1234-5678-8765-1234', 
+  'debit': '0000-1111-2222-3333', 
+  'primaryEmail': 'primary@Email.com', 
+  'secondaryEmail': 'secondary@Email.com',
+  'password': 'dummyPasswordANDdummyPassword',
+  'homePhone': "+1 1234567890",
+  'workPhone': "+1 9876543210",
+  'addressLine1': "This is my addressline 1. This is my home",
+  'addressLine2': "AddressLine 2",
+  'uuid1': '123e4567-e89b-12d3-a456-426614174000'
+};
+
+const jsonMaskConfig2 = {
+    // Card
+    cardMaskOptions: { maskWith: "X", unmaskedStartDigits: 2,unmaskedEndDigits: 4 },
+    cardFields: ['credit', 'debit'],
+
+    // Email
+    emailMaskOptions: { maskWith: "*", unmaskedStartCharactersBeforeAt: 2, unmaskedEndCharactersAfterAt: 2, maskAtTheRate: false },
+    emailFields: ['primaryEmail', 'secondaryEmail'],
+
+    // Password
+    passwordMaskOptions: { maskWith: "*", maxMaskedCharacters: 10, unmaskedStartCharacters: 0, unmaskedEndCharacters: 0 },
+    passwordFields: ['password'],
+
+    // Phone
+    phoneMaskOptions: { maskWith: "*", unmaskedStartDigits: 2, unmaskedEndDigits: 1 },
+    phoneFields: ['homePhone', 'workPhone'],
+
+    // String
+    stringMaskOptions: { maskWith: "*", maskOnlyFirstOccurance: false, values: [], maskAll: true, maskSpace: false },
+    stringFields: ['addressLine1', 'addressLine2'],
+
+    // UUID
+    uuidMaskOptions: { maskWith: "*", unmaskedStartCharacters: 4, unmaskedEndCharacters: 2 },
+    uuidFields: ['uuid1']
+};
+
+const maskedJsonOutput2 = MaskData.maskJSON2(jsonInput2, jsonMaskConfig2);
+console.log(maskedJsonOutput2);
+
