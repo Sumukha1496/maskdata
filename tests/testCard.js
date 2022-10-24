@@ -95,6 +95,30 @@ describe('Masking card numbers', function() {
       const masked = maskData.maskCard(input, negativeEndOption);
       expect(masked).to.equal(output, 'masked output does not match expected value');
     });
+
+    it('test with 0 unmasked start and end digits', function() {
+      const _0UnmaskedOption = {
+        maskWith: 'x',
+        unmaskedStartDigits: 0,
+        unmaskedEndDigits: 0
+      }
+      const input = '1234-5678-1234-5678'
+      const output = 'xxxx-xxxx-xxxx-xxxx'
+      const masked = maskData.maskCard(input, _0UnmaskedOption);
+      expect(masked).to.equal(output);
+    });
+
+    it('test with non number card data', function() {
+      const cardMaskOptions = {
+        maskWith: 'x',
+        unmaskedStartDigits: 1,
+        unmaskedEndDigits: 1
+      }
+      const input = 'm1234-5678-1234-5678'
+      const output = 'm1xxx-xxxx-xxxx-xxx8'
+      const masked = maskData.maskCard(input, cardMaskOptions);
+      expect(masked).to.equal(output);
+    });
   });
 
   describe('Mask with special input strings', function() {
@@ -123,36 +147,7 @@ describe('Masking card numbers', function() {
 
       testData.forEach(({title, input, output}) => {
         it(`special input - ${title}`, function() {
-          const masked = maskData.maskPassword(input, maskOptions);
-          expect(masked).to.equal(output, 'masked output does not match expected value');
-        });
-      });
-    });
-
-    describe('Mask with special input - input shall throw error', function() {
-
-      // set with input generating an error / exception
-      let testData = [
-        {
-          title: 'test input as number',
-          input: 12,
-          output: '12'
-        },
-        {
-          title: 'test input as array',
-          input: ['12'],
-          output: '12'
-        },
-        {
-          title: 'test input as object',
-          input: {a: 'b', x: 'y'},
-          output: '12'
-        }
-      ]
-
-      testData.forEach(({title, input, output}) => {
-        it(`special input - ${title}`, function() {
-          const masked = maskData.maskPassword(input, maskOptions);
+          const masked = maskData.maskCard(input, maskOptions);
           expect(masked).to.equal(output, 'masked output does not match expected value');
         });
       });

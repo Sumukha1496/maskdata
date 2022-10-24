@@ -1,4 +1,4 @@
-const MaskData = require('./index');
+const MaskData = require('../index');
 
 const passwordMaskOptions = {
   maxMaskedCharacters: 10,
@@ -203,3 +203,86 @@ const maskCardOptions = {
 const obj = { cardNumber: "123456789123" ,abc: "abceew" ,efg: "121212" } ;
 const result = MaskData.replaceValue(obj, 'cardNumber', MaskData.maskCard(obj['cardNumber'], maskCardOptions));
 console.log(result);
+
+const jsonInput = {
+  'credit': '1234-5678-8765-1234', 
+  'debit': '0000-1111-2222-3333', 
+  'primaryEmail': 'primary@Email.com', 
+  'secondaryEmail': 'secondary@Email.com',
+  'password': 'dummyPassword',
+  'homePhone': "+1 1234567890",
+  'workPhone': "+1 9876543210",
+  'addressLine1': "This is my addressline 1. This is my home",
+  'addressLine2': "AddressLine 2",
+  'uuid1': '123e4567-e89b-12d3-a456-426614174000'
+};
+
+const jsonMaskConfig = {
+    cardFields: ['credit', 'debit'],
+    emailFields: ['primaryEmail', 'secondaryEmail'],
+    passwordFields: ['password'],
+    phoneFields: ['homePhone', 'workPhone'],
+    stringMaskOptions:  {
+      maskWith: "*",
+      maskOnlyFirstOccurance: false,
+      values: ["This"]
+    },
+    stringFields: ['addressLine1', 'addressLine2'],
+    uuidFields: ['uuid1']
+};
+
+const maskedJsonOutput = MaskData.maskJSON2(jsonInput, jsonMaskConfig);
+console.log(maskedJsonOutput);
+
+
+const jsonInput2 = {
+  cards: {
+    creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222'],
+    debitCards: ['0000-1111-2222-3333', '2222-1111-3333-4444']
+  },
+  emails: {
+    primaryEmail: 'primary@Email.com', 
+    secondaryEmail: 'secondary@Email.com'
+  },
+  passwords: [['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword']],
+  phones: {
+    homePhone: "+1 1234567890",
+    workPhone: "+1 9876543210",
+  },
+  address: {
+    addressLine1: "This is my addressline 1. This is my home",
+    addressLine2: "AddressLine 2"
+  },
+  uuids: {
+    uuid1: '123e4567-e89b-12d3-a456-426614174000'
+  }
+};
+
+const jsonMaskConfig2 = {
+    // Card
+    cardMaskOptions: { maskWith: "X", unmaskedStartDigits: 2,unmaskedEndDigits: 4 },
+    cardFields: ['cards.creditCards[0]', 'cards.creditCards[1]', 'cards.debitCards[0]', 'cards.debitCards[1]'],
+
+    // Email
+    emailMaskOptions: { maskWith: "*", unmaskedStartCharactersBeforeAt: 2, unmaskedEndCharactersAfterAt: 2, maskAtTheRate: false },
+    emailFields: ['emails.primaryEmail', 'emails.secondaryEmail'],
+
+    // Password
+    passwordMaskOptions: { maskWith: "*", maxMaskedCharacters: 10, unmaskedStartCharacters: 0, unmaskedEndCharacters: 0 },
+    passwordFields: ['passwords[0][0]]', 'passwords[0][1]'],
+
+    // Phone
+    phoneMaskOptions: { maskWith: "*", unmaskedStartDigits: 2, unmaskedEndDigits: 1 },
+    phoneFields: ['phones.homePhone', 'phones.workPhone'],
+
+    // String
+    stringMaskOptions: { maskWith: "*", maskOnlyFirstOccurance: false, values: [], maskAll: true, maskSpace: false },
+    stringFields: ['address.addressLine1', 'address.addressLine2'],
+
+    // UUID
+    uuidMaskOptions: { maskWith: "*", unmaskedStartCharacters: 4, unmaskedEndCharacters: 2 },
+    uuidFields: ['uuids.uuid1']
+};
+
+const maskedJsonOutput2 = MaskData.maskJSON2(jsonInput2, jsonMaskConfig2);
+console.log(maskedJsonOutput2);

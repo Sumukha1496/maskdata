@@ -1,6 +1,6 @@
 {
   "name": "maskdata",
-  "version": "1.1.10",
+  "version": "1.2.0",
   "description": "Node module to mask various kinds of data in the required formats",
   "main": "index.js",
   "repository": {
@@ -8,8 +8,8 @@
     "url": "https://github.com/Sumukha1496/maskdata"
   },
   "scripts": {
-    "test": "node test.js && mocha tests/test*.js --timeout 5000 --exit",
-    "coverage": "nyc --reporter=lcov --report-dir coverage/ mocha --timeout 5000 --reporter mocha-junit-reporter --reporter-options mochaFile=coverage/junit.xml --exit"
+    "test": "mocha tests/test*.js --timeout 5000 --exit",
+    "coverage": "nyc --reporter=html --reporter=text npm run test"
   },
   "keywords": [
     "mask",
