@@ -185,9 +185,58 @@ const defaultjsonMask2Configs = {
     uuidFields: [] // List of UUID fields to be masked
 };
 ```
-
 <b>NOTE: For defaultCardMaskOptions, defaultEmailMask2Options, defaultPasswordMaskOptions, defaultPhoneMaskOptions, defaultStringMaskOptions and defaultUuidMaskOptions refer the corresponding masking features. </b>
-</br></br>
+
+```javascript
+const defaultjsonMask2Configs = {
+    cardMaskOptions: {
+        maskWith: "*",
+        unmaskedStartDigits: 4,
+        unmaskedEndDigits: 1
+    },
+    cardFields: [],
+
+    emailMaskOptions: {
+        maskWith: "*",
+        unmaskedStartCharactersBeforeAt: 3,
+        unmaskedEndCharactersAfterAt: 2,
+        maskAtTheRate: false
+    },
+    emailFields: [],
+
+    passwordMaskOptions: {
+        maskWith: "*",
+        maxMaskedCharacters: 16,
+        unmaskedStartCharacters: 0,
+        unmaskedEndCharacters: 0
+    },
+    passwordFields: [],
+
+    phoneMaskOptions: {
+        maskWith: "*",
+        unmaskedStartDigits: 4,
+        unmaskedEndDigits: 1
+    },
+    phoneFields: [],
+
+    stringMaskOptions:  {
+        maskWith: "*",
+        maskOnlyFirstOccurance: false,
+        values: [],
+        maskAll: false,
+        maskSpace: true
+    },
+    stringFields: [],
+
+    uuidMaskOptions: {
+        maskWith: "*",
+        unmaskedStartCharacters: 0,
+        unmaskedEndCharacters: 0
+    },
+    uuidFields: []
+};
+
+```
 
 ### JSON mask examples
 Example1: 
