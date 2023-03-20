@@ -29,15 +29,17 @@
     "Set json fields",
     "Replcae json fields"
   ],
-  "author": "sumukha.s<sumukha.hs369@gmail.com>",
+  "author": "sumukha.hs<sumukha.hs369@gmail.com>",
+  "homepage": "https://github.com/Sumukha1496/maskdata#readme",
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "chai": "^4.3.6",
-    "mocha": "^9.2.2",
-    "mocha-junit-reporter": "^2.0.2",
-    "nyc": "^15.1.0"
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "mocha-junit-reporter": "^2.2.0",
+    "nyc": "^15.1.0",
+    "typescript": "^4.9.5"
   }
 }
