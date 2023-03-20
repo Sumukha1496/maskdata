@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.2.1 Features](#release-features)
+- [Version 1.2.2 Features](#release-features)
 - [How to Use](#how-to-use)
 - [Maskdata for Typescript](#maskdata-for-typescript)
     - [Mask Card number](#mask-card-number)
@@ -42,7 +42,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
-### Version 1.2.1
+### Version 1.2.2
 - Type definitions for the typescript developers. Yay!!!
 But there is a small change in how you import and use the library. Follow this to know how you can import and use the masking functions in a typescript project: [Mask data for Typescript](#maskdata-for-typescript)
 ### Version 1.2.0
@@ -70,8 +70,9 @@ const MaskData = require('./maskdata');
 
 ## Maskdata for Typescript
 > Follow this document for more details: 
-[Maskdata for typescript](./MASKDATA_FOR_TYPESCRIPT.md) <br/><br/>
+[Maskdata for typescript](./MASKDATA_FOR_TYPESCRIPT.md)
 
+<br/>
 
 ## Mask card number
 This will mask the digits in a card number.<br/>This will mask only the numerical data and not any non-numeric delimiters, alphabets, or any other types of data
