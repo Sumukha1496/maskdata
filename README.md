@@ -4,8 +4,9 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.2.0 Features](#release-features)
+- [Version 1.2.1 Features](#release-features)
 - [How to Use](#how-to-use)
+- [Maskdata for Typescript](#maskdata-for-typescript)
     - [Mask Card number](#mask-card-number)
     - [Mask Email](#mask-email-id)
       - [Mask Email id with the default configuration](#mask-email-id-with-the-default-configuration)
@@ -35,11 +36,15 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 * Mask JSON - JSON can contain cards, emails, passwords, phones, strings, and UUIDs. Mask all of them with a single call using - [Mask JSON fields](#mask-json)
 * Get nested field from JSON
 * Set/Replace nested field values from JSON
+* [Maskdata for typescript](#maskdata-for-typescript)
 
 # Install maskdata
 > npm i maskdata
 
 # Release Features
+### Version 1.2.1
+- Type definitions for the typescript developers. Yay!!!
+But there is a small change in how you import and use the library. Follow this to know how you can import and use the masking functions in a typescript project: [Mask data for Typescript](#mask-data-for-typescript)
 ### Version 1.2.0
 - Support for masking cards, emails, passwords, phones, strings, and UUIDs. Mask all of them with a single call using - [Mask JSON fields](#mask-json)
 - Support for masking UUID - [Mask UUID](#mask-uuid)
@@ -60,6 +65,13 @@ https://github.com/Sumukha1496/maskdata/pull/23
 ```javascript
 const MaskData = require('./maskdata');
 ```
+
+<br/>
+
+## Maskdata for Typescript
+> Follow this document for more details: 
+[Maskdata for typescript](./MASKDATA_FOR_TYPESCRIPT.md) <br/><br/>
+
 
 ## Mask card number
 This will mask the digits in a card number.<br/>This will mask only the numerical data and not any non-numeric delimiters, alphabets, or any other types of data
@@ -698,7 +710,7 @@ Type of married: boolean
 
 ```
 
-## Mask fields in a JSON  
+## Mask fields in a JSON
 <b> NOTE: This is an old functionality. For more flexibility and single masking call to mask different types of data in the json object, start using the new maskJson2() function - [Mask JSON fields](#mask-json)</b>
 
 This method masks the field value if present in the given object.
