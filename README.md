@@ -44,7 +44,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Release Features
 ### Version 1.2.1
 - Type definitions for the typescript developers. Yay!!!
-But there is a small change in how you import and use the library. Follow this to know how you can import and use the masking functions in a typescript project: [Mask data for Typescript](#mask-data-for-typescript)
+But there is a small change in how you import and use the library. Follow this to know how you can import and use the masking functions in a typescript project: [Mask data for Typescript](#maskdata-for-typescript)
 ### Version 1.2.0
 - Support for masking cards, emails, passwords, phones, strings, and UUIDs. Mask all of them with a single call using - [Mask JSON fields](#mask-json)
 - Support for masking UUID - [Mask UUID](#mask-uuid)
