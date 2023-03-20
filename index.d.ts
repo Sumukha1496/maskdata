@@ -1,6 +1,6 @@
 declare module 'maskdata' {    
     export interface CardMaskOptions {
-      maskWith?: char;
+      maskWith?: string;
       unmaskedStartDigits?: number;
       unmaskedEndDigits?: number;
     }
