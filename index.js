@@ -8,6 +8,7 @@ const MaskPassword = require('./lib/maskService/PasswordMask');
 const MaskUuid = require('./lib/maskService/UuidMask');
 const JsonMask = require('./lib/maskService/JsonMask');
 const JsonGetSet = require('./lib/helpers/jsonGetSet');
+const { result } = require('lodash');
 
 class MaskData {
   
@@ -20,7 +21,11 @@ class MaskData {
   }
 
   static maskJSON2(json, options) {
-    return JsonMask.maskJSON2(json, options);
+    JsonMask.maskJSON2(json, options).then((result) => {
+      console.log(result);
+      return result;
+    });
+    // JsonMask.maskJSON2(json, options).then((result) => result);
   }
 
   static maskPhone(phone, options) {

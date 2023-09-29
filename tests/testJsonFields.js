@@ -229,6 +229,9 @@ describe('JSON mask2', function() {
       jsonMaskConfig['uuidFields'] = ['uuids.uuid1'];
       it(`${title}`, function() {
         const masked = maskData.maskJSON2(input, jsonMaskConfig);
+        console.log("=========");
+        console.log(masked);
+        console.log("=========");
         expect(masked['cards']['creditCards'][0]).to.equal(outputCredit);
         expect(masked['cards']['creditCards'][1]).to.equal('1111-****-****-***2');
         expect(masked['cards']['debitCards'][0]).to.equal(outputDebit);
