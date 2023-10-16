@@ -253,36 +253,146 @@ const jsonInput2 = {
     addressLine1: "This is my addressline 1. This is my home",
     addressLine2: "AddressLine 2"
   },
+  string1: [
+    {
+      "id": "1111",
+      "name": "Test",
+      "primaryEmail": 'primary@Email.com', 
+      "items": [
+        {
+          "id": "11111",
+          "passwords": ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
+          "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222'],
+          "phone": "+1 1234567890",
+          "uuid1": '123e4567-e89b-12d3-a456-426614174000',
+          "primaryEmail": 'primary@Email.com', 
+          "name": "11111",
+          "child": [
+            {
+              "child1": "child1111111",
+              "phone": "+1 1234567890",
+              "passwords": ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
+              "primaryEmail": 'primary@Email.com', 
+              "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222']
+            },
+            {
+              "child1": "child2222222",
+              "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222']
+            }
+          ] 
+        },
+        {
+          "id": "11112",
+          "phone": "+1 1234567890",
+          "name": "11112",
+          "uuid1": '123e4567-e89b-12d3-a456-426614174000',
+          "primaryEmail": 'primary@Email.com', 
+          "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222'],
+          "child": [
+            {
+              "child1": "child1111111",
+              "passwords": ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
+              "primaryEmail": 'primary@Email.com', 
+              "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222'],
+              "uuid1": '123e4567-e89b-12d3-a456-426614174000',
+              "phone": "+1 1234567890"
+            },
+            {
+              "child1": "child2222222",
+              "primaryEmail": 'a@b.c', 
+              "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222'],
+              "phone": "+1 1234567890",
+              "uuid1": '123e4567-e89b-12d3-a456-426614174000'
+            }
+          ] 
+        }
+      ],
+      
+    },
+     {
+      "id": "2222",
+      "name": "Test",
+      "items": [
+        {
+          "id": "22221",
+          "phone": "+1 1234567890",
+          "passwords": ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
+          "name": "22221",
+          "uuid1": '123e4567-e89b-12d3-a456-426614174000',
+          "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222'],
+          "child": [
+            {
+              "child1": "child1111111",
+              "phone": "+1 1234567890",
+              "uuid1": '123e4567-e89b-12d3-a456-426614174000',
+              "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222']
+            },
+            {
+              "child1": "child2222222",
+              "uuid1": '123e4567-e89b-12d3-a456-426614174000',
+              "passwords": ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
+              "phone": "+1 1234567890",
+              "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222']
+            }
+          ] 
+        },
+        {
+          "id": "22222",
+          "name": "22222",
+          "phone": "+1 1234567890",
+          "primaryEmail": 'primary@Email.com', 
+          "uuid1": '123e4567-e89b-12d3-a456-426614174000',
+          "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222'],
+          "child": [
+            {
+              "child1": "child1111111",
+              "phone": "+1 1234567890",
+              "passwords": ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
+              "primaryEmail": 'primary@Email.com', 
+              "uuid1": '123e4567-e89b-12d3-a456-426614174000',
+              "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222']
+            },
+            {
+              "child1": "child2222222",
+              "phone": "+1 1234567890",
+              "passwords": ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
+              "uuid1": '123e4567-e89b-12d3-a456-426614174000',
+              "creditCards": ['1234-5678-8765-1234', '1111-2222-1111-2222']
+            }
+          ] 
+        }
+      ],
+    }
+  ],
   uuids: {
     uuid1: '123e4567-e89b-12d3-a456-426614174000'
   }
 };
 
 const jsonMaskConfig2 = {
-    // Card
-    cardMaskOptions: { maskWith: "X", unmaskedStartDigits: 2,unmaskedEndDigits: 4 },
-    cardFields: ['cards.creditCards[0]', 'cards.creditCards[1]', 'cards.debitCards[0]', 'cards.debitCards[1]'],
+  cardMaskOptions: { maskWith: "X", unmaskedStartDigits: 2,unmaskedEndDigits: 4 },
+  cardFields: ['string1[*].items[*].creditCards.*', 'string1[*].items[*].child[*].creditCards.*', 'cards.creditCards[0]', 'cards.creditCards[1]', 'cards.debitCards[0]', 'cards.debitCards[1]'],
 
-    // Email
-    emailMaskOptions: { maskWith: "*", unmaskedStartCharactersBeforeAt: 2, unmaskedEndCharactersAfterAt: 2, maskAtTheRate: false },
-    emailFields: ['emails.primaryEmail', 'emails.secondaryEmail'],
+  // Email
+  emailMaskOptions: { maskWith: "*", unmaskedStartCharactersBeforeAt: 2, unmaskedEndCharactersAfterAt: 2, maskAtTheRate: false },
+  emailFields: ['string1[*].items[*].primaryEmail', 'string1[*].items[*].child[*].primaryEmail', 'string1[*].primaryEmail', 'emails.primaryEmail', 'emails.secondaryEmail'],
 
-    // Password
-    passwordMaskOptions: { maskWith: "*", maxMaskedCharacters: 10, unmaskedStartCharacters: 0, unmaskedEndCharacters: 0 },
-    passwordFields: ['passwords[0][0]]', 'passwords[0][1]'],
+  // Password
+  passwordMaskOptions: { maskWith: "*", maxMaskedCharacters: 10, unmaskedStartCharacters: 0, unmaskedEndCharacters: 0 },
+  passwordFields: ['passwords[0][0]]', 'passwords[0][1]', 'string1[*].items[*].passwords.*', 'string1[*].items[*].child[*].passwords.*[1]',],
 
-    // Phone
-    phoneMaskOptions: { maskWith: "*", unmaskedStartDigits: 2, unmaskedEndDigits: 1 },
-    phoneFields: ['phones.homePhone', 'phones.workPhone'],
+  // Phone
+  phoneMaskOptions: { maskWith: "*", unmaskedStartDigits: 2, unmaskedEndDigits: 1 },
+  phoneFields: ['string1[*].items[*].phone', 'string1[*].items[*].child[*].phone', 'phones.homePhone', 'phones.workPhone'],
 
-    // String
-    stringMaskOptions: { maskWith: "*", maskOnlyFirstOccurance: false, values: [], maskAll: true, maskSpace: false },
-    stringFields: ['address.addressLine1', 'address.addressLine2'],
+  // String
+  stringMaskOptions: { maskWith: "*", maskOnlyFirstOccurance: false, values: [], maskAll: true, maskSpace: false },
+  stringFields: ['string1[*].items[*].id', 'string1[*].items[*].child[*].child1', 'address.addressLine1', 'address.addressLine2'],
 
-    // UUID
-    uuidMaskOptions: { maskWith: "*", unmaskedStartCharacters: 4, unmaskedEndCharacters: 2 },
-    uuidFields: ['uuids.uuid1']
+  // UUID
+  uuidMaskOptions: { maskWith: "*", unmaskedStartCharacters: 4, unmaskedEndCharacters: 2 },
+  uuidFields: ['uuids.uuid1', 'string1[*].items[*].uuid1', 'string1[*].items[*].child[*].uuid1']
 };
 
 const maskedJsonOutput2 = MaskData.maskJSON2(jsonInput2, jsonMaskConfig2);
-console.log(maskedJsonOutput2);
+console.log(JSON.stringify(maskedJsonOutput2));
