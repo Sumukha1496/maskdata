@@ -434,7 +434,6 @@ describe('JSON mask2', function() {
 
       it(`${title}`, function() {
         const masked = maskData.maskJSON2(input, jsonMaskConfig);
-        console.log(JSON.stringify(masked))
         expect(masked['cards'][0]['number']).to.equal(outputCard);
         expect(masked['cards'][1]['number']).to.equal(outputCard);
         expect(masked['cards'][2]['number']).to.equal(outputCard);
