@@ -27,7 +27,12 @@
     "mask object",
     "Get json fields",
     "Set json fields",
-    "Replcae json fields"
+    "Replcae json fields",
+    "email",
+    "phone",
+    "uuid", 
+    "string",
+    "sensitive"
   ],
   "author": "sumukha.hs<sumukha.hs369@gmail.com>",
   "homepage": "https://www.npmjs.com/package/maskdata?activeTab=readme",

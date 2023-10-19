@@ -409,7 +409,8 @@ describe('JSON mask2', function() {
         primaryEmail: 'primary@Email.com', 
         secondaryEmail: 'secondary@Email.com',
         moreEmails: ["email1@email.com", "email2@email.com", "email3@email.com", {childEmail: "child@child.com", secondChild: {nestedkid: "hello@hello.com"}}]
-      }
+      },
+      array: ["element1", "element22", "element333"]
     };
 
     let testData = [
@@ -432,6 +433,9 @@ describe('JSON mask2', function() {
       jsonMaskConfig['cardFields'] = ['cards[*].number'];
       jsonMaskConfig['emailFields'] = ['emails.*'];
 
+      jsonMaskConfig['stringFields'] = ['array.*'];
+      jsonMaskConfig['stringMaskOptions'] = { maskWith: "?", maskOnlyFirstOccurance: false, values: [], maskAll: true, maskSpace: false }
+
       it(`${title}`, function() {
         const masked = maskData.maskJSON2(input, jsonMaskConfig);
         expect(masked['cards'][0]['number']).to.equal(outputCard);
@@ -445,6 +449,11 @@ describe('JSON mask2', function() {
         expect(masked['emails']['moreEmails'][1]).to.equal("******@*********");
         expect(masked['emails']['moreEmails'][2]).to.equal("******@*********");
         expect(masked['emails']['moreEmails'][3].childEmail).to.equal("*****@*********");
+        expect(masked['emails']['moreEmails'][3].secondChild.nestedkid).to.equal("*****@*********");
+
+        expect(masked['array'][0]).to.equal("????????");
+        expect(masked['array'][1]).to.equal("?????????");
+        expect(masked['array'][2]).to.equal("??????????");;
       });
     })
   });
