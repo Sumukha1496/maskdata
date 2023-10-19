@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.2.2 Features](#release-features)
+- [Version 1.2.3 Features](#release-features)
 - [How to Use](#how-to-use)
 - [Maskdata for Typescript](#maskdata-for-typescript)
     - [Mask Card number](#mask-card-number)
@@ -12,6 +12,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
       - [Mask Email id with the default configuration](#mask-email-id-with-the-default-configuration)
     - [Mask JSON fields](#mask-json)
       - [JSON mask examples with nested fields](#json-mask-examples)
+      - [Mask multiple fields at once using .* and [*].](#mask-multiple-fields)
     - [Mask Password](#mask-password)
       - [Mask Password with the default configuration](#mask-password-with-the-default-configuration)
     - [Mask Phone Number](#mask-phone-number)
@@ -20,8 +21,6 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
     - [Mask UUID](#mask-uuid)
     - [Get Nested JSON Property](#get-nested-json-property)
     - [Replace the value of a JSON field](#replace-the-value-of-a-json-field)
-    - [Mask JSON fields](#mask-fields-in-a-json)
-      - [Mask nested JSON fields](#mask-fields-of-a-nested-object)
 - [Report Bugs](#report-bugs)
 - [Give a Star](#give-a-star)
 - [LICENSE - "MIT"](#license---mit)
@@ -42,6 +41,9 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version 1.2.3
+- Bug fix for masking a list of elements in the nested json. More details: [Mask multiple fields](#mask-multiple-fields)
+- Deprecated *maskJsonFields*(For documentation on the maskJsonFields, check previous version README.md files) function and will be removed in the subsequent versions. Use *maksJson2* instead: https://www.npmjs.com/package/maskdata#mask-json
 ### Version 1.2.2
 - Type definitions for the typescript developers. Yay!!!
 But there is a small change in how you import and use the library. Follow this to know how you can import and use the masking functions in a typescript project: [Mask data for Typescript](#maskdata-for-typescript)
@@ -51,15 +53,6 @@ But there is a small change in how you import and use the library. Follow this t
 - Minor bug fix in card masking.
 - Extensive testing with the help of mocha test cases for all features covering more than 110 test cases.
 - Improved Documentation
-### Version: 1.1.10
-- Support of maxMaskedCharacters in masking JSON fields: https://github.com/Sumukha1496/maskdata/issues/21
-- This is applicable only if the type of value is a string. Details: [Mask JSON fields](#mask-fields-in-a-json)
-### Version: 1.1.8
-- Mocha test cases for most of the use cases.
-https://github.com/Sumukha1496/maskdata/pull/23
-- Handling null/Empty inputs --> Mask function will return the input itself.
-### Version: 1.1.6
-- Feature to mask all the characters in the String along with mask/visible spaces in the string.
 
 # How to Use
 ```javascript
@@ -711,157 +704,82 @@ Type of married: boolean
 
 ```
 
-## Mask fields in a JSON
-<b> NOTE: This is an old functionality. For more flexibility and single masking call to mask different types of data in the json object, start using the new maskJson2() function - [Mask JSON fields](#mask-json)</b>
-
-This method masks the field value if present in the given object.
+### Mask Multiple Fields
 ```javascript
-const MaskData = require('./maskdata');
-
-const maskJSONOptions = {
-  // Character to mask the data. The default value is '*'
-  maskWith: "*",
-
-  // It should be an array
-  // Field names to mask. Can give multiple fields.
-  fields: ['password', 'firstName'],
-  
-  // If the type of value is a string and if we want to limit the number of characters in the output, then we can use this. The default value is -1 means, by default this feature is disabled. It is enabled if we provide a positive integer value. This is not a mandatory field in the config and if not provided, it will take the default value -1 and disable the feature.
-  maxMaskedCharactersStr: 4  // Default value is -1 (Disable feature)
-};
-
-const obj = {
-  password: "IKnowNothing",
-  firstName: "Jon",
-  lastName: "Snoww"
-};
-
-const maskedObj = MaskData.maskJSONFields(obj, maskJSONOptions);
-
-//Output: { password: '****', firstName: '***', lastName: 'Snoww' }
-
-```
-
-
-## Mask fields of a nested Object
-<b>NOTE: USE [Mask JSON fields](#mask-json) for better functionalities.</b>
-
-This method masks the field value if present in the given object.
-The masked value type will always be a string. Won't mask if the value is ```null```.
-
-If the field doesn't exist or if there is any syntax error, then it will ignore it without throwing any error.
-```javascript
-const MaskData = require('./maskdata');
-
-const maskJSONOptions = {
-  // Character to mask the data. The default value is '*'
-  maskWith: "*",
-
-  // It should be an array
-  // Field names to mask. Can give multiple fields.
-  fields : [ 'level1.level2.level3.field3', 
-  'level1.level2.field2', 
-  'level1.field1', 
-  'value1', 
-  'level1.level2.level3.field4[0].Hello', 
-  'level1.level2.level3.field4[2]']
-};
-
-const nestedObject = {
-  level1: {
-    field1: "field1",
-    level2: {
-      field2: "field2",
-      level3: {
-        field3: "field3",
-        field4: [{ Hello: "world" }, { Hello: "Newworld" }, "Just a String"]
-      }
+const jsonInput = {
+  cards: [
+    {
+      number: '1234-5678-8765-1234'
+    },
+    {
+      number: '1111-2222-1111-2222'
+    },
+    {
+      number: '0000-1111-2222-3333'
+    },
+    {
+      name: "No card number here"
     }
+  ],
+  emails: {
+    primaryEmail: 'primary@Email.com', 
+    secondaryEmail: 'secondary@Email.com',
+    moreEmails: ["email1@email.com", "email2@email.com", "email3@email.com", {childEmail: "child@child.com", secondChild: {nestedkid: "hello@hello.com"}}]
   },
-  value1: "value"
+  array: ["element1", "element22", "element333"]
 };
-const maskedObj = MaskData.maskJSONFields(nestedObject, defaultJSONMaskOptions2);
 
-//Output: 
-{
-  "level1": {
-    "field1": "******",
-    "level2": {
-      "field2": "******",
-      "level3": {
-        "field3": "******",
-        "field4": [
-          {
-            "Hello": null
-          },
-          {
-            "Hello": "Newworld"
-          },
-          "*************"
-        ]
-      }
-    }
-  },
-  "value1": "*****"
+const jsonMaskConfig = {
+  cardMaskOptions: { maskWith: "X", unmaskedStartDigits: 0, unmaskedEndDigits: 0},
+
+  emailMaskOptions: { maskWith: "*", unmaskedStartCharactersBeforeAt: 0, 
+  unmaskedEndCharactersAfterAt: 0, maskAtTheRate: false },
+
+  stringMaskOptions: { maskWith: "?", maskOnlyFirstOccurance: false, values: [], maskAll: true, maskSpace: false },
+
+  cardFields: ['cards[*].number'],
+  emailFields: ['emails.*'],
+  stringFields: ['array.*']
 }
-```
 
-
-### Example2: To mask all the keys of an object or to mask a field from all the elements of an array.
-
-```javascript
-Limitations: 
-1. Only one * is allowed per field. Either ARRAY[*].FIELD or JSON.* 
-2. It will not work for nested fields like ARRAY[*].FIELD1.FIELD2
-3. It will not mask all array elements if given ARRAY[*] or ARRAY[*].
-4. Will not mask null values.
-5. If ARRAY[*].FIELD is an object, then it will mask that entire object including the key.
-
-const nestedObject = {
-  level1: {
-    field1: "field1Value",
-    level2: {
-      field2: "field2Value",
-      field3: [ { Hello: "Hello", Hi: "one" }, { Hello: "Hello again" } ],
-      level3: {
-        field4: "field4Value",
-        field5: "field5Value"
-      }
-    }
-  },
-  value1: "value"
-};
-
-const maskAllFields = {
-  fields : ['level1.level2.field3[*].Hello', 'level1.level2.level3.*']
-};
-
-const maskedObject = MaskData.maskJSONFields(nestedObject, maskAllFields);
+const maskedOutput = maskData.maskJSON2(jsonInput, jsonMaskConfig);
 
 // Output: 
 {
-  "level1": {
-    "field1": "field1Value",
-    "level2": {
-      "field2": "field2Value",
-      "field3": [
-        {
-          "Hello": "*****",
-          "Hi": "one"
-        },
-        {
-          "Hello": "***********"
-        }
-      ],
-      "level3": {
-        "field4": "***********",
-        "field5": "***********"
-      }
+  "cards": [
+    {
+      "number": "XXXX-XXXX-XXXX-XXXX"
+    },
+    {
+      "number": "XXXX-XXXX-XXXX-XXXX"
+    },
+    {
+      "number": "XXXX-XXXX-XXXX-XXXX"
+    },
+    {
+      "name": "No card number here"
     }
+  ],
+  "emails": {
+    "primaryEmail": "*******@*********",
+    "secondaryEmail": "*********@*********",
+    "moreEmails": [
+      "******@*********",
+      "******@*********",
+      "******@*********",
+      {
+        "childEmail": "*****@*********",
+        "secondChild": {
+          "nestedkid": "*****@*********"
+        }
+      }
+    ]
   },
-  "value1": "value"
+  "array": ["????????", "?????????", "??????????"]
 }
+
 ```
+
 
 # Report Bugs 
 If there is any help needed with the library functionalities or if there is any bug/issue, please raise an issue in GitHub: https://github.com/Sumukha1496/maskdata/issues

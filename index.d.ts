@@ -61,6 +61,10 @@ declare module 'maskdata' {
       }
   
       export function maskPassword(password?: string, options?: PasswordMaskOptions): string;
+      /**
+       * @deprecated
+       * Use maskJSON2 instead: https://www.npmjs.com/package/maskdata#mask-json
+       */
       export function maskJSONFields<T extends object>(json?: T, options?: JsonMaskOptions): T;
       export function maskJSON2<T extends object>(json?: T, options?: JsonMask2Configs): T;
       export function maskPhone(phone?: string, options?: PhoneMaskOptions): string;
