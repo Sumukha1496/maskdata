@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "mocha tests/test*.js --timeout 5000 --exit",
-    "coverage": "nyc --reporter=html --reporter=text npm run test"
+    "coverage": "nyc --reporter=html --reporter=text npm run test",
+    "format": "prettier --write '**/*.{ts,js,json}'"
   },
   "keywords": [
     "mask",
@@ -30,7 +31,7 @@
     "Replcae json fields",
     "email",
     "phone",
-    "uuid", 
+    "uuid",
     "string",
     "sensitive"
   ],
@@ -45,6 +46,7 @@
     "mocha": "^10.2.0",
     "mocha-junit-reporter": "^2.2.1",
     "nyc": "^15.1.0",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   }
 }
