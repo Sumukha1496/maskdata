@@ -1,6 +1,6 @@
 {
   "name": "maskdata",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Node module to mask various kinds of data in the required formats",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "mocha tests/test*.js --timeout 5000 --exit",
-    "coverage": "nyc --reporter=html --reporter=text npm run test"
+    "coverage": "nyc --reporter=html --reporter=text npm run test",
+    "format": "prettier --write '**/*.{ts,js,json}'"
   },
   "keywords": [
     "mask",
@@ -27,19 +28,25 @@
     "mask object",
     "Get json fields",
     "Set json fields",
-    "Replcae json fields"
+    "Replcae json fields",
+    "email",
+    "phone",
+    "uuid",
+    "string",
+    "sensitive"
   ],
   "author": "sumukha.hs<sumukha.hs369@gmail.com>",
-  "homepage": "https://github.com/Sumukha1496/maskdata#readme",
+  "homepage": "https://www.npmjs.com/package/maskdata?activeTab=readme",
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "chai": "^4.3.7",
+    "chai": "^4.3.10",
     "mocha": "^10.2.0",
-    "mocha-junit-reporter": "^2.2.0",
+    "mocha-junit-reporter": "^2.2.1",
     "nyc": "^15.1.0",
-    "typescript": "^4.9.5"
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
   }
 }

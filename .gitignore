@@ -5,3 +5,4 @@ coverage/
 .vs*
 .idea/
 /*.iml
+.DS_Store

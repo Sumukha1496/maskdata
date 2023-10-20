@@ -10,11 +10,15 @@ const JsonMask = require('./lib/maskService/JsonMask');
 const JsonGetSet = require('./lib/helpers/jsonGetSet');
 
 class MaskData {
-  
   static maskPassword(password, options) {
     return MaskPassword.maskPassword(password, options);
   }
 
+  /**
+   *
+   * @deprecated
+   * Use maskJSON2 instead: https://www.npmjs.com/package/maskdata#mask-json
+   */
   static maskJSONFields(json, options) {
     return JsonMask.maskJSONFields(json, options);
   }
@@ -50,7 +54,6 @@ class MaskData {
   static replaceValue(object, field, value) {
     return JsonGetSet.set(object, field, value);
   }
-
 }
 
 module.exports = MaskData;

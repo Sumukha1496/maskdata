@@ -2,8 +2,7 @@
 const maskData = require('../index');
 const expect = require('chai').expect;
 
-describe('Masking strings', function() {
-
+describe('Masking strings', function () {
   // common strings without output - used as base for all tests below
   let testData = [
     {
@@ -21,10 +20,9 @@ describe('Masking strings', function() {
       input: 'this is a\nstring with newline',
       output: ''
     }
-  ]
+  ];
 
-  describe('Mask with default options', function() {
-
+  describe('Mask with default options', function () {
     // default options are this - let tests fail when defaults change
     // const defaultStringMaskOptions = {
     //   maskWith: "*",
@@ -40,19 +38,18 @@ describe('Masking strings', function() {
     localTestData[1].output = localTestData[1].input;
     localTestData[2].output = localTestData[2].input;
 
-    localTestData.forEach(({title, input, output}) => {
-      it(`default mask - ${title}`, function() {
+    localTestData.forEach(({ title, input, output }) => {
+      it(`default mask - ${title}`, function () {
         const masked = maskData.maskString(input);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
-    })
+    });
   });
 
-  describe('Mask with custom options - maskWith, maskSpace', function() {
-
+  describe('Mask with custom options - maskWith, maskSpace', function () {
     // only maskWith and maskSpace set
     const maskOptions = {
-      maskWith: "?",
+      maskWith: '?',
       maskOnlyFirstOccurance: false,
       values: [],
       maskAll: false,
@@ -65,19 +62,18 @@ describe('Masking strings', function() {
     localTestData[1].output = localTestData[1].input;
     localTestData[2].output = localTestData[2].input;
 
-    localTestData.forEach(({title, input, output}) => {
-      it(`custom mask - ${title}`, function() {
+    localTestData.forEach(({ title, input, output }) => {
+      it(`custom mask - ${title}`, function () {
         const masked = maskData.maskString(input, maskOptions);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
     });
   });
 
-  describe('Mask with custom options - maskWith, maskAll, no spaces', function() {
-
+  describe('Mask with custom options - maskWith, maskAll, no spaces', function () {
     // only maskWith, maskAll set
     const maskOptions = {
-      maskWith: "?",
+      maskWith: '?',
       maskOnlyFirstOccurance: false,
       values: [],
       maskAll: true,
@@ -86,21 +82,20 @@ describe('Masking strings', function() {
 
     const localTestData = JSON.parse(JSON.stringify(testData));
     localTestData[0].output = '???? ?? ? ?????????? ??????';
-    localTestData[1].output = '?'.repeat(localTestData[1].input.length);   // no space here
+    localTestData[1].output = '?'.repeat(localTestData[1].input.length); // no space here
     localTestData[2].output = '???? ?? ???????? ???? ???????';
 
-    localTestData.forEach(({title, input, output}) => {
-      it(`custom mask - ${title}`, function() {
+    localTestData.forEach(({ title, input, output }) => {
+      it(`custom mask - ${title}`, function () {
         const masked = maskData.maskString(input, maskOptions);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
     });
   });
 
-  describe('Mask with custom options - maskWith multiple chars, maskAll, maskSpace', function() {
-
+  describe('Mask with custom options - maskWith multiple chars, maskAll, maskSpace', function () {
     // only maskWith, maskAll set
-    const maskChar = "??";   // mask every char in input string with two chars in output
+    const maskChar = '??'; // mask every char in input string with two chars in output
     const maskOptions = {
       maskWith: maskChar,
       maskOnlyFirstOccurance: false,
@@ -114,18 +109,17 @@ describe('Masking strings', function() {
     localTestData[1].output = maskChar.repeat(localTestData[1].input.length);
     localTestData[2].output = maskChar.repeat(localTestData[2].input.length);
 
-    localTestData.forEach(({title, input, output}) => {
-      it(`custom mask - ${title}`, function() {
+    localTestData.forEach(({ title, input, output }) => {
+      it(`custom mask - ${title}`, function () {
         const masked = maskData.maskString(input, maskOptions);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
     });
   });
 
-  describe('Mask with custom options - values and maskAll set, no spaces', function() {
-
+  describe('Mask with custom options - values and maskAll set, no spaces', function () {
     const maskOptions = {
-      maskWith: "x",
+      maskWith: 'x',
       maskOnlyFirstOccurance: false,
       values: ['is', 'ing'],
       maskAll: true,
@@ -135,21 +129,20 @@ describe('Masking strings', function() {
     // expected: values ignored and all masked, space remains
     const localTestData = JSON.parse(JSON.stringify(testData));
     localTestData[0].output = 'xxxx xx x xxxxxxxxxx xxxxxx';
-    localTestData[1].output = 'x'.repeat(localTestData[1].input.length);   // no spaces here
+    localTestData[1].output = 'x'.repeat(localTestData[1].input.length); // no spaces here
     localTestData[2].output = 'xxxx xx xxxxxxxx xxxx xxxxxxx';
 
-    localTestData.forEach(({title, input, output}) => {
-      it(`custom mask - ${title}`, function() {
+    localTestData.forEach(({ title, input, output }) => {
+      it(`custom mask - ${title}`, function () {
         const masked = maskData.maskString(input, maskOptions);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
     });
   });
 
-  describe('Mask with custom options - values and all occurrences', function() {
-
+  describe('Mask with custom options - values and all occurrences', function () {
     const maskOptions = {
-      maskWith: "*",
+      maskWith: '*',
       maskOnlyFirstOccurance: false,
       values: ['is', 'ing'],
       maskAll: false,
@@ -161,18 +154,17 @@ describe('Masking strings', function() {
     localTestData[1].output = 'th****astr***';
     localTestData[2].output = 'th** ** a\nstr*** with newline';
 
-    localTestData.forEach(({title, input, output}) => {
-      it(`custom mask - ${title}`, function() {
+    localTestData.forEach(({ title, input, output }) => {
+      it(`custom mask - ${title}`, function () {
         const masked = maskData.maskString(input, maskOptions);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
     });
   });
 
-  describe('Mask with custom options - values and first occureances', function() {
-
+  describe('Mask with custom options - values and first occureances', function () {
     const maskOptions = {
-      maskWith: "*",
+      maskWith: '*',
       maskOnlyFirstOccurance: true,
       values: ['is', 'ing'],
       maskAll: false,
@@ -184,26 +176,24 @@ describe('Masking strings', function() {
     localTestData[1].output = 'th**isastr***';
     localTestData[2].output = 'th** is a\nstr*** with newline';
 
-    localTestData.forEach(({title, input, output}) => {
-      it(`custom mask - ${title}`, function() {
+    localTestData.forEach(({ title, input, output }) => {
+      it(`custom mask - ${title}`, function () {
         const masked = maskData.maskString(input, maskOptions);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
     });
   });
 
-  describe('Mask with special input strings', function() {
-
+  describe('Mask with special input strings', function () {
     const maskOptions = {
-      maskWith: "x",
+      maskWith: 'x',
       maskOnlyFirstOccurance: true,
       values: [],
       maskAll: true,
       maskSpace: true
     };
 
-    describe('Mask with special input - input will generate an output', function() {
-
+    describe('Mask with special input - input will generate an output', function () {
       // first set with input generating an masked output
       let testData = [
         {
@@ -220,34 +210,33 @@ describe('Masking strings', function() {
           title: 'test input as number',
           input: 12,
           output: 'xx'
-        },
-      ]
+        }
+      ];
 
-      testData.forEach(({title, input, output}) => {
-        it(`special input - ${title}`, function() {
+      testData.forEach(({ title, input, output }) => {
+        it(`special input - ${title}`, function () {
           const masked = maskData.maskString(input, maskOptions);
           expect(masked).to.equal(output, 'masked output does not match expected value');
         });
       });
     });
 
-    describe('Mask with improper input - input won\'t be masked', function() {
-
+    describe("Mask with improper input - input won't be masked", function () {
       let testData = [
         {
           title: 'test input as array',
-          input: ['12', 'ab'],
+          input: ['12', 'ab']
         },
         {
           title: 'test input as object',
-          input: {a: 'b', x: 'y'},
+          input: { a: 'b', x: 'y' }
         }
-      ]
+      ];
 
-      testData.forEach(({title, input, output}) => {
-        it(`special input - ${title}`, function() {
+      testData.forEach(({ title, input, output }) => {
+        it(`special input - ${title}`, function () {
           const masked = maskData.maskString(input, maskOptions);
-          expect(masked).to.equal(input, 'input won\'t be masked');
+          expect(masked).to.equal(input, "input won't be masked");
         });
       });
     });

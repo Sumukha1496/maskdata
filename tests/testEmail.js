@@ -3,10 +3,8 @@ const maskData = require('../index');
 const BadOption = require('../lib/ExceptionsHandler/BadOption');
 const expect = require('chai').expect;
 
-describe('Masking email addresses', function() {
-
-  describe('Mask with default options', function() {
-
+describe('Masking email addresses', function () {
+  describe('Mask with default options', function () {
     // default options are this - let tests fail when defaults change
     // const defaultCardMaskOptions = {
     //   maskWith: '*',
@@ -46,22 +44,21 @@ describe('Masking email addresses', function() {
         input: 'user@x',
         output: 'use*@x'
       }
-    ]
+    ];
 
-    testData.forEach(({title, input, output}) => {
-      it(`default mask - ${title}`, function() {
+    testData.forEach(({ title, input, output }) => {
+      it(`default mask - ${title}`, function () {
         const masked = maskData.maskEmail2(input);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
-    })
+    });
   });
 
-  describe('Mask with custom options (char, before, after)', function() {
-
+  describe('Mask with custom options (char, before, after)', function () {
     const maskOptions = {
       maskWith: 'x',
       unmaskedStartCharactersBeforeAt: 4,
-      unmaskedEndCharactersAfterAt: 6,    // full tld and part of sld
+      unmaskedEndCharactersAfterAt: 6, // full tld and part of sld
       maskAtTheRate: false
     };
 
@@ -71,22 +68,21 @@ describe('Masking email addresses', function() {
         input: 'testuser@dummy.org',
         output: 'testxxxx@xxxmy.org'
       }
-    ]
+    ];
 
-    testData.forEach(({title, input, output}) => {
-      it(`default mask - ${title}`, function() {
+    testData.forEach(({ title, input, output }) => {
+      it(`default mask - ${title}`, function () {
         const masked = maskData.maskEmail2(input, maskOptions);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
-    })
+    });
   });
 
-  describe('Mask with custom options (maskAtTheRate)', function() {
-
+  describe('Mask with custom options (maskAtTheRate)', function () {
     const maskOptions = {
       maskWith: '*',
       unmaskedStartCharactersBeforeAt: 4,
-      unmaskedEndCharactersAfterAt: 6,    // full tld and part of sld
+      unmaskedEndCharactersAfterAt: 6, // full tld and part of sld
       maskAtTheRate: true
     };
 
@@ -99,31 +95,31 @@ describe('Masking email addresses', function() {
       {
         title: 'test user and domain part to short',
         input: 'we@a.de',
-        output: 'we*a.de'   // before and after are shorter than visible, only @ replaced
+        output: 'we*a.de' // before and after are shorter than visible, only @ replaced
       },
       {
         title: 'test user part to short',
         input: 'we@dummy.org',
-        output: 'we****my.org'   // before and after are shorter than visible, only @ replaced
+        output: 'we****my.org' // before and after are shorter than visible, only @ replaced
       },
       {
         title: 'test domain part to short',
         input: 'testuser@a.de',
-        output: 'test*****a.de'   // before and after are shorter than visible, only @ replaced
+        output: 'test*****a.de' // before and after are shorter than visible, only @ replaced
       }
-    ]
+    ];
 
-    testData.forEach(({title, input, output}) => {
-      it(`custom mask - ${title}`, function() {
+    testData.forEach(({ title, input, output }) => {
+      it(`custom mask - ${title}`, function () {
         const masked = maskData.maskEmail2(input, maskOptions);
         expect(masked).to.equal(output, 'masked output does not match expected value');
       });
     });
 
-    it('custom mask - negative start digits', function() {
+    it('custom mask - negative start digits', function () {
       const negativeStartOptions = {
         maskWith: '*',
-        unmaskedStartCharactersBeforeAt: -1,  // replaced with 0 internally
+        unmaskedStartCharactersBeforeAt: -1, // replaced with 0 internally
         unmaskedEndCharactersAfterAt: 1,
         maskAtTheRate: false
       };
@@ -133,10 +129,10 @@ describe('Masking email addresses', function() {
       expect(masked).to.equal(output, 'masked output does not match expected value');
     });
 
-    it('custom mask - negative end digits', function() {
+    it('custom mask - negative end digits', function () {
       const negativeEndOptions = {
         maskWith: '*',
-        unmaskedStartCharactersBeforeAt: 1,  // replaced with 0 internally
+        unmaskedStartCharactersBeforeAt: 1, // replaced with 0 internally
         unmaskedEndCharactersAfterAt: -1,
         maskAtTheRate: false
       };
@@ -147,40 +143,38 @@ describe('Masking email addresses', function() {
     });
   });
 
-  describe('test error cases for email addresses', function() {
-
+  describe('test error cases for email addresses', function () {
     let testData = [
       {
         title: 'test no email address at all',
         input: 'user-dummy.org',
         output: 'use*@x'
       }
-    ]
+    ];
 
-    testData.forEach(({title, input, output}) => {
-      it(`default mask - ${title}`, function() {
+    testData.forEach(({ title, input, output }) => {
+      it(`default mask - ${title}`, function () {
         try {
           const masked = maskData.maskEmail2(input);
           expect.fail('maskEmail2 should throw error');
-        }
-        catch(e) {
-          expect(e).to.be.a('string').and.match(/Bad config.*Email must.*@/);
+        } catch (e) {
+          expect(e)
+            .to.be.a('string')
+            .and.match(/Bad config.*Email must.*@/);
         }
       });
-    })
+    });
   });
 
-  describe('Mask with special input strings', function() {
-
+  describe('Mask with special input strings', function () {
     const maskOptions = {
-      maskWith: "x",
+      maskWith: 'x',
       unmaskedStartCharactersBeforeAt: 1,
       unmaskedEndCharactersAfterAt: 1,
       maskAtTheRate: false
     };
 
-    describe('Mask with special input - input will generate an output', function() {
-
+    describe('Mask with special input - input will generate an output', function () {
       // first set with input generating an masked output
       let testData = [
         {
@@ -193,35 +187,34 @@ describe('Masking email addresses', function() {
           input: null,
           output: null
         }
-      ]
+      ];
 
-      testData.forEach(({title, input, output}) => {
-        it(`special input - ${title}`, function() {
+      testData.forEach(({ title, input, output }) => {
+        it(`special input - ${title}`, function () {
           const masked = maskData.maskEmail2(input, maskOptions);
           expect(masked).to.equal(output, 'masked output does not match expected value');
         });
       });
     });
 
-    describe('Mask with non string input - input will not be masked', function() {
-
+    describe('Mask with non string input - input will not be masked', function () {
       let testData = [
         {
           title: 'test input as number',
-          input: 12,
+          input: 12
         },
         {
           title: 'test input as array',
-          input: ['12'],
+          input: ['12']
         },
         {
           title: 'test input as object',
-          input: {a: 'b', x: 'y'},
+          input: { a: 'b', x: 'y' }
         }
-      ]
+      ];
 
-      testData.forEach(({title, input, output}) => {
-        it(`special input - ${title}`, function() {
+      testData.forEach(({ title, input, output }) => {
+        it(`special input - ${title}`, function () {
           const masked = maskData.maskEmail2(input, maskOptions);
           expect(masked).to.equal(input, 'Improper input');
         });
