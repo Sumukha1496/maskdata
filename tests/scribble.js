@@ -540,4 +540,6 @@ const jsonMaskConfig3 = {
 };
 
 const maskedOutput = MaskData.maskJSON2(jsonInput3, jsonMaskConfig3);
+
 console.log(maskedOutput);
+console.log(maskedOutput['emails'].moreEmails[3].secondChild.nestedkid);

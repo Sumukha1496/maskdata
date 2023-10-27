@@ -41,6 +41,11 @@ describe('Masking JWT tokens', function () {
         output: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjJ9'
       },
       {
+        title: 'Invalid JWT2. Do not mask',
+        input: '..eyJpYXQiOjE1MTYyMzkwMjJ9',
+        output: '..eyJpYXQiOjE1MTYyMzkwMjJ9'
+      },
+      {
         title: 'empty jwt. Do not mask',
         input: '',
         output: ''
@@ -166,6 +171,44 @@ describe('Masking JWT tokens', function () {
     testData.forEach(({ title, input, output, configKey, configValue }) => {
       const config = JSON.parse(JSON.stringify(jwtMaskOptions));
       config[configKey] = configValue;
+      it(`custom mask2 - ${title}`, function () {
+        const masked = maskData.maskJwt(input, config);
+        expect(masked).to.equal(output, 'masked output does not match expected value');
+      });
+    });
+  });
+
+  describe('Test maxMaskedCharacters', function () {
+    const jwtMaskOptions = {
+      maskWith: '*',
+      maxMaskedCharacters: 512,
+      maskDot: true,
+      maskHeader: true,
+      maskPayload: true,
+      maskSignature: true
+    };
+
+    let testData = [
+      {
+        title: 'Mask with maxMaskedCharacters=1',
+        input: 'abcd.efgh.hijk',
+        output: '***',
+        maxMaskedCharacters: 1,
+        maskDot: true
+      },
+      {
+        title: 'Mask with maxMaskedCharacters=1',
+        input: 'abcd.efgh.hijk',
+        output: '*..',
+        maxMaskedCharacters: 1,
+        maskDot: false
+      }
+    ];
+
+    testData.forEach(({ title, input, output, maxMaskedCharacters, maskDot }) => {
+      const config = JSON.parse(JSON.stringify(jwtMaskOptions));
+      config['maxMaskedCharacters'] = maxMaskedCharacters;
+      config['maskDot'] = maskDot;
       it(`custom mask2 - ${title}`, function () {
         const masked = maskData.maskJwt(input, config);
         expect(masked).to.equal(output, 'masked output does not match expected value');

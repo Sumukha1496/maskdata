@@ -571,4 +571,173 @@ describe('JSON mask2', function () {
       });
     });
   });
+
+  describe('Mask UUID fields with invalid options', function () {
+    let testData = [
+      {
+        title: 'Mask UUID fields with custom options',
+        input: JSON.parse(JSON.stringify(jsonInput)),
+        outputUuid: '123e4567-e89b-12d3-a456-426614174000'
+      }
+    ];
+
+    testData.forEach(({ title, input, outputUuid }) => {
+      const jsonMaskConfig = JSON.parse(JSON.stringify(Constants.defaultjsonMask2Configs));
+      const uuidMaskOptions = JSON.parse(JSON.stringify(Constants.defaultUuidMaskOptions));
+      // const defaultUuidMaskOptions = {
+      //   maskWith: "*",
+      //   unmaskedStartCharacters: 0,
+      //   unmaskedEndCharacters: 0
+      // };
+      uuidMaskOptions['maskWith'] = 'X';
+      uuidMaskOptions['unmaskedStartCharacters'] = 8;
+      uuidMaskOptions['unmaskedEndCharacters'] = 12;
+      jsonMaskConfig['uuidFields'] = ['uuid1.*.invalidField'];
+      jsonMaskConfig['uuidMaskOptions'] = uuidMaskOptions;
+      it(`${title}`, function () {
+        const masked = maskData.maskJSON2(input, jsonMaskConfig);
+        expect(masked['credit']).to.equal(input['credit']);
+        expect(masked['debit']).to.equal(input['debit']);
+        expect(masked['primaryEmail']).to.equal(input['primaryEmail']);
+        expect(masked['secondaryEmail']).to.equal(input['secondaryEmail']);
+        expect(masked['password']).to.equal(input['password']);
+        expect(masked['homePhone']).to.equal(input['homePhone']);
+        expect(masked['workPhone']).to.equal(input['workPhone']);
+        expect(masked['addressLine1']).to.equal(input['addressLine1']);
+        expect(masked['addressLine2']).to.equal(input['addressLine2']);
+        expect(masked['uuid1']).to.equal(outputUuid);
+      });
+    });
+  });
+
+  describe('Test Json mask with .* and [*].', function () {
+    const jsonInput = {
+      cards: [
+        {
+          number: '1234-5678-8765-1234'
+        },
+        {
+          number: '1111-2222-1111-2222'
+        },
+        {
+          number: '0000-1111-2222-3333'
+        },
+        {
+          name: 'No card number here'
+        }
+      ],
+      emails: {
+        primaryEmail: 'primary@Email.com',
+        secondaryEmail: 'secondary@Email.com',
+        moreEmails: [
+          'email1@email.com',
+          'email2@email.com',
+          'email3@email.com',
+          { childEmail: 'child@child.com', secondChild: { nestedkid: 'hello@hello.com' } }
+        ]
+      },
+      array: ['element1', 'element22', 'element333'],
+      jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2wiLCJuYW1lIjoiVGVzdCIsImlhdCI6ImxvbCJ9.XNDxZcBWWEKYkCiu6XFGmAeuPF7iFnI7Sdv91gVZJMU'
+    };
+
+    let testData = [
+      {
+        title: 'Mask UUID fields with custom options',
+        input: JSON.parse(JSON.stringify(jsonInput)),
+        output: {
+          cards: [
+            {
+              number: 'XXXX-XXXX-XXXX-XXXX'
+            },
+            {
+              number: 'XXXX-XXXX-XXXX-XXXX'
+            },
+            {
+              number: 'XXXX-XXXX-XXXX-XXXX'
+            },
+            {
+              name: 'No card number here'
+            }
+          ],
+          emails: {
+            primaryEmail: '*******@*********',
+            secondaryEmail: '*********@*********',
+            moreEmails: [
+              '******@*********',
+              '******@*********',
+              '******@*********',
+              {
+                childEmail: '*****@*********',
+                secondChild: {
+                  nestedkid: '*****@*********'
+                }
+              }
+            ]
+          },
+          array: ['????????', '?????????', '??????????'],
+          jwt: '************.**********.**********'
+        }
+      }
+    ];
+
+    const jsonMaskConfig = {
+      cardMaskOptions: { maskWith: 'X', unmaskedStartDigits: 0, unmaskedEndDigits: 0 },
+
+      emailMaskOptions: {
+        maskWith: '*',
+        unmaskedStartCharactersBeforeAt: 0,
+        unmaskedEndCharactersAfterAt: 0,
+        maskAtTheRate: false
+      },
+
+      stringMaskOptions: {
+        maskWith: '?',
+        maskOnlyFirstOccurance: false,
+        values: [],
+        maskAll: true,
+        maskSpace: false
+      },
+      jwtMaskOptions: {
+        maskWith: '*',
+        maxMaskedCharacters: 32,
+        maskDot: false,
+        maskHeader: true,
+        maskPayload: true,
+        maskSignature: true
+      },
+
+      cardFields: ['cards[*].number'],
+      emailFields: ['emails.*'],
+      stringFields: ['array.*'],
+      jwtFields: ['jwt']
+    };
+
+    testData.forEach(({ title, input, output }) => {
+      it(`${title}`, function () {
+        const masked = maskData.maskJSON2(input, jsonMaskConfig);
+        expect(masked['cards'][0].number).to.equal(output['cards'][0].number);
+        expect(masked['cards'][1].number).to.equal(output['cards'][1].number);
+        expect(masked['cards'][2].number).to.equal(output['cards'][2].number);
+        expect(masked['cards'][3].number).to.equal(undefined);
+
+        expect(masked['emails'].primaryEmail).to.equal(output['emails'].primaryEmail);
+        expect(masked['emails'].secondaryEmail).to.equal(output['emails'].secondaryEmail);
+        expect(masked['emails'].moreEmails[0]).to.equal(output['emails'].moreEmails[0]);
+        expect(masked['emails'].moreEmails[1]).to.equal(output['emails'].moreEmails[1]);
+        expect(masked['emails'].moreEmails[2]).to.equal(output['emails'].moreEmails[2]);
+        expect(masked['emails'].moreEmails[3].childEmail).to.equal(
+          output['emails'].moreEmails[3].childEmail
+        );
+        expect(masked['emails'].moreEmails[3].secondChild.nestedkid).to.equal(
+          output['emails'].moreEmails[3].secondChild.nestedkid
+        );
+
+        expect(masked['array'][0]).to.equal(output['array'][0]);
+        expect(masked['array'][1]).to.equal(output['array'][1]);
+        expect(masked['array'][2]).to.equal(output['array'][2]);
+
+        expect(masked['jwt']).to.equal(output['jwt']);
+      });
+    });
+  });
 });
