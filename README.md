@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.2.5 Features](#release-features)
+- [Version 1.2.6 Features](#release-features)
 - [How to Use](#how-to-use)
 - [Maskdata for Typescript](#maskdata-for-typescript)
     - [Mask Card number](#mask-card-number)
@@ -43,7 +43,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
-### Version 1.2.5 
+### Version 1.2.6 
 - JWT token masking: Mask JWT tokens with configs to mask as per your need. More details: [Mask JWT Token](#mask-jwt-token)
 - Mask Json now supports JWT token masking also. More details: [Mask JWT in a JSON](#mask-json)
 - Bug fix in maskJson2 where it was not checking for the empty/null/undefined fields and was resulting in error `"TypeError: validatedConfig[typeToFunctionMap[key][1]] is not iterable"`
@@ -201,7 +201,7 @@ const defaultjsonMask2Configs = {
     jwtFields: [] // List of JWT fields to be masked
 };
 ```
-<b>NOTE: For defaultCardMaskOptions, defaultEmailMask2Options, defaultPasswordMaskOptions, defaultPhoneMaskOptions, defaultStringMaskOptions and defaultUuidMaskOptions refer the corresponding masking features. </b>
+<b>NOTE: For defaultCardMaskOptions, defaultEmailMask2Options, defaultPasswordMaskOptions, defaultPhoneMaskOptions, defaultStringMaskOptions, defaultUuidMaskOptions and defaultJwtMaskOptions refer corresponding masking features. </b>
 
 ```javascript
 const defaultjsonMask2Configs = {
@@ -249,7 +249,17 @@ const defaultjsonMask2Configs = {
         unmaskedStartCharacters: 0,
         unmaskedEndCharacters: 0
     },
-    uuidFields: []
+    uuidFields: [],
+
+    jwtMaskOptions: {
+        maskWith: '*',
+        maxMaskedCharacters: 512,
+        maskDot: true,
+        maskHeader: true,
+        maskPayload: true,
+        maskSignature: true
+    },
+    jwtFields: [],
 };
 
 ```
@@ -387,7 +397,8 @@ const jsonInput2 = {
   },
   uuids: {
     uuid1: '123e4567-e89b-12d3-a456-426614174000'
-  }
+  },
+  jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjJ9.tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ'
 };
 
 const jsonMaskConfig2 = {
@@ -414,6 +425,10 @@ const jsonMaskConfig2 = {
     // UUID
     uuidMaskOptions: { maskWith: "*", unmaskedStartCharacters: 4, unmaskedEndCharacters: 2 },
     uuidFields: ['uuids.uuid1']
+
+    // JWT
+    jwtMaskOptions: { maskWith: '*', maxMaskedCharacters: 512, maskDot: true, maskHeader: true, maskPayload: true, maskSignature: true},
+    jwtFields: ['jwt']
 };
 
 const maskedJsonOutput2 = MaskData.maskJSON2(jsonInput2, jsonMaskConfig2);
@@ -433,7 +448,8 @@ const maskedJsonOutput2 = MaskData.maskJSON2(jsonInput2, jsonMaskConfig2);
     addressLine1: '**** ** ** *********** ** **** ** ** ****',
     addressLine2: '*********** *'
   },
-  uuids: { uuid1: '123e****-****-****-****-**********00' }
+  uuids: { uuid1: '123e****-****-****-****-**********00' },
+  jwt: '*********************************************************************************************************'
 }
 
 ```
