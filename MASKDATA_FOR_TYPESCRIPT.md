@@ -23,7 +23,7 @@ console.log(maskedPassword);
 
 ## Available mask configs/option
 ### 1. PasswordMaskOptions
-Used in [Password Masking](#mask-password)
+Usage: [Password Masking](./README.md#mask-password)
 ```javascript
 {
     maskWith?: string;
@@ -34,7 +34,7 @@ Used in [Password Masking](#mask-password)
 ```
 
 ### 2. CardMaskOptions
-Used in [Card masking](./README.md#mask-card-number)
+Usage: [Card masking](./README.md#mask-card-number)
 ```javascript
 {
     maskWith?: string;
@@ -44,7 +44,7 @@ Used in [Card masking](./README.md#mask-card-number)
 ```
 
 ### 3. EmailMask2Options
-Used in [Email masking](./README.md#mask-email-id)
+Usage: [Email masking](./README.md#mask-email-id)
 ```javascript
 {
     maskWith?: string;
@@ -55,7 +55,7 @@ Used in [Email masking](./README.md#mask-email-id)
 ```
 
 ### 4. PhoneMaskOptions
-Used in [Phone Number Masking](#mask-phone-number)
+Usage: [Phone Number Masking](./README.md#mask-phone-number)
 ```javascript
 {
     maskWith?: string;
@@ -64,7 +64,7 @@ Used in [Phone Number Masking](#mask-phone-number)
 }
 ```
 ### 5. StringMaskOptions
-Used in [String masking](./README.md#mask-the-characters-or-words-in-the-string)
+Usage: [String masking](./README.md#mask-the-characters-or-words-in-the-string)
 ```javascript
 {
     maskWith?: string;
@@ -76,7 +76,7 @@ Used in [String masking](./README.md#mask-the-characters-or-words-in-the-string)
 ```
 
 ### 6. UuidMaskOptions
-Used in [UUID Masking](#mask-uuid)
+Usage: [UUID Masking](./README.md#mask-uuid)
 ```javascript
 {
     maskWith?: string;
@@ -86,7 +86,7 @@ Used in [UUID Masking](#mask-uuid)
 ```
 
 ### 7. JsonMask2Configs
-Used in [JSON fields masking](#mask-json)
+Usage: [JSON fields masking](./README.md#mask-json)
 ```javascript
 {
     cardMaskOptions?: CardMaskOptions;
@@ -101,12 +101,24 @@ Used in [JSON fields masking](#mask-json)
     stringFields?: string[];
     uuidMaskOptions?: UuidMaskOptions;
     uuidFields?: string[];
+    jwtMaskOptions?: JwtMaskOptions;
+    jwtFields?: string[];
 }
 ```
+### 8. Mask JWT
+Usage: [JWT masking](./README.md#mask-jwt-token)
+const defaultJwtMaskOptions = {
+  maskWith: '*',
+  maxMaskedCharacters: 512,
+  maskDot: true,
+  maskHeader: true,
+  maskPayload: true,
+  maskSignature: true
+};
 
 <br/>
 
 ## Available functions to import along with their configs
 ```javascript
-import { maskPassword, PasswordMaskOptions, maskJSON2, JsonMask2Configs, maskPhone, PhoneMaskOptions, maskEmail2, EmailMask2Options, maskCard, CardMaskOptions, maskString, StringMaskOptions, maskUuid, UuidMaskOptions, getInnerProperty, replaceValue } from 'maskdata';
+import { maskPassword, PasswordMaskOptions, maskJSON2, JsonMask2Configs, maskPhone, PhoneMaskOptions, maskEmail2, EmailMask2Options, maskCard, CardMaskOptions, maskString, StringMaskOptions, maskUuid, UuidMaskOptions, maskJwt, JwtMaskOptions, getInnerProperty, replaceValue } from 'maskdata';
 ```

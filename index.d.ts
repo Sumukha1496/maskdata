@@ -67,6 +67,8 @@ declare module 'maskdata' {
     stringFields?: string[];
     uuidMaskOptions?: UuidMaskOptions;
     uuidFields?: string[];
+    jwtMaskOptions?: JwtMaskOptions;
+    jwtFields?: string[];
   }
 
   export function maskPassword(password?: string, options?: PasswordMaskOptions): string;
