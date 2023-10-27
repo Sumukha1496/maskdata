@@ -18,139 +18,6 @@ const jsonInput = {
   uuid1: '123e4567-e89b-12d3-a456-426614174000'
 };
 
-const jsonInput2 = {
-  cards: {
-    creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222'],
-    debitCards: ['0000-1111-2222-3333', '2222-1111-3333-4444']
-  },
-  emails: {
-    primaryEmail: 'primary@Email.com',
-    secondaryEmail: 'secondary@Email.com'
-  },
-  passwords: [['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword']],
-  phones: {
-    homePhone: '+1 1234567890',
-    workPhone: '+1 9876543210'
-  },
-  address: {
-    addressLine1: 'This is my addressline 1. This is my home',
-    addressLine2: 'AddressLine 2'
-  },
-  string1: [
-    {
-      id: '1111',
-      name: 'Test',
-      primaryEmail: 'primary@Email.com',
-      items: [
-        {
-          id: '11111',
-          passwords: ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
-          creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222'],
-          phone: '+1 1234567890',
-          uuid1: '123e4567-e89b-12d3-a456-426614174000',
-          primaryEmail: 'primary@Email.com',
-          name: '11111',
-          child: [
-            {
-              child1: 'child1111111',
-              phone: '+1 1234567890',
-              passwords: ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
-              primaryEmail: 'primary@Email.com',
-              creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222']
-            },
-            {
-              child1: 'child2222222',
-              creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222']
-            }
-          ]
-        },
-        {
-          id: '11112',
-          phone: '+1 1234567890',
-          name: '11112',
-          uuid1: '123e4567-e89b-12d3-a456-426614174000',
-          primaryEmail: 'primary@Email.com',
-          creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222'],
-          child: [
-            {
-              child1: 'child1111111',
-              passwords: ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
-              primaryEmail: 'primary@Email.com',
-              creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222'],
-              uuid1: '123e4567-e89b-12d3-a456-426614174000',
-              phone: '+1 1234567890'
-            },
-            {
-              child1: 'child2222222',
-              primaryEmail: 'a@b.c',
-              creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222'],
-              phone: '+1 1234567890',
-              uuid1: '123e4567-e89b-12d3-a456-426614174000'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: '2222',
-      name: 'Test',
-      items: [
-        {
-          id: '22221',
-          phone: '+1 1234567890',
-          passwords: ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
-          name: '22221',
-          uuid1: '123e4567-e89b-12d3-a456-426614174000',
-          creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222'],
-          child: [
-            {
-              child1: 'child1111111',
-              phone: '+1 1234567890',
-              uuid1: '123e4567-e89b-12d3-a456-426614174000',
-              creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222']
-            },
-            {
-              child1: 'child2222222',
-              uuid1: '123e4567-e89b-12d3-a456-426614174000',
-              passwords: ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
-              phone: '+1 1234567890',
-              creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222']
-            }
-          ]
-        },
-        {
-          id: '22222',
-          name: '22222',
-          phone: '+1 1234567890',
-          primaryEmail: 'primary@Email.com',
-          uuid1: '123e4567-e89b-12d3-a456-426614174000',
-          creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222'],
-          child: [
-            {
-              child1: 'child1111111',
-              phone: '+1 1234567890',
-              passwords: ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
-              primaryEmail: 'primary@Email.com',
-              uuid1: '123e4567-e89b-12d3-a456-426614174000',
-              creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222']
-            },
-            {
-              child1: 'child2222222',
-              phone: '+1 1234567890',
-              passwords: ['dummyPasswordANDdummyPassword', 'dummyPasswordANDdummyPassword'],
-              uuid1: '123e4567-e89b-12d3-a456-426614174000',
-              creditCards: ['1234-5678-8765-1234', '1111-2222-1111-2222']
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  uuids: {
-    uuid1: '123e4567-e89b-12d3-a456-426614174000'
-  }
-};
-
 describe('JSON mask1', function () {
   describe('Mask json with default options', function () {
     let testData = {
@@ -375,6 +242,17 @@ describe('JSON mask2', function () {
       },
       uuids: {
         uuid1: '123e4567-e89b-12d3-a456-426614174000'
+      },
+      jwts: {
+        token1:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+        token2:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2wiLCJuYW1lIjoiVGVzdCIsImlhdCI6ImxvbCJ9.XNDxZcBWWEKYkCiu6XFGmAeuPF7iFnI7Sdv91gVZJMU',
+        token3List: [
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdDEifQ.TvKsZHhAgnZeplD4YdkKAgjdhdtFSQn-xZJ7HiiS1ok',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdDIifQ.ekZkXoeOb4SE_YLlc0Iv8V3wm17xS1B7TzhtYHvIYl0',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdDMifQ.CNiJIr7TZgsVGS0dbFFwdPtG6v1wwSor9jFoVeUkrJ0'
+        ]
       }
     };
 
@@ -391,7 +269,11 @@ describe('JSON mask2', function () {
         outputWorkPhone: '+1 9********0',
         outputAddressLine1: 'This is my addressline 1. This is my home',
         outputAddressLine2: 'AddressLine 2',
-        outputUuid: '********-****-****-****-************'
+        outputUuid: '********-****-****-****-************',
+        outputJwt1:
+          '***********************************************************************************************************************************************************',
+        outputJwt2:
+          '*************************************************************************************************************************************'
       }
     ];
 
@@ -408,7 +290,9 @@ describe('JSON mask2', function () {
         outputWorkPhone,
         outputAddressLine1,
         outputAddressLine2,
-        outputUuid
+        outputUuid,
+        outputJwt1,
+        outputJwt2
       }) => {
         const jsonMaskConfig = JSON.parse(JSON.stringify(Constants.defaultjsonMask2Configs));
         jsonMaskConfig['cardFields'] = [
@@ -422,6 +306,7 @@ describe('JSON mask2', function () {
         jsonMaskConfig['phoneFields'] = ['phones.homePhone', 'phones.workPhone'];
         jsonMaskConfig['stringFields'] = ['address.addressLine1', 'address.addressLine2'];
         jsonMaskConfig['uuidFields'] = ['uuids.uuid1'];
+        jsonMaskConfig['jwtFields'] = ['jwts.token1', 'jwts.token2'];
         it(`${title}`, function () {
           const masked = maskData.maskJSON2(input, jsonMaskConfig);
           expect(masked['cards']['creditCards'][0]).to.equal(outputCredit);
@@ -441,259 +326,14 @@ describe('JSON mask2', function () {
           expect(masked['address']['addressLine2']).to.equal(outputAddressLine2);
 
           expect(masked['uuids']['uuid1']).to.equal(outputUuid);
+
+          expect(masked['jwts']['token1']).to.equal(outputJwt1);
+          expect(masked['jwts']['token2']).to.equal(outputJwt2);
         });
         it('Test masking improper JSON', function () {
           const notAJson = 'Not a JSON. Just a String';
           const masked = maskData.maskJSON2(notAJson, jsonMaskConfig);
           expect(masked).to.equal(notAJson);
-        });
-      }
-    );
-  });
-
-  describe('Test .[*] and .*', function () {
-    const jsonInput2 = {
-      cards: [
-        {
-          number: '1234-5678-8765-1234'
-        },
-        {
-          number: '1111-2222-1111-2222'
-        },
-        {
-          number: '0000-1111-2222-3333'
-        },
-        {
-          name: 'No card number here'
-        }
-      ],
-      emails: {
-        primaryEmail: 'primary@Email.com',
-        secondaryEmail: 'secondary@Email.com',
-        moreEmails: [
-          'email1@email.com',
-          'email2@email.com',
-          'email3@email.com',
-          { childEmail: 'child@child.com', secondChild: { nestedkid: 'hello@hello.com' } }
-        ]
-      },
-      array: ['element1', 'element22', 'element333']
-    };
-
-    let testData = [
-      {
-        title: 'test .[*] and .*',
-        input: jsonInput2,
-        outputCard: 'XXXX-XXXX-XXXX-XXXX',
-        outputPrimaryEmail: '*******@*********',
-        outputSecondaryEmail: '*********@*********'
-      }
-    ];
-
-    testData.forEach(({ title, input, outputCard, outputPrimaryEmail, outputSecondaryEmail }) => {
-      const jsonMaskConfig = JSON.parse(JSON.stringify(Constants.defaultjsonMask2Configs));
-
-      jsonMaskConfig['cardMaskOptions'] = {
-        maskWith: 'X',
-        unmaskedStartDigits: 0,
-        unmaskedEndDigits: 0
-      };
-      jsonMaskConfig['emailMaskOptions'] = {
-        maskWith: '*',
-        unmaskedStartCharactersBeforeAt: 0,
-        unmaskedEndCharactersAfterAt: 0,
-        maskAtTheRate: false
-      };
-
-      jsonMaskConfig['cardFields'] = ['cards[*].number'];
-      jsonMaskConfig['emailFields'] = ['emails.*'];
-
-      jsonMaskConfig['stringFields'] = ['array.*'];
-      jsonMaskConfig['stringMaskOptions'] = {
-        maskWith: '?',
-        maskOnlyFirstOccurance: false,
-        values: [],
-        maskAll: true,
-        maskSpace: false
-      };
-
-      it(`${title}`, function () {
-        const masked = maskData.maskJSON2(input, jsonMaskConfig);
-        expect(masked['cards'][0]['number']).to.equal(outputCard);
-        expect(masked['cards'][1]['number']).to.equal(outputCard);
-        expect(masked['cards'][2]['number']).to.equal(outputCard);
-        expect(masked['cards'][3]['number']).to.equal(undefined);
-
-        expect(masked['emails']['primaryEmail']).to.equal(outputPrimaryEmail);
-        expect(masked['emails']['secondaryEmail']).to.equal(outputSecondaryEmail);
-        expect(masked['emails']['moreEmails'][0]).to.equal('******@*********');
-        expect(masked['emails']['moreEmails'][1]).to.equal('******@*********');
-        expect(masked['emails']['moreEmails'][2]).to.equal('******@*********');
-        expect(masked['emails']['moreEmails'][3].childEmail).to.equal('*****@*********');
-        expect(masked['emails']['moreEmails'][3].secondChild.nestedkid).to.equal('*****@*********');
-
-        expect(masked['array'][0]).to.equal('????????');
-        expect(masked['array'][1]).to.equal('?????????');
-        expect(masked['array'][2]).to.equal('??????????');
-      });
-    });
-  });
-
-  describe('Mask all nested fields in god json with default options', function () {
-    let testData = [
-      {
-        title: 'test json masking with default options and all types of fields',
-        input: jsonInput2,
-        outputCard: 'XXXX-XXXX-XXXX-XXXX',
-        outputPrimaryEmail: '*******@*********',
-        outputSecondaryEmail: '*********@*********',
-        outputPassword: '**********',
-        outputPhone: '*************',
-        outputAddressLine1: '**** ** ** *********** ** **** ** ** ****',
-        outputAddressLine2: '*********** *',
-        outputUuid: '********-****-****-****-************'
-      }
-    ];
-
-    testData.forEach(
-      ({
-        title,
-        input,
-        outputCard,
-        outputPrimaryEmail,
-        outputSecondaryEmail,
-        outputPassword,
-        outputPhone,
-        outputAddressLine1,
-        outputAddressLine2,
-        outputUuid
-      }) => {
-        const jsonMaskConfig = {
-          cardMaskOptions: { maskWith: 'X', unmaskedStartDigits: 0, unmaskedEndDigits: 0 },
-          cardFields: [
-            'string1[*].items[*].creditCards.*',
-            'string1[*].items[*].child[*].creditCards.*',
-            'cards.creditCards[0]',
-            'cards.creditCards[1]',
-            'cards.debitCards[0]',
-            'cards.debitCards[1]'
-          ],
-
-          // Email
-          emailMaskOptions: {
-            maskWith: '*',
-            unmaskedStartCharactersBeforeAt: 0,
-            unmaskedEndCharactersAfterAt: 0,
-            maskAtTheRate: false
-          },
-          emailFields: [
-            'string1[*].items[*].primaryEmail',
-            'string1[*].items[*].child[*].primaryEmail',
-            'string1[*].primaryEmail',
-            'emails.primaryEmail',
-            'emails.secondaryEmail'
-          ],
-
-          // Password
-          passwordMaskOptions: {
-            maskWith: '*',
-            maxMaskedCharacters: 10,
-            unmaskedStartCharacters: 0,
-            unmaskedEndCharacters: 0
-          },
-          passwordFields: [
-            'passwords[0][0]]',
-            'passwords[0][1]',
-            'string1[*].items[*].passwords.*',
-            'string1[*].items[*].child[*].passwords.*'
-          ],
-
-          // Phone
-          phoneMaskOptions: { maskWith: '*', unmaskedStartDigits: 0, unmaskedEndDigits: 0 },
-          phoneFields: [
-            'string1[*].items[*].phone',
-            'string1[*].items[*].child[*].phone',
-            'phones.homePhone',
-            'phones.workPhone'
-          ],
-
-          // String
-          stringMaskOptions: {
-            maskWith: '*',
-            maskOnlyFirstOccurance: false,
-            values: [],
-            maskAll: true,
-            maskSpace: false
-          },
-          stringFields: [
-            'string1[*].items[*].id',
-            'string1[*].items[*].child[*].child1',
-            'address.addressLine1',
-            'address.addressLine2'
-          ],
-
-          // UUID
-          uuidMaskOptions: { maskWith: '*', unmaskedStartCharacters: 0, unmaskedEndCharacters: 0 },
-          uuidFields: [
-            'uuids.uuid1',
-            'string1[*].items[*].uuid1',
-            'string1[*].items[*].child[*].uuid1'
-          ]
-        };
-        it(`${title}`, function () {
-          const masked = maskData.maskJSON2(input, jsonMaskConfig);
-          expect(masked['cards']['creditCards'][0]).to.equal(outputCard);
-          expect(masked['cards']['creditCards'][1]).to.equal(outputCard);
-          expect(masked['cards']['debitCards'][0]).to.equal(outputCard);
-          expect(masked['cards']['debitCards'][1]).to.equal(outputCard);
-
-          expect(masked['emails']['primaryEmail']).to.equal(outputPrimaryEmail);
-          expect(masked['emails']['secondaryEmail']).to.equal(outputSecondaryEmail);
-
-          expect(masked['passwords'][0][0]).to.equal(outputPassword);
-          expect(masked['passwords'][0][1]).to.equal(outputPassword);
-
-          expect(masked['string1'][0]['items'][0]['child'][0]['passwords'][0]).to.equal(
-            outputPassword
-          );
-          expect(masked['string1'][0]['items'][0]['child'][0]['passwords'][1]).to.equal(
-            outputPassword
-          );
-          expect(masked['string1'][0]['items'][0]['child'][1]['passwords']).to.equal(undefined);
-
-          expect(masked['string1'][0]['items'][1]['child'][0]['passwords'][0]).to.equal(
-            outputPassword
-          );
-          expect(masked['string1'][0]['items'][1]['child'][0]['passwords'][1]).to.equal(
-            outputPassword
-          );
-          expect(masked['string1'][0]['items'][1]['child'][1]['passwords']).to.equal(undefined);
-          expect(masked['string1'][0]['items'][1]['child'][1]['passwords']).to.equal(undefined);
-
-          expect(masked['string1'][0]['items'][1]['creditCards'][0]).to.equal(outputCard);
-          expect(masked['string1'][0]['items'][1]['creditCards'][1]).to.equal(outputCard);
-          expect(masked['string1'][0]['items'][1]['child'][0]['creditCards'][0]).to.equal(
-            outputCard
-          );
-          expect(masked['string1'][1]['items'][1]['child'][1]['creditCards'][1]).to.equal(
-            outputCard
-          );
-
-          expect(masked['phones']['homePhone']).to.equal(outputPhone);
-          expect(masked['phones']['workPhone']).to.equal(outputPhone);
-
-          expect(masked['address']['addressLine1']).to.equal(outputAddressLine1);
-          expect(masked['address']['addressLine2']).to.equal(outputAddressLine2);
-
-          expect(masked['uuids']['uuid1']).to.equal(outputUuid);
-        });
-
-        const jsonMaskConfig2 = JSON.parse(JSON.stringify(Constants.defaultjsonMask2Configs));
-        jsonMaskConfig2.cardFields = ['string1[*].items[*].creditCards.*[0]'];
-
-        it('Test masking with improper field with .*', function () {
-          const masked = maskData.maskJSON2(jsonInput2, jsonMaskConfig2);
-          expect(JSON.stringify(masked)).to.equal(JSON.stringify(jsonInput2));
         });
       }
     );
@@ -928,6 +568,175 @@ describe('JSON mask2', function () {
         expect(masked['addressLine1']).to.equal(input['addressLine1']);
         expect(masked['addressLine2']).to.equal(input['addressLine2']);
         expect(masked['uuid1']).to.equal(outputUuid);
+      });
+    });
+  });
+
+  describe('Mask UUID fields with invalid options', function () {
+    let testData = [
+      {
+        title: 'Mask UUID fields with custom options',
+        input: JSON.parse(JSON.stringify(jsonInput)),
+        outputUuid: '123e4567-e89b-12d3-a456-426614174000'
+      }
+    ];
+
+    testData.forEach(({ title, input, outputUuid }) => {
+      const jsonMaskConfig = JSON.parse(JSON.stringify(Constants.defaultjsonMask2Configs));
+      const uuidMaskOptions = JSON.parse(JSON.stringify(Constants.defaultUuidMaskOptions));
+      // const defaultUuidMaskOptions = {
+      //   maskWith: "*",
+      //   unmaskedStartCharacters: 0,
+      //   unmaskedEndCharacters: 0
+      // };
+      uuidMaskOptions['maskWith'] = 'X';
+      uuidMaskOptions['unmaskedStartCharacters'] = 8;
+      uuidMaskOptions['unmaskedEndCharacters'] = 12;
+      jsonMaskConfig['uuidFields'] = ['uuid1.*.invalidField'];
+      jsonMaskConfig['uuidMaskOptions'] = uuidMaskOptions;
+      it(`${title}`, function () {
+        const masked = maskData.maskJSON2(input, jsonMaskConfig);
+        expect(masked['credit']).to.equal(input['credit']);
+        expect(masked['debit']).to.equal(input['debit']);
+        expect(masked['primaryEmail']).to.equal(input['primaryEmail']);
+        expect(masked['secondaryEmail']).to.equal(input['secondaryEmail']);
+        expect(masked['password']).to.equal(input['password']);
+        expect(masked['homePhone']).to.equal(input['homePhone']);
+        expect(masked['workPhone']).to.equal(input['workPhone']);
+        expect(masked['addressLine1']).to.equal(input['addressLine1']);
+        expect(masked['addressLine2']).to.equal(input['addressLine2']);
+        expect(masked['uuid1']).to.equal(outputUuid);
+      });
+    });
+  });
+
+  describe('Test Json mask with .* and [*].', function () {
+    const jsonInput = {
+      cards: [
+        {
+          number: '1234-5678-8765-1234'
+        },
+        {
+          number: '1111-2222-1111-2222'
+        },
+        {
+          number: '0000-1111-2222-3333'
+        },
+        {
+          name: 'No card number here'
+        }
+      ],
+      emails: {
+        primaryEmail: 'primary@Email.com',
+        secondaryEmail: 'secondary@Email.com',
+        moreEmails: [
+          'email1@email.com',
+          'email2@email.com',
+          'email3@email.com',
+          { childEmail: 'child@child.com', secondChild: { nestedkid: 'hello@hello.com' } }
+        ]
+      },
+      array: ['element1', 'element22', 'element333'],
+      jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2wiLCJuYW1lIjoiVGVzdCIsImlhdCI6ImxvbCJ9.XNDxZcBWWEKYkCiu6XFGmAeuPF7iFnI7Sdv91gVZJMU'
+    };
+
+    let testData = [
+      {
+        title: 'Mask UUID fields with custom options',
+        input: JSON.parse(JSON.stringify(jsonInput)),
+        output: {
+          cards: [
+            {
+              number: 'XXXX-XXXX-XXXX-XXXX'
+            },
+            {
+              number: 'XXXX-XXXX-XXXX-XXXX'
+            },
+            {
+              number: 'XXXX-XXXX-XXXX-XXXX'
+            },
+            {
+              name: 'No card number here'
+            }
+          ],
+          emails: {
+            primaryEmail: '*******@*********',
+            secondaryEmail: '*********@*********',
+            moreEmails: [
+              '******@*********',
+              '******@*********',
+              '******@*********',
+              {
+                childEmail: '*****@*********',
+                secondChild: {
+                  nestedkid: '*****@*********'
+                }
+              }
+            ]
+          },
+          array: ['????????', '?????????', '??????????'],
+          jwt: '************.**********.**********'
+        }
+      }
+    ];
+
+    const jsonMaskConfig = {
+      cardMaskOptions: { maskWith: 'X', unmaskedStartDigits: 0, unmaskedEndDigits: 0 },
+
+      emailMaskOptions: {
+        maskWith: '*',
+        unmaskedStartCharactersBeforeAt: 0,
+        unmaskedEndCharactersAfterAt: 0,
+        maskAtTheRate: false
+      },
+
+      stringMaskOptions: {
+        maskWith: '?',
+        maskOnlyFirstOccurance: false,
+        values: [],
+        maskAll: true,
+        maskSpace: false
+      },
+      jwtMaskOptions: {
+        maskWith: '*',
+        maxMaskedCharacters: 32,
+        maskDot: false,
+        maskHeader: true,
+        maskPayload: true,
+        maskSignature: true
+      },
+
+      cardFields: ['cards[*].number'],
+      emailFields: ['emails.*'],
+      stringFields: ['array.*'],
+      jwtFields: ['jwt']
+    };
+
+    testData.forEach(({ title, input, output }) => {
+      it(`${title}`, function () {
+        const masked = maskData.maskJSON2(input, jsonMaskConfig);
+        expect(masked['cards'][0].number).to.equal(output['cards'][0].number);
+        expect(masked['cards'][1].number).to.equal(output['cards'][1].number);
+        expect(masked['cards'][2].number).to.equal(output['cards'][2].number);
+        expect(masked['cards'][3].number).to.equal(undefined);
+
+        expect(masked['emails'].primaryEmail).to.equal(output['emails'].primaryEmail);
+        expect(masked['emails'].secondaryEmail).to.equal(output['emails'].secondaryEmail);
+        expect(masked['emails'].moreEmails[0]).to.equal(output['emails'].moreEmails[0]);
+        expect(masked['emails'].moreEmails[1]).to.equal(output['emails'].moreEmails[1]);
+        expect(masked['emails'].moreEmails[2]).to.equal(output['emails'].moreEmails[2]);
+        expect(masked['emails'].moreEmails[3].childEmail).to.equal(
+          output['emails'].moreEmails[3].childEmail
+        );
+        expect(masked['emails'].moreEmails[3].secondChild.nestedkid).to.equal(
+          output['emails'].moreEmails[3].secondChild.nestedkid
+        );
+
+        expect(masked['array'][0]).to.equal(output['array'][0]);
+        expect(masked['array'][1]).to.equal(output['array'][1]);
+        expect(masked['array'][2]).to.equal(output['array'][2]);
+
+        expect(masked['jwt']).to.equal(output['jwt']);
       });
     });
   });

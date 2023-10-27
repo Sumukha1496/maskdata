@@ -458,3 +458,88 @@ const jsonMaskConfig2 = {
 
 const maskedJsonOutput2 = MaskData.maskJSON2(jsonInput2, jsonMaskConfig2);
 console.log(JSON.stringify(maskedJsonOutput2));
+
+const jwtMaskOptions = {
+  maskWith: '*',
+  maxMaskedCharacters: 512,
+  maskDot: true,
+  maskHeader: true,
+  maskPayload: true,
+  maskSignature: true
+};
+
+const jwt =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2wiLCJuYW1lIjoiVGVzdCIsImlhdCI6ImxvbCJ9.XNDxZcBWWEKYkCiu6XFGmAeuPF7iFnI7Sdv91gVZJMU';
+console.log(jwt);
+const maskedJwt = MaskData.maskJwt(jwt, jwtMaskOptions);
+console.log(maskedJwt);
+
+const jsonInput3 = {
+  cards: [
+    {
+      number: '1234-5678-8765-1234'
+    },
+    {
+      number: '1111-2222-1111-2222'
+    },
+    {
+      number: '0000-1111-2222-3333'
+    },
+    {
+      name: 'No card number here'
+    }
+  ],
+  emails: {
+    primaryEmail: 'primary@Email.com',
+    secondaryEmail: 'secondary@Email.com',
+    moreEmails: [
+      'email1@email.com',
+      'email2@email.com',
+      'email3@email.com',
+      { childEmail: 'child@child.com', secondChild: { nestedkid: 'hello@hello.com' } }
+    ]
+  },
+  array: ['element1', 'element22', 'element333'],
+  jwts: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2wiLCJuYW1lIjoiVGVzdCIsImlhdCI6ImxvbCJ9.XNDxZcBWWEKYkCiu6XFGmAeuPF7iFnI7Sdv91gVZJMU',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2wiLCJuYW1lIjoiVGVzdCIsImlhdCI6ImxvbCJ9.XNDxZcBWWEKYkCiu6XFGmAeuPF7iFnI7Sdv91gVZJMU',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2wiLCJuYW1lIjoiVGVzdCIsImlhdCI6ImxvbCJ9.XNDxZcBWWEKYkCiu6XFGmAeuPF7iFnI7Sdv91gVZJMU'
+  ]
+};
+
+const jsonMaskConfig3 = {
+  cardMaskOptions: { maskWith: 'X', unmaskedStartDigits: 0, unmaskedEndDigits: 0 },
+
+  emailMaskOptions: {
+    maskWith: '*',
+    unmaskedStartCharactersBeforeAt: 0,
+    unmaskedEndCharactersAfterAt: 0,
+    maskAtTheRate: false
+  },
+
+  stringMaskOptions: {
+    maskWith: '?',
+    maskOnlyFirstOccurance: false,
+    values: [],
+    maskAll: true,
+    maskSpace: false
+  },
+  jwtMaskOptions: {
+    maskWith: '*',
+    maxMaskedCharacters: 32,
+    maskDot: false,
+    maskHeader: true,
+    maskPayload: true,
+    maskSignature: true
+  },
+
+  cardFields: ['cards[*].number'],
+  emailFields: ['emails.*'],
+  stringFields: ['array.*'],
+  jwtFields: ['jwts.*']
+};
+
+const maskedOutput = MaskData.maskJSON2(jsonInput3, jsonMaskConfig3);
+
+console.log(maskedOutput);
+console.log(maskedOutput['emails'].moreEmails[3].secondChild.nestedkid);

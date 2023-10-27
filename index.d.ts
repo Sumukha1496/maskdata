@@ -45,6 +45,15 @@ declare module 'maskdata' {
     unmaskedEndCharacters?: number;
   }
 
+  export interface JwtMaskOptions {
+    maskWith?: string;
+    maxMaskedCharacters?: number;
+    maskDot?: boolean;
+    maskHeader?: boolean;
+    maskPayload?: boolean;
+    maskSignature?: boolean;
+  }
+
   export interface JsonMask2Configs {
     cardMaskOptions?: CardMaskOptions;
     cardFields?: string[];
@@ -72,6 +81,7 @@ declare module 'maskdata' {
   export function maskCard(cardNumber?: string, options?: CardMaskOptions): string;
   export function maskString(str?: string, options?: StringMaskOptions): string;
   export function maskUuid(uuid?: string, options?: UuidMaskOptions): string;
+  export function maskJwt(jwt?: string, options?: JwtMaskOptions): string;
   export function getInnerProperty(object: object, field: string): any;
   export function replaceValue(object: object, field: string, value: any): object;
 }
