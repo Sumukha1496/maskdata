@@ -45,8 +45,9 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Release Features
 ### Version 1.2.4 
 - JWT token masking: Mask JWT tokens with configs to mask as per your need. More details: [Mask JWT Token](#mask-jwt-token)
-- Mask Json now supports JWT token masking also. More details: [Mask multiple fields](#mask-multiple-fields)
+- Mask Json now supports JWT token masking also. More details: [Mask JWT in a JSON](#mask-json)
 - Bug fix in maskJson2 where it was not checking for the empty/null/undefined fields and was resulting in error `"TypeError: validatedConfig[typeToFunctionMap[key][1]] is not iterable"`
+- Better test coverage to the module with the addition of new test cases
 ### Version 1.2.3
 - Bug fix for masking a list of elements in the nested json. More details: [Mask multiple fields](#mask-multiple-fields)
 - Deprecated *maskJsonFields*(For documentation on the maskJsonFields, check previous version README.md files) function and will be removed in the subsequent versions. Use *maksJson2* instead: https://www.npmjs.com/package/maskdata#mask-json
@@ -195,6 +196,9 @@ const defaultjsonMask2Configs = {
 
     uuidMaskOptions: defaultUuidMaskOptions, // Optional 
     uuidFields: [] // List of UUID fields to be masked
+
+    jwtMaskOptions: defaultJwtMaskOptions, // Optional 
+    jwtFields: [] // List of JWT fields to be masked
 };
 ```
 <b>NOTE: For defaultCardMaskOptions, defaultEmailMask2Options, defaultPasswordMaskOptions, defaultPhoneMaskOptions, defaultStringMaskOptions and defaultUuidMaskOptions refer the corresponding masking features. </b>
@@ -672,12 +676,11 @@ const jwtMaskOptions = {
   // Character to mask the data. The default value is '*'
   maskWith: '*',
 
-  // Max masked characters in the output(EXCLUDING the unmasked characters)
+  // Max masked characters in the output(EXCLUDING the unmasked characters). Default value is 512
   maxMaskedCharacters: 512,
 
   // Config to mask OR keep the dots(.). Default value is true, i.e, mask dots
   maskDot: true,
-
 
   // Config to mask OR keep the first part of the JWT. i.e, the header part. Default value is true, i.e, mask the header part
   maskHeader: true,
