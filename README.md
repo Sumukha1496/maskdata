@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.2.3 Features](#release-features)
+- [Version 1.2.4 Features](#release-features)
 - [How to Use](#how-to-use)
 - [Maskdata for Typescript](#maskdata-for-typescript)
     - [Mask Card number](#mask-card-number)
@@ -19,6 +19,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
       - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
     - [Mask words/characters in a string](#mask-the-characters-or-words-in-the-string)
     - [Mask UUID](#mask-uuid)
+    - [Mask JWT Token](#mask-jwt-token)
     - [Get Nested JSON Property](#get-nested-json-property)
     - [Replace the value of a JSON field](#replace-the-value-of-a-json-field)
 - [Report Bugs](#report-bugs)
@@ -32,6 +33,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 * Mask Phone numbers
 * Mask the given words/substrings from throughout a String
 * Mask UUIDs
+* Mask JWT tokens
 * Mask JSON - JSON can contain cards, emails, passwords, phones, strings, and UUIDs. Mask all of them with a single call using - [Mask JSON fields](#mask-json)
 * Get nested field from JSON
 * Set/Replace nested field values from JSON
@@ -41,6 +43,10 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version 1.2.4 
+- JWT token masking: Mask JWT tokens with configs to mask as per your need. More details: [Mask JWT Token](#mask-jwt-token)
+- Mask Json now supports JWT token masking also. More details: [Mask multiple fields](#mask-multiple-fields)
+- Bug fix in maskJson2 where it was not checking for the empty/null/undefined fields and was resulting in error `"TypeError: validatedConfig[typeToFunctionMap[key][1]] is not iterable"`
 ### Version 1.2.3
 - Bug fix for masking a list of elements in the nested json. More details: [Mask multiple fields](#mask-multiple-fields)
 - Deprecated *maskJsonFields*(For documentation on the maskJsonFields, check previous version README.md files) function and will be removed in the subsequent versions. Use *maksJson2* instead: https://www.npmjs.com/package/maskdata#mask-json
@@ -654,6 +660,144 @@ const uuidAfterMasking = MaskData.maskUuid(uuidInput, maskUuidOptions);
 
 ```
 
+## Mask JWT Token
+This function returns the masked JWT tokens. A JWT token consists of 3 parts separated by 2 dots. i.e, `{header}.{payload}.{signature}`. Based on the usecase, we will have to mask/keep a part/s of jwt token. With maskdata you can mask JWT tokens with all possible combinations. 
+If the input is null, undefined, non-string, string with length < 5, doesn't contain 2 dots(invalid JWT format), the function will return the input as it is without masking.
+
+```javascript
+
+const MaskData = require('./maskdata');
+
+const jwtMaskOptions = {
+  // Character to mask the data. The default value is '*'
+  maskWith: '*',
+
+  // Max masked characters in the output(EXCLUDING the unmasked characters)
+  maxMaskedCharacters: 512,
+
+  // Config to mask OR keep the dots(.). Default value is true, i.e, mask dots
+  maskDot: true,
+
+
+  // Config to mask OR keep the first part of the JWT. i.e, the header part. Default value is true, i.e, mask the header part
+  maskHeader: true,
+
+  // Config to mask OR keep the second part of the JWT. i.e, the payload part. Default value is true, i.e, mask the payload part
+  maskPayload: true,
+
+  // Config to mask OR keep the third part of the JWT. i.e, the signature part. Default value is true, i.e, mask the signature part
+  maskSignature: true
+};
+
+const jwt =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjJ9.tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ';
+
+/** In this example,
+ * Header = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ * Payload = eyJpYXQiOjE1MTYyMzkwMjJ9
+ * Signature = tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ
+ */ 
+const maskedJwt = MaskData.maskJwt(jwt, jwtMaskOptions);
+console.log(maskedJwt);
+
+// Output:
+*********************************************************************************************************
+
+```
+
+#### Example: Mask only the signature part
+
+```javascript
+
+const MaskData = require('./maskdata');
+
+const jwtMaskOptions = {
+  maskWith: '*',
+  maxMaskedCharacters: 512,
+  maskDot: false,
+  maskHeader: false,
+  maskPayload: false,
+  maskSignature: true
+};
+
+const jwt =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjJ9.tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ';
+
+/** In this example,
+ * Header = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ * Payload = eyJpYXQiOjE1MTYyMzkwMjJ9
+ * Signature = tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ
+ */ 
+const maskedJwt = MaskData.maskJwt(jwt, jwtMaskOptions);
+console.log(maskedJwt);
+
+// Output:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjJ9.*******************************************
+
+```
+
+#### Example: Mask header and the signature part
+
+```javascript
+
+const MaskData = require('./maskdata');
+
+const jwtMaskOptions = {
+  maskWith: '*',
+  maxMaskedCharacters: 512,
+  maskDot: false,
+  maskHeader: true,
+  maskPayload: false,
+  maskSignature: true
+};
+
+const jwt =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjJ9.tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ';
+
+/** In this example,
+ * Header = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ * Payload = eyJpYXQiOjE1MTYyMzkwMjJ9
+ * Signature = tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ
+ */ 
+const maskedJwt = MaskData.maskJwt(jwt, jwtMaskOptions);
+console.log(maskedJwt);
+
+// Output:
+************************************.eyJpYXQiOjE1MTYyMzkwMjJ9.*******************************************
+
+```
+
+#### Example: Mask all parts except dots and limit the max masked characters in the output to lower value, say 16
+
+```javascript
+
+const MaskData = require('./maskdata');
+
+const jwtMaskOptions = {
+  maskWith: '*',
+  maxMaskedCharacters: 16,
+  maskDot: false,
+  maskHeader: true,
+  maskPayload: true,
+  maskSignature: true
+};
+
+const jwt =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjJ9.tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ';
+
+/** In this example,
+ * Header = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ * Payload = eyJpYXQiOjE1MTYyMzkwMjJ9
+ * Signature = tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ
+ */ 
+const maskedJwt = MaskData.maskJwt(jwt, jwtMaskOptions);
+console.log(maskedJwt);
+
+// Output:
+******.*****.*****
+
+```
+
 ## Get Nested JSON Property
 This method returns the value of the nested JSON property if it exists. Otherwise, it returns ```undefined```
 ```javascript
@@ -726,7 +870,8 @@ const jsonInput = {
     secondaryEmail: 'secondary@Email.com',
     moreEmails: ["email1@email.com", "email2@email.com", "email3@email.com", {childEmail: "child@child.com", secondChild: {nestedkid: "hello@hello.com"}}]
   },
-  array: ["element1", "element22", "element333"]
+  array: ["element1", "element22", "element333"],
+  jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2wiLCJuYW1lIjoiVGVzdCIsImlhdCI6ImxvbCJ9.XNDxZcBWWEKYkCiu6XFGmAeuPF7iFnI7Sdv91gVZJMU'
 };
 
 const jsonMaskConfig = {
@@ -736,10 +881,12 @@ const jsonMaskConfig = {
   unmaskedEndCharactersAfterAt: 0, maskAtTheRate: false },
 
   stringMaskOptions: { maskWith: "?", maskOnlyFirstOccurance: false, values: [], maskAll: true, maskSpace: false },
+  jwtMaskOptions: { maskWith: '*', maxMaskedCharacters: 32, maskDot: false, maskHeader: true, maskPayload: true, maskSignature: true},
 
   cardFields: ['cards[*].number'],
   emailFields: ['emails.*'],
-  stringFields: ['array.*']
+  stringFields: ['array.*'],
+  jwtFields: ['jwt']
 }
 
 const maskedOutput = maskData.maskJSON2(jsonInput, jsonMaskConfig);
@@ -775,7 +922,8 @@ const maskedOutput = maskData.maskJSON2(jsonInput, jsonMaskConfig);
       }
     ]
   },
-  "array": ["????????", "?????????", "??????????"]
+  "array": ["????????", "?????????", "??????????"],
+  "jwt": "************.**********.**********"
 }
 
 ```

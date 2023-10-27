@@ -7,6 +7,7 @@ const MaskString = require('./lib/maskService/StringMask');
 const MaskPassword = require('./lib/maskService/PasswordMask');
 const MaskUuid = require('./lib/maskService/UuidMask');
 const JsonMask = require('./lib/maskService/JsonMask');
+const JwtMask = require('./lib/maskService/JwtMask');
 const JsonGetSet = require('./lib/helpers/jsonGetSet');
 
 class MaskData {
@@ -45,6 +46,10 @@ class MaskData {
 
   static maskUuid(uuid, options) {
     return MaskUuid.maskUuid(uuid, options);
+  }
+
+  static maskJwt(jwt, options) {
+    return JwtMask.maskJwt(jwt, options);
   }
 
   static getInnerProperty(object, field) {

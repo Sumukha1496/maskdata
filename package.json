@@ -1,6 +1,6 @@
 {
   "name": "maskdata",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Node module to mask various kinds of data in the required formats",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -33,7 +33,11 @@
     "phone",
     "uuid",
     "string",
-    "sensitive"
+    "sensitive",
+    "JWT",
+    "jwt mask",
+    "jwt token",
+    "token"
   ],
   "author": "sumukha.hs<sumukha.hs369@gmail.com>",
   "homepage": "https://www.npmjs.com/package/maskdata?activeTab=readme",
