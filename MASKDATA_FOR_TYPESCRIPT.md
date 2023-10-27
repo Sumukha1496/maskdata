@@ -107,6 +107,7 @@ Usage: [JSON fields masking](./README.md#mask-json)
 ```
 ### 8. Mask JWT
 Usage: [JWT masking](./README.md#mask-jwt-token)
+```javascript
 const defaultJwtMaskOptions = {
   maskWith: '*',
   maxMaskedCharacters: 512,
@@ -115,7 +116,7 @@ const defaultJwtMaskOptions = {
   maskPayload: true,
   maskSignature: true
 };
-
+```
 <br/>
 
 ## Available functions to import along with their configs

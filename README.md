@@ -195,7 +195,7 @@ const defaultjsonMask2Configs = {
     stringFields: [], // List of String fields to be masked
 
     uuidMaskOptions: defaultUuidMaskOptions, // Optional 
-    uuidFields: [] // List of UUID fields to be masked
+    uuidFields: [], // List of UUID fields to be masked
 
     jwtMaskOptions: defaultJwtMaskOptions, // Optional 
     jwtFields: [] // List of JWT fields to be masked
