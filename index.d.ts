@@ -25,6 +25,18 @@ declare module 'maskdata' {
     unmaskedEndCharacters?: number;
   }
 
+  export interface StringMaskV2Options {
+    maskWith?: string;
+    maxMaskedCharacters?: number;
+    unmaskedStartCharacters?: number;
+    unmaskedEndCharacters?: number;
+  }
+
+  export interface GenericStringMaskOptions {
+    config: StringMaskV2Options;
+    fields: string[];
+  }
+
   export interface PhoneMaskOptions {
     maskWith?: string;
     unmaskedStartDigits?: number;
@@ -69,19 +81,16 @@ declare module 'maskdata' {
     uuidFields?: string[];
     jwtMaskOptions?: JwtMaskOptions;
     jwtFields?: string[];
+    genericStrings?: GenericStringMaskOptions[];
   }
 
   export function maskPassword(password?: string, options?: PasswordMaskOptions): string;
-  /**
-   * @deprecated
-   * Use maskJSON2 instead: https://www.npmjs.com/package/maskdata#mask-json
-   */
-  export function maskJSONFields<T extends object>(json?: T, options?: JsonMaskOptions): T;
   export function maskJSON2<T extends object>(json?: T, options?: JsonMask2Configs): T;
   export function maskPhone(phone?: string, options?: PhoneMaskOptions): string;
   export function maskEmail2(email?: string, options?: EmailMask2Options): string;
   export function maskCard(cardNumber?: string, options?: CardMaskOptions): string;
   export function maskString(str?: string, options?: StringMaskOptions): string;
+  export function maskStringV2(str?: string, options?: StringMaskV2Options): string;
   export function maskUuid(uuid?: string, options?: UuidMaskOptions): string;
   export function maskJwt(jwt?: string, options?: JwtMaskOptions): string;
   export function getInnerProperty(object: object, field: string): any;

@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.2.6 Features](#release-features)
+- [Version 1.3.0 Features](#release-features)
 - [How to Use](#how-to-use)
 - [Maskdata for Typescript](#maskdata-for-typescript)
     - [Mask Card number](#mask-card-number)
@@ -43,6 +43,14 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version 1.3.0
+- > Breaking change: maskJSON2 supporting list of configs for each type of fields instead of a single config for a type of data. But don't worry, only a tiny change  is needed from your side: 
+- Removal of maskJSONFields function: https://www.npmjs.com/package/maskdata/v/1.1.10#mask-fields-in-a-json 
+- Supporting String mask version2 in response to the below issues.
+  - https://github.com/Sumukha1496/maskdata/issues/17
+  - https://github.com/Sumukha1496/maskdata/issues/40
+  - https://github.com/Sumukha1496/maskdata/issues/42 
+
 ### Version 1.2.6 
 - JWT token masking: Mask JWT tokens with configs to mask as per your need. More details: [Mask JWT Token](#mask-jwt-token)
 - Mask Json now supports JWT token masking also. More details: [Mask JWT in a JSON](#mask-json)
@@ -51,15 +59,6 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 ### Version 1.2.3
 - Bug fix for masking a list of elements in the nested json. More details: [Mask multiple fields](#mask-multiple-fields)
 - Deprecated *maskJsonFields*(For documentation on the maskJsonFields, check previous version README.md files) function and will be removed in the subsequent versions. Use *maksJson2* instead: https://www.npmjs.com/package/maskdata#mask-json
-### Version 1.2.2
-- Type definitions for the typescript developers. Yay!!!
-But there is a small change in how you import and use the library. Follow this to know how you can import and use the masking functions in a typescript project: [Mask data for Typescript](#maskdata-for-typescript)
-### Version 1.2.0
-- Support for masking cards, emails, passwords, phones, strings, and UUIDs. Mask all of them with a single call using - [Mask JSON fields](#mask-json)
-- Support for masking UUID - [Mask UUID](#mask-uuid)
-- Minor bug fix in card masking.
-- Extensive testing with the help of mocha test cases for all features covering more than 110 test cases.
-- Improved Documentation
 
 # How to Use
 ```javascript

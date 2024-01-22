@@ -1,6 +1,5 @@
 'use strict';
 const maskData = require('../index');
-const BadOption = require('../lib/ExceptionsHandler/BadOption');
 const expect = require('chai').expect;
 
 describe('Masking email addresses', function () {

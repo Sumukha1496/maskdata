@@ -15,103 +15,9 @@ const jsonInput = {
   workPhone: '+1 9876543210',
   addressLine1: 'This is my addressline 1. This is my home',
   addressLine2: 'AddressLine 2',
-  uuid1: '123e4567-e89b-12d3-a456-426614174000'
+  uuid1: '123e4567-e89b-12d3-a456-426614174000',
+  randomString: 'This is a random string'
 };
-
-describe('JSON mask1', function () {
-  describe('Mask json with default options', function () {
-    let testData = {
-      title: 'Mask json with default options',
-      input: {
-        level1: {
-          field1: 'field1Value',
-          level2: {
-            field2: 'field2Value',
-            field3: [{ Hello: 'Hello', Hi: 'one' }, { Hello: 'Hello again' }],
-            level3: {
-              field4: 'field4Value',
-              field5: 'field5Value'
-            }
-          }
-        },
-        value1: 'value'
-      }
-    };
-
-    it(`${testData.title}`, function () {
-      const jsonMaskConfig = {
-        fields: ['level1.level2.field3[*].Hello', 'level1.level2.level3.*', 'value1']
-      };
-      const masked = maskData.maskJSONFields(testData.input, jsonMaskConfig);
-      expect(masked['level1']['level2']['field3'][0]['Hello']).to.equal('*****');
-      expect(masked['level1']['level2']['field3'][1]['Hello']).to.equal('***********');
-      expect(masked['level1']['level2']['level3']['field4']).to.equal('***********');
-      expect(masked['level1']['level2']['level3']['field5']).to.equal('***********');
-      expect(masked['value1']).to.equal('*****');
-    });
-
-    it('Mask json with maxMaskedCharactersStr', function () {
-      const jsonMaskConfig = {
-        fields: ['key1'],
-        maxMaskedCharactersStr: 10
-      };
-      const masked = maskData.maskJSONFields(
-        { key1: 'value1WithTooManyCharacters' },
-        jsonMaskConfig
-      );
-      expect(masked['key1']).to.equal('**********');
-    });
-  });
-
-  describe('Mask json without passing configs', function () {
-    let testData = {
-      title: 'Mask json with default options',
-      input: {
-        level1: {
-          field1: 'field1Value',
-          level2: {
-            field2: 'field2Value',
-            field3: [
-              { Hello: 'Hello', Hi: 'one' },
-              { Hello: 'Hello again' },
-              { NoHello: 'No Hello' }
-            ],
-            level3: {
-              field4: 'field4Value',
-              field5: 'field5Value'
-            }
-          }
-        },
-        value1: 'value'
-      }
-    };
-
-    it(`${testData.title}`, function () {
-      const jsonMaskConfig = {
-        fields: [
-          'level1.level2.field3[*].Hello',
-          'level1.level2.level3.*',
-          'value1',
-          'unknownField'
-        ]
-      };
-      const masked = maskData.maskJSONFields(testData.input);
-      expect(masked['level1']['level2']['field3'][0]['Hello']).to.equal(
-        testData.input['level1']['level2']['field3'][0]['Hello']
-      );
-      expect(masked['level1']['level2']['field3'][1]['Hello']).to.equal(
-        testData.input['level1']['level2']['field3'][1]['Hello']
-      );
-      expect(masked['level1']['level2']['level3']['field4']).to.equal(
-        testData.input['level1']['level2']['level3']['field4']
-      );
-      expect(masked['level1']['level2']['level3']['field5']).to.equal(
-        testData.input['level1']['level2']['level3']['field5']
-      );
-      expect(masked['value1']).to.equal(testData.input['value1']);
-    });
-  });
-});
 
 describe('JSON mask2', function () {
   describe('Mask with default options and no fields', function () {
@@ -128,7 +34,8 @@ describe('JSON mask2', function () {
         outputWorkPhone: '+1 9876543210',
         outputAddressLine1: 'This is my addressline 1. This is my home',
         outputAddressLine2: 'AddressLine 2',
-        outputUuid: '123e4567-e89b-12d3-a456-426614174000'
+        outputUuid: '123e4567-e89b-12d3-a456-426614174000',
+        outputRandomString: 'This is a random string'
       }
     ];
 
@@ -145,7 +52,8 @@ describe('JSON mask2', function () {
         outputWorkPhone,
         outputAddressLine1,
         outputAddressLine2,
-        outputUuid
+        outputUuid,
+        outputRandomString
       }) => {
         it(`${title}`, function () {
           const masked = maskData.maskJSON2(input, Constants.defaultjsonMask2Configs);
@@ -159,6 +67,7 @@ describe('JSON mask2', function () {
           expect(masked['addressLine1']).to.equal(outputAddressLine1);
           expect(masked['addressLine2']).to.equal(outputAddressLine2);
           expect(masked['uuid1']).to.equal(outputUuid);
+          expect(masked['randomString']).to.equal(outputRandomString);
         });
       }
     );
@@ -178,7 +87,8 @@ describe('JSON mask2', function () {
         outputWorkPhone: '+1 9********0',
         outputAddressLine1: 'This is my addressline 1. This is my home',
         outputAddressLine2: 'AddressLine 2',
-        outputUuid: '********-****-****-****-************'
+        outputUuid: '********-****-****-****-************',
+        outputRandonString: '***********************'
       }
     ];
 
@@ -195,7 +105,8 @@ describe('JSON mask2', function () {
         outputWorkPhone,
         outputAddressLine1,
         outputAddressLine2,
-        outputUuid
+        outputUuid,
+        outputRandonString
       }) => {
         const jsonMaskConfig = JSON.parse(JSON.stringify(Constants.defaultjsonMask2Configs));
         jsonMaskConfig['cardFields'] = ['credit', 'debit'];
@@ -204,6 +115,7 @@ describe('JSON mask2', function () {
         jsonMaskConfig['phoneFields'] = ['homePhone', 'workPhone'];
         jsonMaskConfig['stringFields'] = ['addressLine1', 'addressLine2'];
         jsonMaskConfig['uuidFields'] = ['uuid1'];
+        jsonMaskConfig['genericStrings'] = [{ fields: ['randomString'] }];
         it(`${title}`, function () {
           const masked = maskData.maskJSON2(input, jsonMaskConfig);
           expect(masked['credit']).to.equal(outputCredit);
@@ -216,6 +128,7 @@ describe('JSON mask2', function () {
           expect(masked['addressLine1']).to.equal(outputAddressLine1);
           expect(masked['addressLine2']).to.equal(outputAddressLine2);
           expect(masked['uuid1']).to.equal(outputUuid);
+          expect(masked['randomString']).to.equal(outputRandonString);
         });
       }
     );
@@ -253,6 +166,10 @@ describe('JSON mask2', function () {
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdDIifQ.ekZkXoeOb4SE_YLlc0Iv8V3wm17xS1B7TzhtYHvIYl0',
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdDMifQ.CNiJIr7TZgsVGS0dbFFwdPtG6v1wwSor9jFoVeUkrJ0'
         ]
+      },
+      drivingLicense: {
+        license1: 'XX1234 YY',
+        motorLicenses: ['ABCD1234', 'EFGH5678']
       }
     };
 
@@ -307,6 +224,9 @@ describe('JSON mask2', function () {
         jsonMaskConfig['stringFields'] = ['address.addressLine1', 'address.addressLine2'];
         jsonMaskConfig['uuidFields'] = ['uuids.uuid1'];
         jsonMaskConfig['jwtFields'] = ['jwts.token1', 'jwts.token2'];
+        jsonMaskConfig['genericStrings'] = [
+          { fields: ['drivingLicense.license1', 'drivingLicense.motorLicenses.*'] }
+        ];
         it(`${title}`, function () {
           const masked = maskData.maskJSON2(input, jsonMaskConfig);
           expect(masked['cards']['creditCards'][0]).to.equal(outputCredit);
@@ -329,6 +249,10 @@ describe('JSON mask2', function () {
 
           expect(masked['jwts']['token1']).to.equal(outputJwt1);
           expect(masked['jwts']['token2']).to.equal(outputJwt2);
+
+          expect(masked['drivingLicense']['license1']).to.equal('*********');
+          expect(masked['drivingLicense']['motorLicenses'][0]).to.equal('********');
+          expect(masked['drivingLicense']['motorLicenses'][1]).to.equal('********');
         });
         it('Test masking improper JSON', function () {
           const notAJson = 'Not a JSON. Just a String';
@@ -339,11 +263,20 @@ describe('JSON mask2', function () {
     );
   });
 
-  describe('Mask card fields with custom options', function () {
+  describe('Mask fields with custom options', function () {
+    let input = JSON.parse(JSON.stringify(jsonInput));
+    input['randomStrings'] = {};
+    input['randomStrings']['row1'] = 'This is row 1 random string';
+    input['randomStrings']['row2'] = ['Entry1', 'Entry2', 'Entry3'];
+    input['randomStrings']['row3'] = {
+      key1: 'Row3 Object 1',
+      key2: 'Row3 Object 2',
+      key3: ['Entry1', 'Entry2', 'Entry3']
+    };
     let testData = [
       {
         title: 'Mask card fields with custom options',
-        input: JSON.parse(JSON.stringify(jsonInput)),
+        input: input,
         outputCredit: 'XXXX-XXXX-XXXX-1234',
         outputDebit: 'XXXX-XXXX-XXXX-3333'
       }
@@ -352,18 +285,47 @@ describe('JSON mask2', function () {
     testData.forEach(({ title, input, outputCredit, outputDebit }) => {
       const jsonMaskConfig = JSON.parse(JSON.stringify(Constants.defaultjsonMask2Configs));
       const cardMaskOptions = JSON.parse(JSON.stringify(Constants.defaultCardMaskOptions));
-      // const defaultCardMaskOptions = {
-      //   maskWith: "*",
-      //   unmaskedStartDigits: 4,
-      //   unmaskedEndDigits: 1
-      // };
       cardMaskOptions['maskWith'] = 'X';
       cardMaskOptions['unmaskedStartDigits'] = 0;
       cardMaskOptions['unmaskedEndDigits'] = 4;
       jsonMaskConfig['cardFields'] = ['credit', 'debit'];
       jsonMaskConfig['cardMaskOptions'] = cardMaskOptions;
+      jsonMaskConfig['genericStrings'] = [
+        {
+          fields: ['randomString'],
+          config: {
+            maskWith: '?',
+            unmaskedStartCharacters: 2,
+            unmaskedEndCharacters: 3,
+            maxMaskedCharacters: 8
+          }
+        },
+        {
+          fields: ['randomStrings.row1'],
+          config: {
+            maskWith: '*',
+            unmaskedStartCharacters: 2,
+            unmaskedEndCharacters: 3,
+            maxMaskedCharacters: 8
+          }
+        },
+        { fields: ['randomStrings.row2.*'], config: { maskWith: 'X', unmaskedEndCharacters: 1 } },
+        { fields: ['randomStrings.row3.key1'] },
+        {
+          fields: ['randomStrings.row3.key3.*'],
+          config: { maskWith: '@', unmaskedEndCharacters: 1 }
+        },
+        {
+          fields: ['unknownField'],
+          config: { maskWith: '@', unmaskedEndCharacters: 1 }
+        },
+        {
+          config: { maskWith: '@', unmaskedEndCharacters: 1 }
+        }
+      ];
       it(`${title}`, function () {
         const masked = maskData.maskJSON2(input, jsonMaskConfig);
+        console.log(JSON.stringify(masked));
         expect(masked['credit']).to.equal(outputCredit);
         expect(masked['debit']).to.equal(outputDebit);
         expect(masked['primaryEmail']).to.equal(input['primaryEmail']);
@@ -373,6 +335,17 @@ describe('JSON mask2', function () {
         expect(masked['workPhone']).to.equal(input['workPhone']);
         expect(masked['addressLine1']).to.equal(input['addressLine1']);
         expect(masked['addressLine2']).to.equal(input['addressLine2']);
+        expect(masked['randomString']).to.equal('Th???ing');
+        expect(masked['randomStrings']['row1']).to.equal('Th***ing');
+        expect(masked['randomStrings']['row2'][0]).to.equal('XXXXX1');
+        expect(masked['randomStrings']['row2'][1]).to.equal('XXXXX2');
+        expect(masked['randomStrings']['row2'][2]).to.equal('XXXXX3');
+        expect(masked['randomStrings']['row3']['key1']).to.equal('*************');
+        expect(masked['randomStrings']['row3']['key2']).to.equal('Row3 Object 2');
+        expect(masked['randomStrings']['row3']['key3'][0]).to.equal('@@@@@1');
+        expect(masked['randomStrings']['row3']['key3'][1]).to.equal('@@@@@2');
+        expect(masked['randomStrings']['row3']['key3'][2]).to.equal('@@@@@3');
+        expect(masked['unknownField']).to.equal(undefined);
       });
     });
   });
