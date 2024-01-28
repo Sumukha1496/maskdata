@@ -17,7 +17,6 @@ const options: PasswordMaskOptions = {
 };
 
 const maskedPassword = maskPassword(password, options);
-console.log(maskedPassword);
 ```
 <br/>
 
@@ -85,9 +84,25 @@ Usage: [UUID Masking](./README.md#mask-uuid)
 } 
 ```
 
-### 7. JsonMask2Configs
-Usage: [JSON fields masking](./README.md#mask-json)
+### 7. StringMaskV2Options
+Usage: [Generic String Masking](./README.md#generic-string-masking)
 ```javascript
+{
+    maskWith?: string;
+    maxMaskedCharacters?: number;
+    unmaskedStartCharacters?: number;
+    unmaskedEndCharacters?: number;
+} 
+```
+
+### 8. JsonMask2Configs
+Usage: [JSON fields masking](./README.md#mask-json)
+```typescript
+interface GenericStringMaskOptions {
+    config?: StringMaskV2Options;
+    fields: string[];
+}
+
 {
     cardMaskOptions?: CardMaskOptions;
     cardFields?: string[];
@@ -103,23 +118,24 @@ Usage: [JSON fields masking](./README.md#mask-json)
     uuidFields?: string[];
     jwtMaskOptions?: JwtMaskOptions;
     jwtFields?: string[];
+    genericStrings?: GenericStringMaskOptions[]
 }
 ```
-### 8. Mask JWT
+### 9. Mask JWT
 Usage: [JWT masking](./README.md#mask-jwt-token)
 ```javascript
-const defaultJwtMaskOptions = {
-  maskWith: '*',
-  maxMaskedCharacters: 512,
-  maskDot: true,
-  maskHeader: true,
-  maskPayload: true,
-  maskSignature: true
-};
+{
+    maskWith?: string;
+    maxMaskedCharacters?: number;
+    maskDot?: boolean;
+    maskHeader?: boolean;
+    maskPayload?: boolean;
+    maskSignature?: boolean;
+  }
 ```
 <br/>
 
-## Available functions to import along with their configs
+## Available imports
 ```javascript
-import { maskPassword, PasswordMaskOptions, maskJSON2, JsonMask2Configs, maskPhone, PhoneMaskOptions, maskEmail2, EmailMask2Options, maskCard, CardMaskOptions, maskString, StringMaskOptions, maskUuid, UuidMaskOptions, maskJwt, JwtMaskOptions, getInnerProperty, replaceValue } from 'maskdata';
+import { maskPassword, PasswordMaskOptions, maskJSON2, JsonMask2Configs, maskPhone, PhoneMaskOptions, maskEmail2, EmailMask2Options, maskCard, CardMaskOptions, maskString, StringMaskOptions, maskUuid, UuidMaskOptions, maskJwt, JwtMaskOptions, maskStringV2, GenericStringMaskOptions, StringMaskV2Options, getInnerProperty, replaceValue } from 'maskdata';
 ```

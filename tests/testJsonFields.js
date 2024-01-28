@@ -73,6 +73,32 @@ describe('JSON mask2', function () {
     );
   });
 
+  describe('Mask all fields with no config', function () {
+    let testData = [
+      {
+        title: 'test json masking with no config but all types of fields',
+        input: JSON.parse(JSON.stringify(jsonInput))
+      }
+    ];
+
+    testData.forEach(({ title, input }) => {
+      it(`${title}`, function () {
+        const masked = maskData.maskJSON2(input);
+        expect(masked['credit']).to.equal(input['credit']);
+        expect(masked['debit']).to.equal(input['debit']);
+        expect(masked['primaryEmail']).to.equal(input['primaryEmail']);
+        expect(masked['secondaryEmail']).to.equal(input['secondaryEmail']);
+        expect(masked['password']).to.equal(input['password']);
+        expect(masked['homePhone']).to.equal(input['homePhone']);
+        expect(masked['workPhone']).to.equal(input['workPhone']);
+        expect(masked['addressLine1']).to.equal(input['addressLine1']);
+        expect(masked['addressLine2']).to.equal(input['addressLine2']);
+        expect(masked['uuid1']).to.equal(input['uuid1']);
+        expect(masked['randomString']).to.equal(input['randomString']);
+      });
+    });
+  });
+
   describe('Mask all fields with default options', function () {
     let testData = [
       {
@@ -325,7 +351,6 @@ describe('JSON mask2', function () {
       ];
       it(`${title}`, function () {
         const masked = maskData.maskJSON2(input, jsonMaskConfig);
-        console.log(JSON.stringify(masked));
         expect(masked['credit']).to.equal(outputCredit);
         expect(masked['debit']).to.equal(outputDebit);
         expect(masked['primaryEmail']).to.equal(input['primaryEmail']);

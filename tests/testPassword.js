@@ -157,17 +157,15 @@ describe('Masking password', function () {
       let testData = [
         {
           title: 'test input as array',
-          input: ['12'],
-          output: '12'
+          input: ['12']
         },
         {
           title: 'test input as object',
-          input: { a: 'b', x: 'y' },
-          output: { a: 'b', x: 'y' }
+          input: { a: 'b', x: 'y' }
         }
       ];
 
-      testData.forEach(({ title, input, output }) => {
+      testData.forEach(({ title, input }) => {
         it(`special input - ${title}`, function () {
           const masked = maskData.maskPassword(input, maskOptions);
           expect(masked).to.equal(input, "input won't be masked");

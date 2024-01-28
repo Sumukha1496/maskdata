@@ -33,7 +33,7 @@ declare module 'maskdata' {
   }
 
   export interface GenericStringMaskOptions {
-    config: StringMaskV2Options;
+    config?: StringMaskV2Options;
     fields: string[];
   }
 
