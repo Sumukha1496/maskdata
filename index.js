@@ -15,15 +15,6 @@ class MaskData {
     return MaskPassword.maskPassword(password, options);
   }
 
-  /**
-   *
-   * @deprecated
-   * Use maskJSON2 instead: https://www.npmjs.com/package/maskdata#mask-json
-   */
-  static maskJSONFields(json, options) {
-    return JsonMask.maskJSONFields(json, options);
-  }
-
   static maskJSON2(json, options) {
     return JsonMask.maskJSON2(json, options);
   }
@@ -42,6 +33,10 @@ class MaskData {
 
   static maskString(str, options) {
     return MaskString.maskString(str, options);
+  }
+
+  static maskStringV2(str, options) {
+    return MaskString.maskStringV2(str, options);
   }
 
   static maskUuid(uuid, options) {

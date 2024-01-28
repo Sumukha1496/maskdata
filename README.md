@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.2.6 Features](#release-features)
+- [Version 1.3.1 Features](#release-features)
 - [How to Use](#how-to-use)
 - [Maskdata for Typescript](#maskdata-for-typescript)
     - [Mask Card number](#mask-card-number)
@@ -17,6 +17,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
       - [Mask Password with the default configuration](#mask-password-with-the-default-configuration)
     - [Mask Phone Number](#mask-phone-number)
       - [Mask Phone Number with the default configuration](#mask-phone-number-with-the-default-configuration)
+    - [Generic String masking](#generic-string-masking)
     - [Mask words/characters in a string](#mask-the-characters-or-words-in-the-string)
     - [Mask UUID](#mask-uuid)
     - [Mask JWT Token](#mask-jwt-token)
@@ -43,6 +44,13 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version 1.3.1
+- Removal of maskJSONFields function: https://www.npmjs.com/package/maskdata/v/1.1.10#mask-fields-in-a-json 
+- String mask version2 for generic string masking in response to the below issues: [Details](#generic-string-masking)
+  - https://github.com/Sumukha1496/maskdata/issues/17
+  - https://github.com/Sumukha1496/maskdata/issues/40
+  - https://github.com/Sumukha1496/maskdata/issues/42 
+- Supporting generic string masking(string mask V2) as part of maskJson2: [generic String masking in a JSON](#json-mask-examples)
 ### Version 1.2.6 
 - JWT token masking: Mask JWT tokens with configs to mask as per your need. More details: [Mask JWT Token](#mask-jwt-token)
 - Mask Json now supports JWT token masking also. More details: [Mask JWT in a JSON](#mask-json)
@@ -51,15 +59,6 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 ### Version 1.2.3
 - Bug fix for masking a list of elements in the nested json. More details: [Mask multiple fields](#mask-multiple-fields)
 - Deprecated *maskJsonFields*(For documentation on the maskJsonFields, check previous version README.md files) function and will be removed in the subsequent versions. Use *maksJson2* instead: https://www.npmjs.com/package/maskdata#mask-json
-### Version 1.2.2
-- Type definitions for the typescript developers. Yay!!!
-But there is a small change in how you import and use the library. Follow this to know how you can import and use the masking functions in a typescript project: [Mask data for Typescript](#maskdata-for-typescript)
-### Version 1.2.0
-- Support for masking cards, emails, passwords, phones, strings, and UUIDs. Mask all of them with a single call using - [Mask JSON fields](#mask-json)
-- Support for masking UUID - [Mask UUID](#mask-uuid)
-- Minor bug fix in card masking.
-- Extensive testing with the help of mocha test cases for all features covering more than 110 test cases.
-- Improved Documentation
 
 # How to Use
 ```javascript
@@ -171,7 +170,7 @@ const maskedEmail = MaskData.maskEmail2(email);
 ```
 
 ## Mask JSON
-This is the new functionality in version 1.2.0 to handle the masking of multiple types of data in the JSON object with a single mask function call. Use this function instead of the previous function maskJsonFields(). <br><br>To mask with the default options, just pass the required fields(cardFields[] and/or emailFields[] and/or passwordFields[] and/or phoneFields[] and/or stringFields[] and/or uuidFields[]) in the second argument to the function.
+This is the new functionality in version 1.2.0+ to handle masking of multiple types of data in the JSON object with a single mask function call. 
 
 ```javascript
 const MaskData = require('./maskdata');
@@ -198,10 +197,17 @@ const defaultjsonMask2Configs = {
     uuidFields: [], // List of UUID fields to be masked
 
     jwtMaskOptions: defaultJwtMaskOptions, // Optional 
-    jwtFields: [] // List of JWT fields to be masked
+    jwtFields: [], // List of JWT fields to be masked
+
+    genericStrings: [
+      {
+        config: defaultStringMaskV2Options,
+        fields: []
+      }
+    ]
 };
 ```
-<b>NOTE: For defaultCardMaskOptions, defaultEmailMask2Options, defaultPasswordMaskOptions, defaultPhoneMaskOptions, defaultStringMaskOptions, defaultUuidMaskOptions and defaultJwtMaskOptions refer corresponding masking features. </b>
+> NOTE: For details on the configs mentioned above, refer: <br /> [defaultCardMaskOptions](#mask-card-number)<br/>[defaultEmailMask2Options](#mask-email-id)<br/> [defaultPasswordMaskOptions](#mask-password)<br/> [defaultPhoneMaskOptions](#mask-phone-number)<br/> [defaultStringMaskOptions](#mask-the-characters-or-words-in-the-string)<br/> [defaultUuidMaskOptions](#mask-uuid)<br /> [defaultJwtMaskOptions](#mask-jwt-token)<br /> [defaultStringMaskV2Options / generic String Maksing](#generic-string-masking) 
 
 ```javascript
 const defaultjsonMask2Configs = {
@@ -260,6 +266,18 @@ const defaultjsonMask2Configs = {
         maskSignature: true
     },
     jwtFields: [],
+    // To extend the mask function to other types of data. 
+    genericStrings: [
+      {
+        config: {
+          maskWith: "*",
+          maxMaskedCharacters: 256,
+          unmaskedStartDigits: 0,
+          unmaskedEndDigits: 0
+        },
+        fields: []
+      }
+    ]
 };
 
 ```
@@ -277,7 +295,16 @@ const jsonInput = {
   'workPhone': "+1 9876543210",
   'addressLine1': "This is my addressline 1. This is my home",
   'addressLine2': "AddressLine 2",
-  'uuid1': '123e4567-e89b-12d3-a456-426614174000'
+  'uuid1': '123e4567-e89b-12d3-a456-426614174000',
+  'randomStrings': {
+    'row1': 'This is row 1 random string',
+    'row2': ['Entry1', 'Entry2', 'Entry3'],
+    'row3': {
+      'key1': 'Row3 Object 1',
+      'key2': 'Row3 Object 2',
+      'key3': ['Entry1', 'Entry2', 'Entry3']
+    }
+  }
 };
 
 const jsonMaskConfig = {
@@ -291,13 +318,29 @@ const jsonMaskConfig = {
       values: ["This"]
     },
     stringFields: ['addressLine1', 'addressLine2'],
-    uuidFields: ['uuid1']
+    uuidFields: ['uuid1'],
+    genericStrings: [
+        {
+          fields: ['randomStrings.row1'],
+          config: {
+            maskWith: '*',
+            unmaskedStartCharacters: 2,
+            unmaskedEndCharacters: 3,
+            maxMaskedCharacters: 8
+          }
+        },
+        { fields: ['randomStrings.row2.*'], config: { maskWith: 'X', unmaskedEndCharacters: 1 } },
+        { fields: ['randomStrings.row3.key1'] },
+        {
+          fields: ['randomStrings.row3.key3.*'],
+          config: { maskWith: '@', unmaskedEndCharacters: 1 }
+        }
+    ]
 };
 
 const maskedJsonOutput = maskData.maskJSON2(jsonInput, jsonMaskConfig);
 
 Output:
-
 {
   credit: '1234-****-****-***4',
   debit: '0000-****-****-***3',
@@ -308,7 +351,16 @@ Output:
   workPhone: '+1 9********0',
   addressLine1: '**** is my addressline 1. **** is my home',
   addressLine2: 'AddressLine 2',
-  uuid1: '********-****-****-****-************'
+  uuid1: '********-****-****-****-************',
+  randomStrings: {
+    row1: 'Th***ing',
+    row2: ['XXXXX1', 'XXXXX2', 'XXXXX3'],
+    row3: {
+      key1: '*************',
+      key2: 'Row3 Object 2',
+      key3: ['@@@@@1', '@@@@@2', '@@@@@3']
+    }
+  }
 }
 
 
@@ -567,7 +619,59 @@ const maskedPhoneNumber = MaskData.maskPhone(phoneNumber);
 //Output: +911********0
 
 ```
+## Generic string masking
+This functionality can be used to mask any string with the below configs.
+#### Example1
+```javascript
+const MaskData = require('./maskdata');
 
+const defaultStringMaskV2Options = {
+  // Character to mask the data
+  // default value is '*'
+  maskWith: "*",
+
+  // This is to limit the maximun characters in the output.
+  // Default value is 256
+  maxMaskedCharacters: 256,
+
+  // To show(not mask) first 'n' characters of the string.
+  // Default value is 0. 
+  unmaskedStartCharacters: 0,
+
+  // To show(not mask) last 'n' characters of the string.
+  // Default value is 0. 
+  unmaskedEndCharacters: 0
+};
+
+const string1 = "Password1$";
+
+const maskedString = MaskData.maskStringV2(string1, defaultStringMaskV2Options);
+
+//Output: **********
+``` 
+
+#### Example2
+
+```javascript
+const MaskData = require('./maskdata');
+
+const stringMaskV2Options = {
+  maskWith: "X",
+  maxMaskedCharacters: 20, // To limit the output length to 20.
+  unmaskedStartCharacters: 4,
+  unmaskedEndCharacters: 9
+};
+
+const secret = "TEST:U2VjcmV0S2V5MQ==:CLIENT-A";
+
+const maskedSecret = MaskData.maskStringV2(password, stringMaskV2Options);
+//Output: TESTXXXXXXX:CLIENT-A
+
+stringMaskV2Options.unmaskedStartCharacters = 0;
+
+maskedSecret = MaskData.maskStringV2(password, stringMaskV2Options);
+//Output: XXXXXXXXXXX:CLIENT-A
+```
 
 ## Mask the characters or words in the string
 This will mask the characters or words if present in the given string.
@@ -717,7 +821,6 @@ const jwt =
  * Signature = tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ
  */ 
 const maskedJwt = MaskData.maskJwt(jwt, jwtMaskOptions);
-console.log(maskedJwt);
 
 // Output:
 *********************************************************************************************************
@@ -748,7 +851,6 @@ const jwt =
  * Signature = tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ
  */ 
 const maskedJwt = MaskData.maskJwt(jwt, jwtMaskOptions);
-console.log(maskedJwt);
 
 // Output:
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjJ9.*******************************************
@@ -779,7 +881,6 @@ const jwt =
  * Signature = tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ
  */ 
 const maskedJwt = MaskData.maskJwt(jwt, jwtMaskOptions);
-console.log(maskedJwt);
 
 // Output:
 ************************************.eyJpYXQiOjE1MTYyMzkwMjJ9.*******************************************
@@ -810,7 +911,6 @@ const jwt =
  * Signature = tbDepxpstvGdW8TC3G8zg4B6rUYAOvfzdceoH48wgRQ
  */ 
 const maskedJwt = MaskData.maskJwt(jwt, jwtMaskOptions);
-console.log(maskedJwt);
 
 // Output:
 ******.*****.*****
