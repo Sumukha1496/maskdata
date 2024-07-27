@@ -443,7 +443,7 @@ describe('JSON mask2', function () {
           }
         },
         {
-          fields: ['*key1'],
+          fields: ['*key10'],
           config: {
             maskWith: '*',
             unmaskedStartCharacters: 2,
