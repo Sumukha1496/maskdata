@@ -9,7 +9,8 @@ describe('Masking password', function () {
     //   maskWith: "*",
     //   maxMaskedCharacters: 16,
     //   unmaskedStartCharacters: 0,
-    //   unmaskedEndCharacters: 0
+    //   unmaskedEndCharacters: 0,
+    //   maskedOutputLength: undefined
     // };
 
     let testData = [
@@ -113,6 +114,139 @@ describe('Masking password', function () {
       expect(masked).to.equal(
         output,
         'No masking done because maxMasked(max output characters) equal to start + end'
+      );
+    });
+  });
+
+  describe('Mask with maskedOutputLength config', function () {
+    const config = {
+      maskWith: 'X',
+      maskedOutputLength: 6
+    };
+
+    let testData = [
+      {
+        title: 'Random string',
+        input: '1234-5678-1234-5678',
+        output: 'XXXXXX'
+      },
+      {
+        title: 'input string length equal to maskedOutputLength',
+        input: '12-345',
+        output: 'XXXXXX'
+      },
+      {
+        title: 'input string length less than maskedOutputLength',
+        input: '12',
+        output: 'XXXXXX'
+      },
+      {
+        title: 'input string length greater than maskedOutputLength',
+        input: '1234567',
+        output: 'XXXXXX'
+      }
+    ];
+
+    testData.forEach(({ title, input, output }) => {
+      it(`custom mask - ${title}`, function () {
+        const masked = maskData.maskPassword(input, config);
+        expect(masked).to.equal(output, 'masked output does not match expected value');
+      });
+    });
+
+    it('custom mask - test with maskedOutputLength and maxMaskedCharacters; No effect from maxMaskedCharacters', function () {
+      const config = {
+        maskWith: 'x',
+        maxMaskedCharacters: 4,
+        maskedOutputLength: 6
+      };
+      const input = '1234-5678-1234-5678';
+      const output = 'xxxxxx';
+      const masked = maskData.maskPassword(input, config);
+      expect(masked).to.equal(output, 'masked output does not match expected value');
+    });
+
+    it('unmaskedStartCharacters + unmaskedEndCharacters < maskedOutputLength; No masking done', function () {
+      const config = {
+        maskWith: 'x',
+        maskedOutputLength: 6,
+        unmaskedStartCharacters: 4, // 4+4=8 > 6
+        unmaskedEndCharacters: 4
+      };
+      const input = '1234-5678-1234-5678';
+      const output = '123478';
+      const masked = maskData.maskPassword(input, config);
+      expect(masked).to.equal(
+        output,
+        'No masking done because maskedOutputLength shorter than start + end'
+      );
+    });
+
+    it('unmaskedStartCharacters + unmaskedEndCharacters = maskedOutputLength; No masking done', function () {
+      const config = {
+        maskWith: 'x',
+        maskedOutputLength: 8,
+        unmaskedStartCharacters: 4, // 4+4=8
+        unmaskedEndCharacters: 4
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = '12345678';
+      const masked = maskData.maskPassword(input, config);
+      expect(masked).to.equal(
+        output,
+        'No masking done because maskedOutputLength equal to start + end'
+      );
+    });
+    it('maskedOutputLength = null; Treat it as undefined and mask with other default configs', function () {
+      const config = {
+        maskWith: 'x',
+        maskedOutputLength: null
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = 'xxxxxxxxxxxxxxxx';
+      const masked = maskData.maskPassword(input, config);
+      expect(masked).to.equal(
+        output,
+        'Default config masking should have been done as maskedOutputLength is null and is treated as undefined'
+      );
+    });
+    it('maskedOutputLength = undefined; Treat it as undefined and mask with other default configs', function () {
+      const config = {
+        maskWith: 'x',
+        maskedOutputLength: undefined
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = 'xxxxxxxxxxxxxxxx';
+      const masked = maskData.maskPassword(input, config);
+      expect(masked).to.equal(
+        output,
+        'Default config masking should have been done as maskedOutputLength is undefined'
+      );
+    });
+    it('maskedOutputLength < 0; Treat it as undefined and mask with other default configs', function () {
+      const config = {
+        maskWith: 'x',
+        maskedOutputLength: -1
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = 'xxxxxxxxxxxxxxxx';
+      const masked = maskData.maskPassword(input, config);
+      expect(masked).to.equal(
+        output,
+        'Default config masking should have been done as maskedOutputLength is negative as is treated as undefined'
+      );
+    });
+    it('maskedOutputLength = 0; Output length = 0 characters', function () {
+      const config = {
+        maskWith: 'x',
+        maskedOutputLength: 0
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = '';
+      const masked = maskData.maskPassword(input, config);
+      expect(masked).to.equal(
+        output,
+        'Output length should be 0 as maskedOutputLength is explicitly mentioned as 0'
       );
     });
   });
