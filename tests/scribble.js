@@ -481,23 +481,57 @@ const JsonMask2Configs = {
   genericStrings: [
     {
       config: {
-        maskWith: "*",
-        maxMaskedCharacters: 6,
+        maskWith: '*',
+        maxMaskedCharacters: 6
       },
-      fields: [
-        "*addressLine1"
-      ],
-    },
-  ],
+      fields: ['*addressLine1']
+    }
+  ]
 };
 
 console.log(
-  MaskData.maskJSON2({
-    car: "Mazda",
-    addressLine1: "Mask me!",
-    deeper: {
-      addressLine1: "Mask me!",
-      evenDeeper: { addressLine1: "Mask me!" },
+  MaskData.maskJSON2(
+    {
+      car: 'Mazda',
+      addressLine1: 'Mask me!',
+      deeper: {
+        addressLine1: 'Mask me!',
+        evenDeeper: { addressLine1: 'Mask me!' }
+      }
     },
-  }, JsonMask2Configs),
+    JsonMask2Configs
+  )
 );
+
+const inputJson = {
+  cards: [
+    {
+      number: '1234-5678-0123-0000'
+    },
+    {
+      number: '1111-2222-3333-4444'
+    },
+    {
+      number: '2222-4444-6666-8888'
+    },
+    {
+      number: '1111-3333-5555-7777'
+    },
+    {
+      number: '0000-0000-0000-0000'
+    }
+  ]
+};
+
+const cardfieldsToMask = ['*number']; // Specify the field with a '*' at the beginning and NO dot(.) anywhere else in that field.
+
+const jsonMaskConfigx = {
+  cardMaskOptions: {
+    maskWith: '*',
+    unmaskedStartDigits: 4,
+    unmaskedEndDigits: 1
+  },
+  cardFields: cardfieldsToMask
+};
+
+console.log(MaskData.maskJSON2(inputJson, jsonMaskConfigx));

@@ -1,6 +1,6 @@
 {
   "name": "maskdata",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Node module to mask various kinds of data in the required formats",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -26,6 +26,8 @@
     "mask json",
     "mask string",
     "mask object",
+    "mask json",
+    "recursive mask json",
     "Get json fields",
     "Set json fields",
     "Replcae json fields",

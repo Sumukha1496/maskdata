@@ -378,19 +378,19 @@ describe('JSON mask2', function () {
   describe('Mask generic string fields with *', function () {
     let input = JSON.parse(JSON.stringify(jsonInput));
     input['cards'] = [
-      {'number': "1234-5678-1234-5678"},
-      {'number': "2222-3333-4444-5555"},
-      {'number': "5555-6666-7777-8888"},
-      {'number': "1111-3333-5555-7777"},
-      {'number1': "0000-0000-0000-0000"}
-    ]
+      { number: '1234-5678-1234-5678' },
+      { number: '2222-3333-4444-5555' },
+      { number: '5555-6666-7777-8888' },
+      { number: '1111-3333-5555-7777' },
+      { number1: '0000-0000-0000-0000' }
+    ];
     input['randomStrings'] = {};
     input['randomStrings']['key1'] = 'This is row 1 random string';
     input['randomStrings']['row2'] = ['Entry1', 'Entry2', 'Entry3'];
     input['randomStrings']['row3'] = {
       key1: 'Row3 Object 1',
       key2: 'Row3 Object 2',
-      key3: ['Entry1', 'Entry2', 'Entry3', {key1: 'mask me also'}]
+      key3: ['Entry1', 'Entry2', 'Entry3', { key1: 'mask me also' }]
     };
     input['randomStrings']['row4'] = [
       {
@@ -405,7 +405,7 @@ describe('JSON mask2', function () {
       {
         key1: 'mask me also4'
       }
-    ]
+    ];
     let testData = [
       {
         title: 'Mask generic string fields with *',
@@ -451,11 +451,11 @@ describe('JSON mask2', function () {
             maxMaskedCharacters: 8
           }
         },
-        { fields: ['randomStrings.row2.*'], config: { maskWith: 'X', unmaskedEndCharacters: 1 } },
+        { fields: ['randomStrings.row2.*'], config: { maskWith: 'X', unmaskedEndCharacters: 1 } }
       ];
       it(`${title}`, function () {
         const masked = maskData.maskJSON2(input, jsonMaskConfig);
-        console.log(JSON.stringify(input))
+        console.log(JSON.stringify(input));
         expect(masked['credit']).to.equal(outputCredit);
         expect(masked['debit']).to.equal(outputDebit);
         expect(masked['cards'][0]['number']).to.equal('XXXX-XXXX-XXXX-5678');

@@ -4,7 +4,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 # Table of Contents
 - [Features](#features)
 - [Install maskdata](#install-maskdata)
-- [Version 1.3.1 Features](#release-features)
+- [Version 1.3.2 Features](#release-features)
 - [How to Use](#how-to-use)
 - [Maskdata for Typescript](#maskdata-for-typescript)
     - [Mask Card number](#mask-card-number)
@@ -13,6 +13,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
     - [Mask JSON fields](#mask-json)
       - [JSON mask examples with nested fields](#json-mask-examples)
       - [Mask multiple fields at once using .* and [*].](#mask-multiple-fields)
+        - [Recursive masking / Mask all the fields with a name in the json](#recursive-masking)
     - [Mask Password](#mask-password)
       - [Mask Password with the default configuration](#mask-password-with-the-default-configuration)
     - [Mask Phone Number](#mask-phone-number)
@@ -44,6 +45,12 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 > npm i maskdata
 
 # Release Features
+### Version 1.3.2
+- Recursive masking feature: [Details](#recursive-masking)
+  - https://github.com/Sumukha1496/maskdata/issues/45
+  - https://github.com/Sumukha1496/maskdata/issues/47
+- Fixed output length masking: [Mask Password](#mask-password) and [Mask String](#generic-string-masking)
+  - https://github.com/Sumukha1496/maskdata/issues/46
 ### Version 1.3.1
 - Removal of maskJSONFields function: https://www.npmjs.com/package/maskdata/v/1.1.10#mask-fields-in-a-json 
 - String mask version2 for generic string masking in response to the below issues: [Details](#generic-string-masking)
@@ -51,14 +58,6 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
   - https://github.com/Sumukha1496/maskdata/issues/40
   - https://github.com/Sumukha1496/maskdata/issues/42 
 - Supporting generic string masking(string mask V2) as part of maskJson2: [generic String masking in a JSON](#json-mask-examples)
-### Version 1.2.6 
-- JWT token masking: Mask JWT tokens with configs to mask as per your need. More details: [Mask JWT Token](#mask-jwt-token)
-- Mask Json now supports JWT token masking also. More details: [Mask JWT in a JSON](#mask-json)
-- Bug fix in maskJson2 where it was not checking for the empty/null/undefined fields and was resulting in error `"TypeError: validatedConfig[typeToFunctionMap[key][1]] is not iterable"`
-- Better test coverage to the module with the addition of new test cases
-### Version 1.2.3
-- Bug fix for masking a list of elements in the nested json. More details: [Mask multiple fields](#mask-multiple-fields)
-- Deprecated *maskJsonFields*(For documentation on the maskJsonFields, check previous version README.md files) function and will be removed in the subsequent versions. Use *maksJson2* instead: https://www.npmjs.com/package/maskdata#mask-json
 
 # How to Use
 ```javascript
@@ -518,6 +517,10 @@ const maskPasswordOptions = {
   // Default value is 16
   maxMaskedCharacters: 16,
 
+  // To fix the length of output irrespective of the length of the input. 
+  // Default value is undefined. If this value is set, then maxMaskedCharacters will not be considered and the output length will always be equal to fixedOutputLength characters.
+  fixedOutputLength: undefined,
+
   // To show(not mask) first 'n' characters in the password/secret key. 
   // Default value is 0. 
   unmaskedStartCharacters: 0,
@@ -542,6 +545,7 @@ const MaskData = require('./maskdata');
     maskWith: "*"
     maxMaskedCharacters: 16,
     unmaskedStartCharacters: 0,
+    fixedOutputLength: undefined,
     unmaskedEndCharacters: 0
   **/
 
@@ -560,7 +564,8 @@ const maskPasswordOptions = {
   maskWith: "X",
   maxMaskedCharacters: 20, // To limit the output String length to 20.
   unmaskedStartCharacters: 4,
-  unmaskedEndCharacters: 9 // As the last 9 characters of the secret key is meta info which can be printed for debugging or other purposes
+  unmaskedEndCharacters: 9, // As the last 9 characters of the secret key is meta info which can be printed for debugging or other purposes
+  fixedOutputLength: undefined
 };
 
 const password = "TEST:U2VjcmV0S2V5MQ==:CLIENT-A";
@@ -634,6 +639,10 @@ const defaultStringMaskV2Options = {
   // Default value is 256
   maxMaskedCharacters: 256,
 
+  // To fix the length of output irrespective of the length of the input. 
+  // Default value is undefined. If this value is set, then maxMaskedCharacters will not be considered and the output length will always be equal to fixedOutputLength characters.
+  fixedOutputLength: undefined,
+
   // To show(not mask) first 'n' characters of the string.
   // Default value is 0. 
   unmaskedStartCharacters: 0,
@@ -659,7 +668,8 @@ const stringMaskV2Options = {
   maskWith: "X",
   maxMaskedCharacters: 20, // To limit the output length to 20.
   unmaskedStartCharacters: 4,
-  unmaskedEndCharacters: 9
+  unmaskedEndCharacters: 9,
+  fixedOutputLength: undefined
 };
 
 const secret = "TEST:U2VjcmV0S2V5MQ==:CLIENT-A";
@@ -1045,6 +1055,95 @@ const maskedOutput = maskData.maskJSON2(jsonInput, jsonMaskConfig);
   "jwt": "************.**********.**********"
 }
 
+```
+
+### Recursive Masking
+If you want to mask all the fields with a name irrespective of its level in the json, use the `*{field_name}`. 
+
+Example: 
+```javascript
+
+const inputJson = {
+  car: "Mazda",
+  addressLine1: "Mask me!",
+  deeper: {
+    addressLine1: "Mask me!",
+    evenDeeper: { addressLine1: "Mask me!" },
+  },
+};
+
+const fieldsToMask = ["*addressLine1"];  // Specify the field with a '*' at the beginning and NO dot(.) anywhere else in that field.
+
+const jsonMaskConfig = {
+  genericStrings: [
+    {
+      config: {
+        maskWith: "*",
+        maxMaskedCharacters: 6
+      },
+      fields: fieldsToMask
+    },
+  ],
+};
+
+const maskedOutput = maskData.maskJSON2(inputJson, jsonMaskConfig);
+
+// Output: 
+{
+  car: 'Mazda',
+  addressLine1: '******',
+  deeper: { addressLine1: '******', evenDeeper: { addressLine1: '******' } }
+}
+```
+
+#### Example 2: 
+Using Recursive masking to mask card numbers in a json using mask card config. Recursive masking can be used to mask all types of data mentioned [here](#mask-json)
+
+```javascript
+
+const inputJson = {
+  cards: [
+    {
+      number: "1234-5678-0123-0000"
+    },
+    {
+      number: "1111-2222-3333-4444"
+    },
+    {
+      number: "2222-4444-6666-8888"
+    },
+    {
+      number: "1111-3333-5555-7777"
+    },
+    {
+      number: "0000-0000-0000-0000"
+    }
+  ]
+};
+
+const cardfieldsToMask = ["*number"];  // Specify the field with a '*' at the beginning and NO dot(.) anywhere else in that field.
+    
+const jsonMaskConfig = {
+  cardMaskOptions: {
+        maskWith: "*",
+        unmaskedStartDigits: 4,
+        unmaskedEndDigits: 1
+    },
+  cardFields: cardfieldsToMask, 
+};
+
+const maskedOutput = maskData.maskJSON2(jsonInput, jsonMaskConfig);
+
+// Output: 
+{
+  cards: [
+    { number: '1234-****-****-***0' },
+    { number: '1111-****-****-***4' },
+    { number: '2222-****-****-***8' },
+    { number: '1111-****-****-***7' },
+    { number: '0000-****-****-***0' }
+  ]
+}
 ```
 
 

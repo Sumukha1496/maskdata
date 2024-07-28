@@ -21,6 +21,7 @@ declare module 'maskdata' {
   export interface PasswordMaskOptions {
     maskWith?: string;
     maxMaskedCharacters?: number;
+    fixedOutputLength?: undefined | number;
     unmaskedStartCharacters?: number;
     unmaskedEndCharacters?: number;
   }
@@ -28,6 +29,7 @@ declare module 'maskdata' {
   export interface StringMaskV2Options {
     maskWith?: string;
     maxMaskedCharacters?: number;
+    fixedOutputLength?: undefined | number;
     unmaskedStartCharacters?: number;
     unmaskedEndCharacters?: number;
   }
