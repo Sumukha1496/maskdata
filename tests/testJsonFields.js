@@ -455,7 +455,6 @@ describe('JSON mask2', function () {
       ];
       it(`${title}`, function () {
         const masked = maskData.maskJSON2(input, jsonMaskConfig);
-        console.log(JSON.stringify(input));
         expect(masked['credit']).to.equal(outputCredit);
         expect(masked['debit']).to.equal(outputDebit);
         expect(masked['cards'][0]['number']).to.equal('XXXX-XXXX-XXXX-5678');
