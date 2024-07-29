@@ -375,7 +375,7 @@ describe('JSON mask2', function () {
     });
   });
 
-  describe('Mask generic string fields with *', function () {
+  describe('Test recursive masking', function () {
     let input = JSON.parse(JSON.stringify(jsonInput));
     input['cards'] = [
       { number: '1234-5678-1234-5678' },
@@ -483,6 +483,37 @@ describe('JSON mask2', function () {
         expect(masked['randomStrings']['row4'][2]['key1']).to.equal('ma***so3');
         expect(masked['randomStrings']['row4'][3]['key1']).to.equal('ma***so4');
         expect(masked['unknownField']).to.equal(undefined);
+      });
+      it(`Recursive masking negative test cases; Do not mask`, function () {
+        const inputJson = {
+          cards: {
+            number: '1234-5678-0123-0000',
+            deeper: {
+              number: '0000-0000-0000-0000'
+            }
+          },
+          cards2: [
+            {
+              number: '1111-2222-3333-4444'
+            },
+            {
+              number: '2222-4444-6666-8888'
+            }
+          ]
+        };
+        const jsonMaskConfig = {
+          cardMaskOptions: {
+            maskWith: '*',
+            unmaskedStartDigits: 4,
+            unmaskedEndDigits: 1
+          },
+          cardFields: ['*cards.number']
+        };
+        const masked = maskData.maskJSON2(inputJson, jsonMaskConfig);
+        expect(masked['cards']['number']).to.equal('1234-5678-0123-0000');
+        expect(masked['cards']['deeper']['number']).to.equal('0000-0000-0000-0000');
+        expect(masked['cards2'][0]['number']).to.equal('1111-2222-3333-4444');
+        expect(masked['cards2'][1]['number']).to.equal('2222-4444-6666-8888');
       });
     });
   });

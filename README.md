@@ -1096,7 +1096,7 @@ const maskedOutput = maskData.maskJSON2(inputJson, jsonMaskConfig);
 }
 ```
 
-#### Example 2: 
+Example 2: 
 Using Recursive masking to mask card numbers in a json using mask card config. Recursive masking can be used to mask all types of data mentioned [here](#mask-json)
 
 ```javascript
