@@ -517,7 +517,7 @@ const maskPasswordOptions = {
   // Default value is 16
   maxMaskedCharacters: 16,
 
-  // To fix the length of output irrespective of the length of the input. 
+  // To fix the length of output irrespective of the length of the input. This comes in handy when the input length < maxMaskedCharacters but we want a fixed output length.
   // Default value is undefined. If this value is set, then maxMaskedCharacters will not be considered and the output length will always be equal to fixedOutputLength characters.
   fixedOutputLength: undefined,
 
@@ -639,7 +639,7 @@ const defaultStringMaskV2Options = {
   // Default value is 256
   maxMaskedCharacters: 256,
 
-  // To fix the length of output irrespective of the length of the input. 
+  // To fix the length of output irrespective of the length of the input. This comes in handy when the input length < maxMaskedCharacters but we want a fixed output length.
   // Default value is undefined. If this value is set, then maxMaskedCharacters will not be considered and the output length will always be equal to fixedOutputLength characters.
   fixedOutputLength: undefined,
 
