@@ -375,6 +375,149 @@ describe('JSON mask2', function () {
     });
   });
 
+  describe('Test recursive masking', function () {
+    let input = JSON.parse(JSON.stringify(jsonInput));
+    input['cards'] = [
+      { number: '1234-5678-1234-5678' },
+      { number: '2222-3333-4444-5555' },
+      { number: '5555-6666-7777-8888' },
+      { number: '1111-3333-5555-7777' },
+      { number1: '0000-0000-0000-0000' }
+    ];
+    input['randomStrings'] = {};
+    input['randomStrings']['key1'] = 'This is row 1 random string';
+    input['randomStrings']['row2'] = ['Entry1', 'Entry2', 'Entry3'];
+    input['randomStrings']['row3'] = {
+      key1: 'Row3 Object 1',
+      key2: 'Row3 Object 2',
+      key3: ['Entry1', 'Entry2', 'Entry3', { key1: 'mask me also' }]
+    };
+    input['randomStrings']['row4'] = [
+      {
+        key1: 'mask me also1'
+      },
+      {
+        key1: 'mask me also2'
+      },
+      {
+        key1: 'mask me also3'
+      },
+      {
+        key1: 'mask me also4'
+      }
+    ];
+    let testData = [
+      {
+        title: 'Mask generic string fields with *',
+        input: input,
+        outputCredit: 'XXXX-XXXX-XXXX-1234',
+        outputDebit: 'XXXX-XXXX-XXXX-3333'
+      }
+    ];
+
+    testData.forEach(({ title, input, outputCredit, outputDebit }) => {
+      const jsonMaskConfig = JSON.parse(JSON.stringify(Constants.defaultjsonMask2Configs));
+      const cardMaskOptions = JSON.parse(JSON.stringify(Constants.defaultCardMaskOptions));
+      cardMaskOptions['maskWith'] = 'X';
+      cardMaskOptions['unmaskedStartDigits'] = 0;
+      cardMaskOptions['unmaskedEndDigits'] = 4;
+      jsonMaskConfig['cardFields'] = ['credit', 'debit', '*number'];
+      jsonMaskConfig['cardMaskOptions'] = cardMaskOptions;
+      jsonMaskConfig['genericStrings'] = [
+        {
+          fields: ['randomString'],
+          config: {
+            maskWith: '?',
+            unmaskedStartCharacters: 2,
+            unmaskedEndCharacters: 3,
+            maxMaskedCharacters: 8
+          }
+        },
+        {
+          fields: ['*key1'],
+          config: {
+            maskWith: '*',
+            unmaskedStartCharacters: 2,
+            unmaskedEndCharacters: 3,
+            maxMaskedCharacters: 8
+          }
+        },
+        {
+          fields: ['*key10'],
+          config: {
+            maskWith: '*',
+            unmaskedStartCharacters: 2,
+            unmaskedEndCharacters: 3,
+            maxMaskedCharacters: 8
+          }
+        },
+        { fields: ['randomStrings.row2.*'], config: { maskWith: 'X', unmaskedEndCharacters: 1 } }
+      ];
+      it(`${title}`, function () {
+        const masked = maskData.maskJSON2(input, jsonMaskConfig);
+        expect(masked['credit']).to.equal(outputCredit);
+        expect(masked['debit']).to.equal(outputDebit);
+        expect(masked['cards'][0]['number']).to.equal('XXXX-XXXX-XXXX-5678');
+        expect(masked['cards'][1]['number']).to.equal('XXXX-XXXX-XXXX-5555');
+        expect(masked['cards'][2]['number']).to.equal('XXXX-XXXX-XXXX-8888');
+        expect(masked['cards'][3]['number']).to.equal('XXXX-XXXX-XXXX-7777');
+        expect(masked['cards'][4]['number1']).to.equal('0000-0000-0000-0000');
+        expect(masked['primaryEmail']).to.equal(input['primaryEmail']);
+        expect(masked['secondaryEmail']).to.equal(input['secondaryEmail']);
+        expect(masked['password']).to.equal(input['password']);
+        expect(masked['homePhone']).to.equal(input['homePhone']);
+        expect(masked['workPhone']).to.equal(input['workPhone']);
+        expect(masked['addressLine1']).to.equal(input['addressLine1']);
+        expect(masked['addressLine2']).to.equal(input['addressLine2']);
+        expect(masked['randomString']).to.equal('Th???ing');
+        expect(masked['randomStrings']['key1']).to.equal('Th***ing');
+        expect(masked['randomStrings']['row2'][0]).to.equal('XXXXX1');
+        expect(masked['randomStrings']['row2'][1]).to.equal('XXXXX2');
+        expect(masked['randomStrings']['row2'][2]).to.equal('XXXXX3');
+        expect(masked['randomStrings']['row3']['key3'][0]).to.equal('Entry1');
+        expect(masked['randomStrings']['row3']['key3'][1]).to.equal('Entry2');
+        expect(masked['randomStrings']['row3']['key3'][2]).to.equal('Entry3');
+        expect(masked['randomStrings']['row3']['key3'][3]['key1']).to.equal('ma***lso');
+        expect(masked['randomStrings']['row4'][0]['key1']).to.equal('ma***so1');
+        expect(masked['randomStrings']['row4'][1]['key1']).to.equal('ma***so2');
+        expect(masked['randomStrings']['row4'][2]['key1']).to.equal('ma***so3');
+        expect(masked['randomStrings']['row4'][3]['key1']).to.equal('ma***so4');
+        expect(masked['unknownField']).to.equal(undefined);
+      });
+      it(`Recursive masking negative test cases; Do not mask`, function () {
+        const inputJson = {
+          cards: {
+            number: '1234-5678-0123-0000',
+            deeper: {
+              number: '0000-0000-0000-0000'
+            }
+          },
+          cards2: [
+            {
+              number: '1111-2222-3333-4444'
+            },
+            {
+              number: '2222-4444-6666-8888'
+            }
+          ]
+        };
+        const jsonMaskConfig = {
+          cardMaskOptions: {
+            maskWith: '*',
+            unmaskedStartDigits: 4,
+            unmaskedEndDigits: 1
+          },
+          cardFields: ['*cards.number']
+        };
+        const masked = maskData.maskJSON2(inputJson, jsonMaskConfig);
+        expect(masked['cards']['number']).to.equal('1234-5678-0123-0000');
+        expect(masked['cards']['deeper']['number']).to.equal('0000-0000-0000-0000');
+        expect(masked['cards2'][0]['number']).to.equal('1111-2222-3333-4444');
+        expect(masked['cards2'][1]['number']).to.equal('2222-4444-6666-8888');
+      });
+    });
+  });
+
   describe('Mask email fields with custom options', function () {
     let testData = [
       {

@@ -10,6 +10,7 @@ describe('Masking String V2', function () {
     //   maxMaskedCharacters: 256,
     //   unmaskedStartCharacters: 0,
     //   unmaskedEndCharacters: 0
+    //   fixedOutputLength: undefined
     // };
 
     let testData = [
@@ -117,6 +118,139 @@ describe('Masking String V2', function () {
       expect(masked).to.equal(
         output,
         'No masking done because maxMasked(max output characters) equal to start + end'
+      );
+    });
+  });
+
+  describe('Mask with fixedOutputLength', function () {
+    const maskOptions = {
+      maskWith: 'X',
+      fixedOutputLength: 6
+    };
+
+    let testData = [
+      {
+        title: 'Random string',
+        input: '1234-5678-1234-5678',
+        output: 'XXXXXX'
+      },
+      {
+        title: 'input string length equal to fixedOutputLength',
+        input: '12-345',
+        output: 'XXXXXX'
+      },
+      {
+        title: 'input string length less than fixedOutputLength',
+        input: '12',
+        output: 'XXXXXX'
+      },
+      {
+        title: 'input string length greater than fixedOutputLength',
+        input: '1234567',
+        output: 'XXXXXX'
+      }
+    ];
+
+    testData.forEach(({ title, input, output }) => {
+      it(`custom mask - ${title}`, function () {
+        const masked = maskData.maskStringV2(input, maskOptions);
+        expect(masked).to.equal(output, 'masked output does not match expected value');
+      });
+    });
+
+    it('custom mask - test with fixedOutputLength and maxMaskedCharacters; No effect from maxMaskedCharacters', function () {
+      const option = {
+        maskWith: 'x',
+        maxMaskedCharacters: 4,
+        fixedOutputLength: 6
+      };
+      const input = '1234-5678-1234-5678';
+      const output = 'xxxxxx';
+      const masked = maskData.maskStringV2(input, option);
+      expect(masked).to.equal(output, 'masked output does not match expected value');
+    });
+
+    it('unmaskedStartCharacters + unmaskedEndCharacters < fixedOutputLength; No masking done', function () {
+      const shortMaxCharsOption = {
+        maskWith: 'x',
+        fixedOutputLength: 6,
+        unmaskedStartCharacters: 4, // 4+4=8 > 6
+        unmaskedEndCharacters: 4
+      };
+      const input = '1234-5678-1234-5678';
+      const output = '123478';
+      const masked = maskData.maskStringV2(input, shortMaxCharsOption);
+      expect(masked).to.equal(
+        output,
+        'No masking done because fixedOutputLength shorter than start + end'
+      );
+    });
+
+    it('unmaskedStartCharacters + unmaskedEndCharacters = fixedOutputLength; No masking done', function () {
+      const shortMaxCharsOption = {
+        maskWith: 'x',
+        fixedOutputLength: 8,
+        unmaskedStartCharacters: 4, // 4+4=8
+        unmaskedEndCharacters: 4
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = '12345678';
+      const masked = maskData.maskStringV2(input, shortMaxCharsOption);
+      expect(masked).to.equal(
+        output,
+        'No masking done because fixedOutputLength equal to start + end'
+      );
+    });
+    it('fixedOutputLength = null; Treat it as undefined and mask with other default configs', function () {
+      const config = {
+        maskWith: 'x',
+        fixedOutputLength: null
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = 'xxxxxxxxxxxxxxxxxxx';
+      const masked = maskData.maskStringV2(input, config);
+      expect(masked).to.equal(
+        output,
+        'Default config masking should have been done as fixedOutputLength is null and is treated as undefined'
+      );
+    });
+    it('fixedOutputLength = undefined; Treat it as undefined and mask with other default configs', function () {
+      const config = {
+        maskWith: 'x',
+        fixedOutputLength: undefined
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = 'xxxxxxxxxxxxxxxxxxx';
+      const masked = maskData.maskStringV2(input, config);
+      expect(masked).to.equal(
+        output,
+        'Default config masking should have been done as fixedOutputLength is undefined'
+      );
+    });
+    it('fixedOutputLength < 0; Treat it as undefined and mask with other default configs', function () {
+      const config = {
+        maskWith: 'x',
+        fixedOutputLength: -1
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = 'xxxxxxxxxxxxxxxxxxx';
+      const masked = maskData.maskStringV2(input, config);
+      expect(masked).to.equal(
+        output,
+        'Default config masking should have been done as fixedOutputLength is negative as is treated as undefined'
+      );
+    });
+    it('fixedOutputLength = 0; Output length = 0 characters', function () {
+      const config = {
+        maskWith: 'x',
+        fixedOutputLength: 0
+      };
+      const input = '1234-abcd-efgh-5678';
+      const output = '';
+      const masked = maskData.maskStringV2(input, config);
+      expect(masked).to.equal(
+        output,
+        'Output length should be 0 as fixedOutputLength is explicitly mentioned as 0'
       );
     });
   });

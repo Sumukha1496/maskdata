@@ -53,73 +53,6 @@ console.log(`Unmasked shortEmail: ${shortEmail}`);
 console.log(`shortEmail after masking: ${MaskData.maskEmail2(shortEmail, emailMask2Options)}`);
 console.log('========================================');
 
-const jsonMaskOptions = {
-  fields: ['password', 'firstName'],
-  maxMaskedCharactersStr: 3
-};
-const json = {
-  password: 'PasswordValue',
-  firstName: 'FIRST_NAME',
-  lastName: 'LAST_NAME'
-};
-console.log(`Unmasked object: `);
-console.log(JSON.stringify(json));
-console.log(`Object after masking:`);
-console.log(JSON.stringify(MaskData.maskJSONFields(json, jsonMaskOptions)));
-console.log('========================================');
-console.log(JSON.stringify(json));
-console.log('========================================');
-const jsonMaskOptions2 = {
-  fields: [
-    'level1.level2.level3.field3',
-    'level1.level2.field2',
-    'level1.field1',
-    'value1',
-    'level1.level2.level3.field4[0].Hello',
-    'level1.level2.level3.field4[2]'
-  ]
-};
-const maskAllFieldsOptions = {
-  fields: ['level1.level2.field3[*].Hello', 'level1.level2.level3.*']
-};
-const nestedAllObject = {
-  level1: {
-    field1: 'field1Value',
-    level2: {
-      field2: 'field2Value',
-      field3: [{ Hello: 'HelloValue', Hi: 'one' }, { Hello: 'Hello again' }],
-      level3: {
-        field4: 'field4Value',
-        field5: 'field5Value'
-      }
-    }
-  },
-  value1: 'value'
-};
-console.log(`Unmasked nested object: `);
-console.log(JSON.stringify(nestedAllObject));
-console.log(`Nested Object after masking all:`);
-console.log(JSON.stringify(MaskData.maskJSONFields(nestedAllObject, maskAllFieldsOptions)));
-console.log('========================================');
-const nestedObject = {
-  level1: {
-    field1: 'field1',
-    level2: {
-      field2: 'field2',
-      level3: {
-        field3: 'field3',
-        field4: [{ Hello: 'world' }, { Hello: 'Newworld' }, 'Just a String']
-      }
-    }
-  },
-  value1: 'value'
-};
-console.log(`Unmasked nested object: `);
-console.log(JSON.stringify(nestedObject));
-console.log(`Nested Object after masking:`);
-console.log(JSON.stringify(MaskData.maskJSONFields(nestedObject, jsonMaskOptions2)));
-console.log('========================================');
-
 const stringMaskOptions = {
   maskWith: '*',
   values: ['is', 'API']
@@ -543,3 +476,62 @@ const maskedOutput = MaskData.maskJSON2(jsonInput3, jsonMaskConfig3);
 
 console.log(maskedOutput);
 console.log(maskedOutput['emails'].moreEmails[3].secondChild.nestedkid);
+
+const JsonMask2Configs = {
+  genericStrings: [
+    {
+      config: {
+        maskWith: '*',
+        maxMaskedCharacters: 6
+      },
+      fields: ['*addressLine1']
+    }
+  ]
+};
+
+console.log(
+  MaskData.maskJSON2(
+    {
+      car: 'Mazda',
+      addressLine1: 'Mask me!',
+      deeper: {
+        addressLine1: 'Mask me!',
+        evenDeeper: { addressLine1: 'Mask me!' }
+      }
+    },
+    JsonMask2Configs
+  )
+);
+
+const inputJson = {
+  cards: [
+    {
+      number: '1234-5678-0123-0000'
+    },
+    {
+      number: '1111-2222-3333-4444'
+    },
+    {
+      number: '2222-4444-6666-8888'
+    },
+    {
+      number: '1111-3333-5555-7777'
+    },
+    {
+      number: '0000-0000-0000-0000'
+    }
+  ]
+};
+
+const cardfieldsToMask = ['*number']; // Specify the field with a '*' at the beginning and NO dot(.) anywhere else in that field.
+
+const jsonMaskConfigx = {
+  cardMaskOptions: {
+    maskWith: '*',
+    unmaskedStartDigits: 4,
+    unmaskedEndDigits: 1
+  },
+  cardFields: cardfieldsToMask
+};
+
+console.log(MaskData.maskJSON2(inputJson, jsonMaskConfigx));
