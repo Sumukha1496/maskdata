@@ -1,7 +1,7 @@
 ## Mask data for Typescript
 The type definitions are bundled with the package. So, no need to install additional dependency. The type definitions are present here: https://github.com/Sumukha1496/maskdata/blob/master/index.d.ts 
 
-Only difference in using this package is with the import statements. 
+For more examples you can refer: [maskdata](https://www.npmjs.com/package/maskdata)
 
 ### Example: Mask password functionality
 
@@ -12,6 +12,7 @@ const password: string = 'myPassword123';
 const options: PasswordMaskOptions = {
   maskWith: '*',
   maxMaskedCharacters: 10,
+  fixedOutputLength: undefined,
   unmaskedStartCharacters: 2,
   unmaskedEndCharacters: 2
 };
@@ -27,6 +28,7 @@ Usage: [Password Masking](./README.md#mask-password)
 {
     maskWith?: string;
     maxMaskedCharacters?: number;
+    fixedOutputLength?: undefined | number;
     unmaskedStartCharacters?: number;
     unmaskedEndCharacters?: number;
 }
@@ -90,12 +92,26 @@ Usage: [Generic String Masking](./README.md#generic-string-masking)
 {
     maskWith?: string;
     maxMaskedCharacters?: number;
+    fixedOutputLength?: undefined | number;
     unmaskedStartCharacters?: number;
     unmaskedEndCharacters?: number;
 } 
 ```
 
-### 8. JsonMask2Configs
+### 8. Mask JWT
+Usage: [JWT masking](./README.md#mask-jwt-token)
+```javascript
+{
+    maskWith?: string;
+    maxMaskedCharacters?: number;
+    maskDot?: boolean;
+    maskHeader?: boolean;
+    maskPayload?: boolean;
+    maskSignature?: boolean;
+  }
+```
+
+### 9. JsonMask2Configs
 Usage: [JSON fields masking](./README.md#mask-json)
 ```typescript
 interface GenericStringMaskOptions {
@@ -120,18 +136,6 @@ interface GenericStringMaskOptions {
     jwtFields?: string[];
     genericStrings?: GenericStringMaskOptions[]
 }
-```
-### 9. Mask JWT
-Usage: [JWT masking](./README.md#mask-jwt-token)
-```javascript
-{
-    maskWith?: string;
-    maxMaskedCharacters?: number;
-    maskDot?: boolean;
-    maskHeader?: boolean;
-    maskPayload?: boolean;
-    maskSignature?: boolean;
-  }
 ```
 <br/>
 
