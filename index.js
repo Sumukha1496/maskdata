@@ -31,6 +31,11 @@ class MaskData {
     return MaskCard.maskCard(cardNumber, options);
   }
 
+  /**
+   * @deprecated since version 1.3.3
+   * This function will be removed in future versions.
+   * Use `maskStringV2` instead.
+   */
   static maskString(str, options) {
     return MaskString.maskString(str, options);
   }

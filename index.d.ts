@@ -51,6 +51,7 @@ declare module 'maskdata' {
     values?: string[];
     maskAll?: boolean;
     maskSpace?: boolean;
+    maxMaskedCharacters?: number;
   }
 
   export interface UuidMaskOptions {
@@ -91,6 +92,11 @@ declare module 'maskdata' {
   export function maskPhone(phone?: string, options?: PhoneMaskOptions): string;
   export function maskEmail2(email?: string, options?: EmailMask2Options): string;
   export function maskCard(cardNumber?: string, options?: CardMaskOptions): string;
+  /**
+   * @deprecated since version 1.3.3
+   * This function will be removed in future versions.
+   * Use `maskStringV2` instead.
+   */
   export function maskString(str?: string, options?: StringMaskOptions): string;
   export function maskStringV2(str?: string, options?: StringMaskV2Options): string;
   export function maskUuid(uuid?: string, options?: UuidMaskOptions): string;

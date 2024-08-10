@@ -19,6 +19,11 @@ describe('Masking strings', function () {
       title: 'test string with newline',
       input: 'this is a\nstring with newline',
       output: ''
+    },
+    {
+      title: 'test string with regex characters',
+      input: 'this is a $tring with ^,&,/,[,.,*,+,?,{,},(,),|,]',
+      output: ''
     }
   ];
 
@@ -37,6 +42,7 @@ describe('Masking strings', function () {
     localTestData[0].output = localTestData[0].input;
     localTestData[1].output = localTestData[1].input;
     localTestData[2].output = localTestData[2].input;
+    localTestData[3].output = localTestData[3].input;
 
     localTestData.forEach(({ title, input, output }) => {
       it(`default mask - ${title}`, function () {
@@ -61,6 +67,7 @@ describe('Masking strings', function () {
     localTestData[0].output = localTestData[0].input;
     localTestData[1].output = localTestData[1].input;
     localTestData[2].output = localTestData[2].input;
+    localTestData[3].output = localTestData[3].input;
 
     localTestData.forEach(({ title, input, output }) => {
       it(`custom mask - ${title}`, function () {
@@ -84,6 +91,7 @@ describe('Masking strings', function () {
     localTestData[0].output = '???? ?? ? ?????????? ??????';
     localTestData[1].output = '?'.repeat(localTestData[1].input.length); // no space here
     localTestData[2].output = '???? ?? ???????? ???? ???????';
+    localTestData[3].output = '???? ?? ? ?????? ???? ???????????????????????????';
 
     localTestData.forEach(({ title, input, output }) => {
       it(`custom mask - ${title}`, function () {
@@ -108,6 +116,7 @@ describe('Masking strings', function () {
     localTestData[0].output = maskChar.repeat(localTestData[0].input.length);
     localTestData[1].output = maskChar.repeat(localTestData[1].input.length);
     localTestData[2].output = maskChar.repeat(localTestData[2].input.length);
+    localTestData[3].output = maskChar.repeat(localTestData[3].input.length);
 
     localTestData.forEach(({ title, input, output }) => {
       it(`custom mask - ${title}`, function () {
@@ -121,7 +130,7 @@ describe('Masking strings', function () {
     const maskOptions = {
       maskWith: 'x',
       maskOnlyFirstOccurance: false,
-      values: ['is', 'ing'],
+      values: ['is', 'ing', '$string'],
       maskAll: true,
       maskSpace: false
     };
@@ -131,6 +140,7 @@ describe('Masking strings', function () {
     localTestData[0].output = 'xxxx xx x xxxxxxxxxx xxxxxx';
     localTestData[1].output = 'x'.repeat(localTestData[1].input.length); // no spaces here
     localTestData[2].output = 'xxxx xx xxxxxxxx xxxx xxxxxxx';
+    localTestData[3].output = 'xxxx xx x xxxxxx xxxx xxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
     localTestData.forEach(({ title, input, output }) => {
       it(`custom mask - ${title}`, function () {
@@ -144,7 +154,7 @@ describe('Masking strings', function () {
     const maskOptions = {
       maskWith: '*',
       maskOnlyFirstOccurance: false,
-      values: ['is', 'ing'],
+      values: ['is', 'ing', '&,/'],
       maskAll: false,
       maskSpace: true
     };
@@ -153,6 +163,7 @@ describe('Masking strings', function () {
     localTestData[0].output = 'Th** ** a test***API Str***';
     localTestData[1].output = 'th****astr***';
     localTestData[2].output = 'th** ** a\nstr*** with newline';
+    localTestData[3].output = 'th** ** a $tr*** with ^,***,[,.,*,+,?,{,},(,),|,]';
 
     localTestData.forEach(({ title, input, output }) => {
       it(`custom mask - ${title}`, function () {
@@ -166,7 +177,7 @@ describe('Masking strings', function () {
     const maskOptions = {
       maskWith: '*',
       maskOnlyFirstOccurance: true,
-      values: ['is', 'ing'],
+      values: ['is', 'ing', '^,&,/,[,.,*,+,?,{,},(,),|,]'],
       maskAll: false,
       maskSpace: true
     };
@@ -175,6 +186,7 @@ describe('Masking strings', function () {
     localTestData[0].output = 'Th** is a test***API String';
     localTestData[1].output = 'th**isastr***';
     localTestData[2].output = 'th** is a\nstr*** with newline';
+    localTestData[3].output = 'th** is a $tr*** with ***************************';
 
     localTestData.forEach(({ title, input, output }) => {
       it(`custom mask - ${title}`, function () {
@@ -233,7 +245,7 @@ describe('Masking strings', function () {
         }
       ];
 
-      testData.forEach(({ title, input, output }) => {
+      testData.forEach(({ title, input }) => {
         it(`special input - ${title}`, function () {
           const masked = maskData.maskString(input, maskOptions);
           expect(masked).to.equal(input, "input won't be masked");
