@@ -3,7 +3,7 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 
 # Table of Contents
 - [Install maskdata](#install-maskdata)
-- [Version 1.3.3 Features](#release-features)
+- [Version 1.3.4 Features](#release-features)
 - [Maskdata for Typescript](#maskdata-for-typescript)
 - [How to Mask](#how-to-mask)
   - [Card number](#mask-card-number)
@@ -32,6 +32,8 @@ maskdata is a Node.js module to mask various kinds of data. With the help of mas
 <br/>
 
 # Release Features
+### Version 1.3.4
+- Dependency version upgrades
 ### Version 1.3.3
 - Better documentation
 - Bug fix and enabling strings with regex characters in the string mask functionality 
