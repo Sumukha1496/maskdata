@@ -45,7 +45,7 @@
   "homepage": "https://www.npmjs.com/package/maskdata?activeTab=readme",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "chai": "^4.3.10",
